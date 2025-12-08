@@ -1,5 +1,5 @@
 # Last Updated: 2025-12-09 00:32:59
-# ��������
+# 基础设置
 geodata-loader: memconservative
 tcp-concurrent: true
 global-client-fingerprint: edge
@@ -12,7 +12,7 @@ profile:
   store-selected: true
   auto-update: true
 
-# ������������ (DNS/Sniffer/Tun)
+# 进阶网络设置 (DNS/Sniffer/Tun)
 sniffer:
   enable: true
   parse-pure-ip: true
@@ -59,14 +59,14 @@ tun:
   dns-hijack:
     - any:53
 
-# GEO ����Դ
+# GEO 数据源
 geox-url:
   geoip: 'https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat'
   geosite: 'https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat'
   mmdb: 'https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip.metadb'
   asn: 'https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb'
 
-# ������
+# 规则订阅
 rule-providers:
   reject:
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
@@ -174,9 +174,9 @@ rule-providers:
     format: yaml
     type: http
 
-# ��������
+# 分组设置
 proxy-groups:
-  - name: �Զ�ѡ��
+  - name: 自动选择
     type: url-test
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Urltest.png
     include-all: true
@@ -188,7 +188,7 @@ proxy-groups:
     health-check:
       enable: true
 
-  - name: ���ؾ���
+  - name: 负载均衡
     type: load-balance
     strategy: consistent-hashing
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Roundrobin.png
@@ -198,12 +198,12 @@ proxy-groups:
     health-check:
       enable: true
 
-  - name: AI�Զ���ѡ
+  - name: AI自动优选
     type: url-test
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
     include-all: true
-    filter: "(?i)����|�ձ�|����|�¼���|̨��"
-    exclude-filter: "(?i)ʥ����"
+    filter: "(?i)美国|日本|荷兰|新加坡|台湾"
+    exclude-filter: "(?i)圣何塞"
     url: "https://www.gstatic.com/generate_204"
     interval: 180
     tolerance: 50
@@ -212,47 +212,47 @@ proxy-groups:
     health-check:
       enable: true
 
-  - name: ����
+  - name: 国内
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/CN.png
     proxies:
       - DIRECT
-      - �Զ�ѡ��
-      - ���ؾ���
+      - 自动选择
+      - 负载均衡
   - name: Google
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
     proxies:
-      - AI�Զ���ѡ
-      - �Զ�ѡ��
-      - ���ؾ���
+      - AI自动优选
+      - 自动选择
+      - 负载均衡
       - DIRECT
 
   - name: OpenAI
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
     proxies:
-      - AI�Զ���ѡ
-      - �Զ�ѡ��
+      - AI自动优选
+      - 自动选择
 
   - name: Gemini
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
     proxies:
-      - AI�Զ���ѡ
-      - �Զ�ѡ��
+      - AI自动优选
+      - 自动选择
 
   - name: Copilot
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Bing.png
     proxies:
-      - AI�Զ���ѡ
-      - �Զ�ѡ��
-  - name: ��Ϸ����
+      - AI自动优选
+      - 自动选择
+  - name: 游戏服务
     type: url-test
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/GAME.png
     include-all: true
-    filter: "(?i)���|̨��|�¼���|�ձ�|����"
+    filter: "(?i)香港|台湾|新加坡|日本|韩国"
     url: "https://www.gstatic.com/generate_204"
     interval: 180
     tolerance: 100
@@ -264,18 +264,18 @@ proxy-groups:
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/YouTube.png
     proxies:
-      - ���ؾ���
-      - �Զ�ѡ��
-      - AI�Զ���ѡ
-  - name: ����ͨ��
+      - 负载均衡
+      - 自动选择
+      - AI自动优选
+  - name: 国外通用
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Global.png
     proxies:
-      - ���ؾ���
-      - �Զ�ѡ��
-      - AI�Զ���ѡ
+      - 负载均衡
+      - 自动选择
+      - AI自动优选
 
-# ��������
+# 规则设置
 rules:
   - GEOIP,PRIVATE,DIRECT,no-resolve
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
@@ -284,24 +284,24 @@ rules:
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
   - DOMAIN,ipv6.msftncsi.com,REJECT
   - DST-PORT,123,DIRECT
-  - DOMAIN-SUFFIX,github.com,����ͨ��
+  - DOMAIN-SUFFIX,github.com,国外通用
   - RULE-SET,reject,REJECT
-  - DST-PORT,22,����ͨ��
-  - RULE-SET,games,��Ϸ����
+  - DST-PORT,22,国外通用
+  - RULE-SET,games,游戏服务
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
   - RULE-SET,openai_classical,OpenAI
   - RULE-SET,gemini_classical,Gemini
   - RULE-SET,copilot_classical,Copilot
   - RULE-SET,microsoft,DIRECT
-  - RULE-SET,telegram,����ͨ��
+  - RULE-SET,telegram,国外通用
   - RULE-SET,YouTube_domain,YouTube
   - RULE-SET,Google_domain,Google
-  - RULE-SET,cn_domain,����
-  - RULE-SET,geolocation-!cn_domain,����ͨ��
+  - RULE-SET,cn_domain,国内
+  - RULE-SET,geolocation-!cn_domain,国外通用
   - RULE-SET,Google_ip,Google
-  - RULE-SET,cn_ip,����
-  - MATCH,����ͨ��
+  - RULE-SET,cn_ip,国内
+  - MATCH,国外通用
 
 
 
