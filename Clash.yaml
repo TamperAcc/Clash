@@ -275,6 +275,7 @@ proxy-groups:
 # 规则设置
 rules:
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
+  - DOMAIN,ipv6.msftncsi.com,REJECT
   - GEOIP,PRIVATE,DIRECT,no-resolve
   - DST-PORT,123,DIRECT
   - DOMAIN-SUFFIX,github.com,国外通用
