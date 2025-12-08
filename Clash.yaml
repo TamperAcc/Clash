@@ -1,4 +1,4 @@
-# Last Updated: 2025-12-09 01:05:02
+# Last Updated: 2025-12-09 01:10:58
 # 基础设置
 geodata-loader: memconservative
 tcp-concurrent: true
@@ -59,7 +59,7 @@ tun:
   dns-hijack:
     - any:53
 
-# GEO 数据�?
+# GEO 数据�?
 geox-url:
   geoip: 'https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat'
   geosite: 'https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat'
@@ -198,12 +198,12 @@ proxy-groups:
     health-check:
       enable: true
 
-  - name: AI自动优�?
+  - name: AI自动优�?
     type: url-test
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
     include-all: true
     filter: "(?i)美国|日本|荷兰"
-    exclude-filter: "(?i)圣何�?
+    exclude-filter: "(?i)圣何�?
     url: "https://www.gstatic.com/generate_204"
     interval: 180
     tolerance: 50
@@ -223,7 +223,7 @@ proxy-groups:
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
     proxies:
-      - AI自动优�?
+      - AI自动优�?
       - 自动选择
       - 负载均衡
       - DIRECT
@@ -232,21 +232,21 @@ proxy-groups:
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
     proxies:
-      - AI自动优�?
+      - AI自动优�?
       - 自动选择
 
   - name: Gemini
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
     proxies:
-      - AI自动优�?
+      - AI自动优�?
       - 自动选择
 
   - name: Copilot
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Bing.png
     proxies:
-      - AI自动优�?
+      - AI自动优�?
       - 自动选择
   - name: 游戏服务
     type: url-test
@@ -266,14 +266,14 @@ proxy-groups:
     proxies:
       - 负载均衡
       - 自动选择
-      - AI自动优�?
+      - AI自动优�?
   - name: 国外通用
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Global.png
     proxies:
       - 负载均衡
       - 自动选择
-      - AI自动优�?
+      - AI自动优�?
 
 # 规则设置
 rules:
