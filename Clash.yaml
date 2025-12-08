@@ -277,11 +277,11 @@ proxy-groups:
 # 规则设置
 rules:
   - GEOIP,PRIVATE,DIRECT,no-resolve
+  - DOMAIN,ipv6.msftconnecttest.com,REJECT
+  - DOMAIN,ipv6.msftncsi.com,REJECT
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
   - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
   - DOMAIN-SUFFIX,msftncsi.com,DIRECT
-  - DOMAIN,ipv6.msftconnecttest.com,REJECT
-  - DOMAIN,ipv6.msftncsi.com,REJECT
   - DST-PORT,123,DIRECT
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
