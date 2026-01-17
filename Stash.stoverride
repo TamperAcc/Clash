@@ -201,7 +201,9 @@ proxy-groups: #!replace
     strategy: consistent-hashing
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png
     include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
+    # 优化：iOS 端同步地区过滤，防止分配到高延迟节点
+    filter: "(?i)香港|台湾|日本|新加坡|韩国|美国|HK|TW|JP|SG|KR|US"
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|印度|土耳其|阿根廷"
     url: "https://www.gstatic.com/generate_204"
     interval: 600  # 优化：10分钟检测一次
     lazy: true
@@ -339,9 +341,9 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  # 🎯 优化：合并所有 AI 服务为单一规则集 (domain 类型，内存占用降低 60%)
+  # 🎯 优化：合并所有 AI 服务为单一规则集 (包含 OpenAI/Gemini/Claude/Copilot)
   ai_services:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/openai.yaml
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/artificial-intelligence.yaml
     path: ./ruleset/ai_services.yaml
     behavior: domain
     interval: 86400
