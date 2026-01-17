@@ -324,8 +324,8 @@ proxy-groups:
     include-all: true
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     proxies:
-      - 自动选择
       - 负载均衡
+      - 自动选择
       - AI自动优选
 
 # 规则设置
