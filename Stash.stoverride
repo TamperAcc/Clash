@@ -228,7 +228,7 @@ proxy-groups: #!replace
     health-check:
       enable: true
 
-  - name: 国内直连
+  - name: 国内
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
     proxies:
@@ -415,7 +415,7 @@ rules: #!replace
   - DOMAIN-SUFFIX,home.arpa,DIRECT
   
   # 3. macOS/iOS 常用软件
-  - PROCESS-NAME,BambuStudio,国内直连
+  - PROCESS-NAME,BambuStudio,国内
   - PROCESS-NAME,WeChat,DIRECT
   - PROCESS-NAME,QQ,DIRECT
   - PROCESS-NAME,Thunder,DIRECT
@@ -498,9 +498,9 @@ rules: #!replace
   - DOMAIN-SUFFIX,epicgames.com,DIRECT
   
   # 9. Bambu Lab 拓竹
-  - DOMAIN-SUFFIX,bambulab.com,国内直连
-  - DOMAIN-SUFFIX,bambulab.cn,国内直连
-  - DOMAIN-SUFFIX,bambulab.co,国内直连
+  - DOMAIN-SUFFIX,bambulab.com,国内
+  - DOMAIN-SUFFIX,bambulab.cn,国内
+  - DOMAIN-SUFFIX,bambulab.co,国内
   
   # 10. 社交媒体 (优化：合并规则集)
   - RULE-SET,social_media,国外通用
@@ -510,10 +510,10 @@ rules: #!replace
   # 11. 视频与搜索 (优化：移除冗余 IP 规则)
   - RULE-SET,youtube_domain,YouTube 4K
   - RULE-SET,google_domain,Google Search
-  - RULE-SET,cn_domain,国内直连
+  - RULE-SET,cn_domain,国内
   - RULE-SET,geolocation_no_cn,国外通用
-  - RULE-SET,cn_ip,国内直连
-  - GEOIP,CN,国内直连
+  - RULE-SET,cn_ip,国内
+  - GEOIP,CN,国内
   
   # 12. 兜底策略
   - DOMAIN-SUFFIX,githubusercontent.com,国外通用
