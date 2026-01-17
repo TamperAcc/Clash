@@ -347,6 +347,9 @@ rules:
   - PROCESS-NAME,Baichuan,DIRECT
   # 保留 BaiduNetdisk 等可能的进程名
   
+  # 广告拦截
+  - RULE-SET,reject,REJECT
+
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
   - DOMAIN,ipv6.msftncsi.com,REJECT
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
@@ -360,8 +363,12 @@ rules:
   - DST-PORT,3478,DIRECT
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
+
+  # GitHub资源 (合并)
   - DOMAIN-SUFFIX,github.com,AI自动优选
-  - RULE-SET,reject,REJECT
+  - DOMAIN-SUFFIX,githubusercontent.com,AI自动优选
+  - DOMAIN-SUFFIX,github.io,AI自动优选
+
   - RULE-SET,games,游戏服务
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
@@ -385,9 +392,6 @@ rules:
   # 🎯 优化：社交媒体统一规则集（Twitter/Facebook/Instagram/TikTok）
   - RULE-SET,social_media,国外通用
   - RULE-SET,telegram_domain,国外通用
-  # GitHub资源
-  - DOMAIN-SUFFIX,githubusercontent.com,AI自动优选
-  - DOMAIN-SUFFIX,github.io,AI自动优选
   
   - RULE-SET,telegram,国外通用
   - RULE-SET,youtube_domain,YouTube
