@@ -190,11 +190,11 @@ script:
 # 策略组 (Proxy Groups) - 强制替换模式
 # ==========================================
 proxy-groups: #!replace
-  - name: 自动选择 ⚡️
+  - name: 自动选择 ⚡
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
     interval: 600  # 优化：10分钟检测一次，减少后台唤醒
     tolerance: 80

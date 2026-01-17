@@ -259,19 +259,19 @@ proxy-groups:
     health-check:
       enable: true
 
-  - name: 负载均衡
-    type: load-balance
-    strategy: consistent-hashing
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png
+  - name: 自动选择
+    type: url-test
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Urltest.png
     include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
-    interval: 600  # 优化：10分钟检测一次
+    interval: 300
+    # 优化：降低容差值，让其更积极地切换到低延迟节点 (原 150 -> 50)
+    tolerance: 50
+    unified-delay: true
     lazy: true
     health-check:
       enable: true
-
-  - name: AI自动优选
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
