@@ -4,7 +4,7 @@
 geodata-loader: memconservative
 tcp-concurrent: true
 global-client-fingerprint: edge
-keep-alive-interval: 1800
+keep-alive-interval: 30
 # 优化：允许局域网设备连接（如手机/平板通过电脑代理）
 allow-lan: true
 bind-address: "*"
@@ -51,6 +51,13 @@ dns:
     - "+.ntp.org"
     - "+.pool.ntp.org"
     - "+.stun.protocol.org"
+    # 游戏/语音 NAT 优化 (WebRTC/Xbox/PS/Nintendo)
+    - "stun.*"
+    - "+.stun.*.*"
+    - "+.stun.*"
+    - "+.nintendo.net"
+    - "+.playstation.net"
+    - "+.xboxlive.com"
     - "time.*.com"
     - "time.*.gov"
     - "time.*.edu.cn"
@@ -89,6 +96,8 @@ dns:
     '+.bilibili.com': '119.29.29.29'
     '+.163.com': '223.5.5.5'
     '+.netease.com': '223.5.5.5'
+    '+.douyin.com': '180.76.76.76'
+    '+.tiktok.com': '180.76.76.76'
     # Bambu Lab 走国内 DNS
     '+.bambulab.cn': '119.29.29.29'
     '+.bambulab.com': '119.29.29.29'
@@ -286,7 +295,7 @@ proxy-groups:
     proxies:
       - 自动选择
       - 负载均衡
-      - AI自动优选
+      - AI 服务
   - name: 国外通用
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Global.png
@@ -294,7 +303,7 @@ proxy-groups:
       # 优化：优先使用“自动选择”而非“负载均衡”，避免IP频繁跳动导致网页需要反复登录或触发验证码
       - 自动选择
       - 负载均衡
-      - AI自动优选
+      - AI 服务
 
 # 规则设置
 rules:
