@@ -187,7 +187,7 @@ proxy-groups: #!replace
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
     interval: 600  # 优化：10分钟检测一次，减少后台唤醒
     tolerance: 80
@@ -203,7 +203,7 @@ proxy-groups: #!replace
     include-all: true
     # 优化：iOS 端同步地区过滤，防止分配到高延迟节点
     filter: "(?i)香港|台湾|日本|新加坡|韩国|美国|HK|TW|JP|SG|KR|US"
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|印度|土耳其|阿根廷"
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|印度|土耳其|阿根廷|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
     interval: 600  # 优化：10分钟检测一次
     lazy: true
@@ -216,7 +216,7 @@ proxy-groups: #!replace
     include-all: true
     # 正则筛选：优先选美国/新加坡/日本
     filter: "(?i)美国|日本|荷兰|新加坡|SG"
-    exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire"
+    exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire|群组|频道|@|联系|网站|入群"
     url: "https://gemini.google.com"
     interval: 600  # 优化：AI 服务稳定性高，无需频繁检测
     tolerance: 100

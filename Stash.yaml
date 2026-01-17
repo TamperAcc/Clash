@@ -244,7 +244,7 @@ proxy-groups:
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
     interval: 600  # 优化：10分钟检测一次，大幅减少 iOS 后台唤醒
     tolerance: 80
@@ -258,7 +258,7 @@ proxy-groups:
     strategy: consistent-hashing
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png
     include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
     interval: 600  # 优化：10分钟检测一次
     lazy: true
@@ -270,7 +270,7 @@ proxy-groups:
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
     filter: "(?i)美国|日本|荷兰|新加坡|SG"
-    exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire"
+    exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire|群组|频道|@|联系|网站|入群"
     url: "https://gemini.google.com"
     interval: 600  # 优化：AI服务稳定性高，10分钟检测一次即可
     tolerance: 100
