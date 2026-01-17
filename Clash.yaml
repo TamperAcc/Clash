@@ -7,10 +7,10 @@ keep-alive-interval: 1800
 # 优化：允许局域网设备连接（如手机/平板通过电脑代理）
 allow-lan: true
 bind-address: "*"
-# 优化：强制跳过本地回环流量，修复VS Code/浏览器无法连接localhost的问题（如截图中的127.0.0.1报错）
+# 优化：强制跳过本地回环流量，修复VS Code/浏览器无法连接localhost的问题
 skip-auth-prefixes:
-  - 127.0.0.1
-  - localhost
+  - 127.0.0.1/8
+  - ::1/128
 
 geo-auto-update: true
 geo-update-interval: 24

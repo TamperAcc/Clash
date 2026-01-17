@@ -14,8 +14,8 @@ allow-lan: true
 bind-address: "*"
 # macOS/iOS 不需要跳过 localhost 验证，但保留无害
 skip-auth-prefixes:
-  - 127.0.0.1
-  - localhost
+  - 127.0.0.1/8
+  - ::1/128
 
 geo-auto-update: true
 geo-update-interval: 24
