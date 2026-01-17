@@ -321,7 +321,6 @@ proxy-groups:
       - Google自动优选
       - AI自动优选
       - 自动选择
-      - 负载均衡
       - DIRECT
   - name: 游戏服务
     type: url-test
