@@ -343,7 +343,7 @@ rule-providers:
     type: http
   # 🎯 优化：合并所有 AI 服务为单一规则集 (包含 OpenAI/Gemini/Claude/Copilot)
   ai_services:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/artificial-intelligence.yaml
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml
     path: ./ruleset/ai_services.yaml
     behavior: domain
     interval: 86400
