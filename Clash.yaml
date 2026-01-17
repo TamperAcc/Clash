@@ -278,17 +278,17 @@ proxy-groups:
 
   - name: 国内
     type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/CN.png
     proxies:
-      - AI自动优选eck:
-      enable: true
+      - DIRECT
+      - 自动选择
+      - 负载均衡
 
   - name: Google
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
     proxies:
-      - Google自动优选
-      - AI 服务
+      - AI自动优选
       - 自动选择
       - DIRECT
   - name: 游戏服务
