@@ -94,11 +94,11 @@ dns:
     - "time1.cloud.tencent.com"
     - "*.bambulab.com"
     - "*.bambulab.cn"
-  nameserver:
+  nameserver: #!replace
     # 优化：仅保留 2 个最强 DNS 以降低系统功耗 (官方最佳实践)
     - 119.29.29.29
     - quic://dns.alidns.com:853
-  fallback:
+  fallback: #!replace
     # 优化：使用备用 IP 和 TCP/DoT 协议，避开 1.1.1.1/8.8.8.8 的重灾区
     - https://1.0.0.1/dns-query
     - tcp://208.67.222.222:443
