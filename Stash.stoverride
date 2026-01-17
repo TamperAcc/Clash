@@ -139,7 +139,7 @@ proxy-groups: #!replace
     include-all: true
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
     url: "https://www.gstatic.com/generate_204"
-    interval: 150
+    interval: 300
     tolerance: 50
     unified-delay: true
     lazy: true
@@ -153,7 +153,7 @@ proxy-groups: #!replace
     include-all: true
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
     url: "https://www.gstatic.com/generate_204"
-    interval: 150
+    interval: 300
     lazy: true
     health-check:
       enable: true
@@ -166,7 +166,7 @@ proxy-groups: #!replace
     filter: "(?i)美国|日本|荷兰|新加坡|SG"
     exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire"
     url: "https://www.gstatic.com/generate_204"
-    interval: 150
+    interval: 300
     tolerance: 50
     unified-delay: true
     lazy: true
@@ -222,7 +222,7 @@ proxy-groups: #!replace
     include-all: true
     filter: "(?i)香港|台湾|新加坡|日本|韩国"
     url: "https://www.gstatic.com/generate_204"
-    interval: 150
+    interval: 300
     tolerance: 50
     unified-delay: true
     lazy: true
