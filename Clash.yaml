@@ -272,15 +272,15 @@ proxy-groups:
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/CN.png
     proxies:
       - DIRECT
-      - 自动选择
       - 负载均衡
+      - 自动选择
   - name: Google
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
     proxies:
+      - 负载均衡
       - AI 服务
       - 自动选择
-      - 负载均衡
       - DIRECT
   - name: 游戏服务
     type: url-test
@@ -298,16 +298,16 @@ proxy-groups:
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/YouTube.png
     proxies:
-      - 自动选择
       - 负载均衡
+      - 自动选择
       - AI 服务
   - name: 国外通用
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Global.png
     proxies:
-      # 优化：优先使用“自动选择”而非“负载均衡”，避免IP频繁跳动导致网页需要反复登录或触发验证码
-      - 自动选择
+      # 优化：优先使用负载均衡作为默认策略 (高可用 + 无感切换)，自动选择作为备用
       - 负载均衡
+      - 自动选择
       - AI 服务
 
 # 规则设置
