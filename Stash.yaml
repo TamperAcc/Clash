@@ -26,6 +26,12 @@ skip-auth-prefixes:
 
 geo-auto-update: true
 geo-update-interval: 24
+# 🚀 优化：使用国内加速镜像下载 GEO 数据库，减少 iOS 流量消耗并提升更新成功率
+geodata-mode: true
+geox-url:
+  geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb"
+  geosite: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
+  mmdb: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
 
 profile:
   store-selected: true
