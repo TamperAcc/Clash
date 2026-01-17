@@ -229,7 +229,8 @@ proxy-groups:
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
-    tolerance: 150
+    # 优化：降低容差值，让其更积极地切换到低延迟节点 (原 150 -> 50)
+    tolerance: 50
     unified-delay: true
     lazy: true
     health-check:
@@ -240,7 +241,10 @@ proxy-groups:
     strategy: consistent-hashing
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Roundrobin.png
     include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
+    # 优化：通过 filter 剔除通常高延迟的地区 (如 欧洲/非洲/南美)，保留亚洲和美国节点
+    # 注意：Clash 核心暂不支持直接按 "delay < 100ms" 过滤，只能通过正则筛选节点名
+    filter: "(?i)香港|台湾|日本|新加坡|韩国|美国|HK|TW|JP|SG|KR|US"
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|印度|土耳其|阿根廷"
     url: "https://www.gstatic.com/generate_204"
     interval: 180
     lazy: true
@@ -256,7 +260,8 @@ proxy-groups:
     exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
-    tolerance: 150
+    # 优化：降低容差值 (原 150 -> 50)
+    tolerance: 50
     unified-delay: true
     lazy: true
     health-check:
