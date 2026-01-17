@@ -43,13 +43,20 @@ sniffer:
     # QUIC:
     #   ports: [443, 8443]
 
+# HTTP 引擎设置 (确保重写生效)
+http:
+  force-http-engine-hosts:
+    - "*.google.cn"
+    - "*.google.com.cn"
+
 # MitM & Rewrite (Stash 增强功能)
 # [重要] 首次使用请在 Stash App "配置列表 -> 覆写/MitM" 中生成并信任 CA 证书
 # 否则 Google 重写无法生效，且可能会导致 HTTPS 连接报错
 mitm:
   enable: true
   append-system-trust: true
-  skip-server-cert-verify: true
+  # 优化：关闭跳过证书验证以提升安全性 (官方不推荐全局开启)
+  # skip-server-cert-verify: true
   hostname:
     - "*.google.cn"
     - "*.google.com.cn"
