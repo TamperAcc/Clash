@@ -275,7 +275,7 @@ proxy-groups:
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
-    exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|Traffic|Expire|群组|频道|@|联系|网站|入群"
     url: "https://gemini.google.com"
     interval: 600  # 优化：AI服务稳定性高，10分钟检测一次即可
     tolerance: 100
@@ -305,7 +305,8 @@ proxy-groups:
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     include-all: true
-    exclude-filter: "(?i)香港|HK|Hong|Kong|圣何塞|Traffic|Expire|群组|频道|@|联系|网站|入群"
+    # 优化：过滤节点名中包含以下关键词，防止谷歌搜索结果偏向特定地区或被临时/测试节点干扰（不区分大小写）
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|Traffic|Expire|群组|频道|@|联系|网站|入群"
     url: "https://www.google.com/generate_204"
     interval: 600
     tolerance: 50

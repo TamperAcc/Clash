@@ -258,7 +258,7 @@ proxy-groups:
     type: url-test
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
     include-all: true
-    exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|Traffic|Expire|群组|频道|@|联系|网站|入群"
     url: "https://gemini.google.com"
     interval: 300
     # 优化：降低容差值 (原 150 -> 50)
@@ -280,8 +280,8 @@ proxy-groups:
     type: url-test
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
     include-all: true
-    # 优化：过滤香港节点，防止谷歌搜索结果偏向港区或部分功能受限
-    filter: "(?i)台湾|日本|新加坡|韩国|美国|TW|JP|SG|KR|US"
+    # 优化：过滤节点名中包含以下关键词，防止谷歌搜索结果偏向特定地区或被临时/测试节点干扰（不区分大小写）
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|Traffic|Expire|群组|频道|@|联系|网站|入群"
     interval: 300
     tolerance: 50
     unified-delay: true
