@@ -248,22 +248,9 @@ rule-providers:
 proxy-groups:
   - name: 自动选择
     type: url-test
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
-    include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|群组|频道|@|联系|网站|入群"
-    url: "https://www.gstatic.com/generate_204"
-    interval: 600  # 优化：10分钟检测一次，大幅减少 iOS 后台唤醒
-    tolerance: 80
-    unified-delay: true
-    lazy: true
-    health-check:
-      enable: true
-
-  - name: 自动选择
-    type: url-test
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Urltest.png
     include-all: true
-    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|expire|traffic|reset|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
     # 优化：降低容差值，让其更积极地切换到低延迟节点 (原 150 -> 50)
@@ -272,10 +259,12 @@ proxy-groups:
     lazy: true
     health-check:
       enable: true
+
+  - name: AI自动优选
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
-    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|Traffic|Expire|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://gemini.google.com"
     interval: 600  # 优化：AI服务稳定性高，10分钟检测一次即可
     tolerance: 100
@@ -300,26 +289,11 @@ proxy-groups:
       - AI自动优选
       - 自动选择
       - 负载均衡
-  
-  - name: Google自动优选
-    type: url-test
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
-    include-all: true
-    # 优化：过滤节点名中包含以下关键词，防止谷歌搜索结果偏向特定地区或被临时/测试节点干扰（不区分大小写）
-    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|Traffic|Expire|群组|频道|@|联系|网站|入群"
-    url: "https://www.google.com/generate_204"
-    interval: 600
-    tolerance: 50
-    unified-delay: true
-    lazy: true
-    health-check:
-      enable: true
 
   - name: Google
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     proxies:
-      - Google自动优选
       - AI自动优选
       - 自动选择
       - DIRECT
@@ -411,12 +385,12 @@ rules:
   - DOMAIN-SUFFIX,github.io,国外通用
   
   - RULE-SET,telegram,国外通用
-    - RULE-SET,youtube_domain,YouTube
-    - RULE-SET,google_domain,Google
-    - RULE-SET,cn_domain,国内
-    - DOMAIN-SUFFIX,github.com,自动选择
-    - DOMAIN-SUFFIX,githubusercontent.com,自动选择
-    - DOMAIN-SUFFIX,github.io,自动选择
+  - RULE-SET,youtube_domain,YouTube
+  - RULE-SET,google_domain,AI 服务
+  - RULE-SET,cn_domain,国内
+  - DOMAIN-SUFFIX,github.com,自动选择
+  - DOMAIN-SUFFIX,githubusercontent.com,自动选择
+  - DOMAIN-SUFFIX,github.io,自动选择
   - RULE-SET,geolocation_no_cn,国外通用
   # 🎯 优化：移除冗余 google_ip 规则，Domain 规则已足够
   - RULE-SET,cn_ip,国内
