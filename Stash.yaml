@@ -375,7 +375,7 @@ rules:
   - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
   - RULE-SET,huggingface,负载均衡
-  - RULE-SET,microsoft,自动选择
+  - RULE-SET,microsoft,负载均衡
   # 游戏下载
   - DOMAIN-SUFFIX,steamserver.net,DIRECT
   - DOMAIN-SUFFIX,steamcontent.com,DIRECT

@@ -479,7 +479,7 @@ rules: #!replace
   # ⚡ 优化：统一 AI 服务规则，减少内存占用和匹配延迟
   - RULE-SET,ai_services,AI 服务 🤖
   - RULE-SET,huggingface,负载均衡 ⚖️
-  - RULE-SET,microsoft,自动选择 ⚡️
+  - RULE-SET,microsoft,负载均衡 ⚖️
   
   # 8. 游戏下载
   - DOMAIN-SUFFIX,steamserver.net,DIRECT

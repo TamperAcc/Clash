@@ -419,8 +419,8 @@ rules:
   - DOMAIN-SUFFIX,tlu.dl.delivery.mp.microsoft.com,DIRECT
   # 优化：HuggingFace 模型下载走负载均衡，利用多节点带宽
   - RULE-SET,huggingface,负载均衡
-  # 优化：微软服务走自动选择，修复VS Code登录和同步问题
-  - RULE-SET,microsoft,自动选择
+  # 优化：微软服务走负载均衡，利用多节点并发提升稳定性
+  - RULE-SET,microsoft,负载均衡
   # 优化：Steam/Epic 等游戏平台下载CDN直连
   - DOMAIN-SUFFIX,steamserver.net,DIRECT
   - DOMAIN-SUFFIX,steamcontent.com,DIRECT
