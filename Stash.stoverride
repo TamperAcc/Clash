@@ -388,7 +388,6 @@ rules: #!replace
   - DOMAIN-SUFFIX,fast.com,全能优选 🚀
   - DST-PORT,123,DIRECT
   - DST-PORT,3478,DIRECT
-  - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
   - DOMAIN-SUFFIX,github.com,全能优选 🚀
   - RULE-SET,reject,REJECT
