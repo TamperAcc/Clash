@@ -233,8 +233,8 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
     proxies:
       - DIRECT
-      - 自动选择 ⚡️
       - 负载均衡 ⚖️
+      - 自动选择 ⚡️
   
   - name: Google自动优选 🔎
     type: url-test
