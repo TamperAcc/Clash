@@ -302,10 +302,26 @@ proxy-groups:
       - 自动选择
       - 负载均衡
   
+  - name: Google自动优选
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
+    include-all: true
+    # 优化：过滤香港节点，防止谷歌搜索结果出现港版内容或某些功能受限
+    filter: "(?i)台湾|日本|新加坡|韩国|美国|TW|JP|SG|KR|US"
+    exclude-filter: "(?i)香港|HK|Hong|Kong|圣何塞|Traffic|Expire|群组|频道|@|联系|网站|入群"
+    url: "https://www.google.com/generate_204"
+    interval: 600
+    tolerance: 50
+    unified-delay: true
+    lazy: true
+    health-check:
+      enable: true
+
   - name: Google
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     proxies:
+      - Google自动优选
       - AI自动优选
       - 自动选择
       - 负载均衡
