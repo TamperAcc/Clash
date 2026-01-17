@@ -268,13 +268,6 @@ proxy-groups:
     health-check:
       enable: true
 
-  - name: AI 服务
-    type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
-    proxies:
-      - AI自动优选
-      - 自动选择
-      - 负载均衡
 
   - name: 国内
     type: select
@@ -308,7 +301,7 @@ proxy-groups:
     proxies:
       - 负载均衡
       - 自动选择
-      - AI 服务
+      - AI自动优选
   - name: 国外通用
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Global.png
@@ -316,7 +309,7 @@ proxy-groups:
       # 优化：优先使用负载均衡作为默认策略 (高可用 + 无感切换)，自动选择作为备用
       - 负载均衡
       - 自动选择
-      - AI 服务
+      - AI自动优选
 
 # 规则设置
 rules:
@@ -405,7 +398,7 @@ rules:
   - DST-PORT,3478,DIRECT
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
-  - DOMAIN-SUFFIX,github.com,AI 服务
+  - DOMAIN-SUFFIX,github.com,AI自动优选
   # 🛠️ 新增：开发工具域名优化
   - DOMAIN-SUFFIX,stackoverflow.com,国外通用
   - DOMAIN-SUFFIX,stackexchange.com,国外通用
@@ -418,7 +411,7 @@ rules:
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
   # 🚀 优化：统一 AI 服务规则集，匹配速度提升 100 倍
-  - RULE-SET,ai_services,AI 服务
+  - RULE-SET,ai_services,AI自动优选
   # 优化：Windows更新强制直连，防止消耗代理流量
   - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
   - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
@@ -442,8 +435,8 @@ rules:
   - RULE-SET,social_media,国外通用
   - RULE-SET,telegram_domain,国外通用
   # 优化：GitHub资源服务器
-  - DOMAIN-SUFFIX,githubusercontent.com,AI 服务
-  - DOMAIN-SUFFIX,github.io,AI 服务
+  - DOMAIN-SUFFIX,githubusercontent.com,AI自动优选
+  - DOMAIN-SUFFIX,github.io,AI自动优选
   
   - RULE-SET,telegram,国外通用
   - RULE-SET,youtube_domain,YouTube
