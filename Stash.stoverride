@@ -1,15 +1,19 @@
 # Last Updated: 2025-12-09 [Stash Professional Override]
 # Stash 元数据
 name: "Stash Professional"
-desc: "针对 iOS 深度优化的专业配置文件 (DoQ + MitM + AI分流 + 省电优化)"
+desc: "iOS 深度优化配置 (DoQ + MitM + 分流优化 + 网络可视化面板)"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 
 # ==========================================
-# 核心网络设置 (DNS / MitM / HTTP / Script)
+# 核心网络设置 (TCP/DNS/MitM/HTTP)
 # ==========================================
 
-# 1. DNS 设置
-# Stash 采用并发查询机制(Concurrent)，不使用 fallback 分组
+# 1. TCP 并发优化 (Hyper Traffic 核心)
+# 当域名解析出多个IP时，同时发起连接取最快响应
+tcp-concurrent: true
+
+# 2. DNS 设置
+# Stash 采用并发查询机制(Concurrent)
 dns:
   enable: true
   ipv6: false
@@ -35,33 +39,30 @@ dns:
   
   # 强制替换原配置的 DNS
   nameserver: #!replace
-    # 高速公共 DNS (并发查询，Stash 会自动选最快的)
+    # 高速公共 DNS (自动并发优选)
     - 119.29.29.29
     - 223.5.5.5
     # DoQ/DoT 加密 DNS (防劫持双保险)
     - quic://dns.alidns.com:853
     - quic://dns.pub:853
     - tls://8.8.4.4:853
-    - tls://8.8.4.4:853
-    - https://1.0.0.1/dns-query
 
-# 2. MitM (中间人攻击) 设置 - 用于解密 HTTPS 流量以进行重写
+# 3. MitM (HTTPS 解密)
 mitm:
   enable: true
-  # 信任 iOS 系统根证书
   append-system-trust: true
   hostname:
     - "*.google.cn"
     - "*.google.com.cn"
     - "www.google.com"
 
-# 3. HTTP 引擎 - 强制特定的 Host 走 HTTP 引擎处理
+# 4. HTTP 引擎
 http:
   force-http-engine-hosts:
     - "*.google.cn"
     - "*.google.com.cn"
 
-# 4. URL 重写 - 解决 Google CN 跳转问题
+# 5. URL 重写
 rewrite:
   - match: ^https?://(www\.)?google\.cn
     replace: https://www.google.com
@@ -70,24 +71,43 @@ rewrite:
     replace: https://www.google.com
     type: 302
 
-# 5. 脚本 Shortcuts - 用于高级流量特征匹配
+# ==========================================
+# 脚本 & 可视化面板 (Tiles)
+# ==========================================
 script:
+  # 1. 流量特征 shortcuts
   shortcuts:
-    # QUIC 阻断: 匹配 UDP 443 端口
     quic_block: network == 'udp' and dst_port == 443
+
+  # 2. 首页数据面板 (Tiles) 
+  # 此功能会在 Stash 首页显示一个卡片，实时展示您的公网 IP 和 ISP 信息
+  tiles:
+    - name: "Network Info"
+      interval: 600
+      title: "🌍 网络信息"
+      content: "刷新中..."
+      icon: "network"
+      backgroundColor: "#222222"
+      # 内联脚本：查询 ip-api.com 获取 IP 信息
+      script: |
+        $httpClient.get('http://ip-api.com/json/?lang=zh-CN', function(error, response, data){
+            var res = JSON.parse(data);
+            $done({
+                title: "🌍 " + res.country + " · " + res.regionName,
+                content: "IP: " + res.query + "\nISP: " + res.isp,
+                icon: "network",
+                backgroundColor: "#222222"
+            });
+        });
 
 # ==========================================
 # 策略组 (Proxy Groups) - 强制替换模式
 # ==========================================
-# 使用 #!replace 彻底清除订阅自带的杂乱分组
-# 使用 Emoji 后缀确保组名唯一，防止报错
 proxy-groups: #!replace
   - name: 自动选择 ⚡️
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
-    # 自动包含订阅中的所有节点
     include-all: true
-    # 排除流量耗尽或无效节点
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
     url: "https://www.gstatic.com/generate_204"
     interval: 600
@@ -113,7 +133,7 @@ proxy-groups: #!replace
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
-    # 正则筛选：优先选美国/新加坡等地区节点
+    # 正则筛选：优先选美国/新加坡/日本
     filter: "(?i)美国|日本|荷兰|新加坡|SG"
     exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire"
     url: "https://www.gstatic.com/generate_204"
