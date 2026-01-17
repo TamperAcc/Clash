@@ -3,30 +3,6 @@
 name: "Stash Professional"
 desc: "针对 iOS 深度优化的专业配置 (DoQ + MitM + AI分流 + 省电优化)"
 
-# 基础设置 (已恢复完整功能)
-mixed-port: 7890
-allow-lan: true
-bind-address: '*'
-mode: rule
-log-level: info
-ipv6: false
-external-controller: 127.0.0.1:9090
-
-# Tun 模式 (已恢复)
-tun:
-  enable: true
-  stack: system
-  auto-route: true
-  auto-detect-interface: true
-  dns-hijack:
-    - any:53
-    - tcp://any:53
-
-# 配置文件持久化 (已恢复)
-profile:
-  store-selected: true
-  store-fake-ip: true
-
 # 进阶网络设置 (DNS/Sniffer)
 sniffer:
   enable: true
