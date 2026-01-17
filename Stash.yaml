@@ -64,6 +64,14 @@ rewrite:
     replace: https://www.google.com
     type: 302
 
+# 脚本 (用于高级网络控制)
+script:
+  shortcuts:
+    # 强制禁用 QUIC/HTTP3 协议
+    # 目的：迫使 Google/YouTube 等服务回退到 TCP 协议
+    # 收益：1. 节省 CPU 解密 UDP 包的电量 2. TCP 在代理隧道中速度更稳定
+    quic_block: network == 'udp' and dst_port == 443
+
 dns:
   enable: true
   ipv6: false
@@ -87,10 +95,8 @@ dns:
     - "*.bambulab.com"
     - "*.bambulab.cn"
   nameserver:
-    - 223.5.5.5
+    # 优化：仅保留 2 个最强 DNS 以降低系统功耗 (官方最佳实践)
     - 119.29.29.29
-    - https://doh.pub/dns-query
-    # 优化：升级为 DoQ (DNS over QUIC)，握手几乎 0 延迟且抗干扰
     - quic://dns.alidns.com:853
   fallback:
     # 优化：使用备用 IP 和 TCP/DoT 协议，避开 1.1.1.1/8.8.8.8 的重灾区
@@ -368,6 +374,9 @@ proxy-groups:
 
 # 规则设置
 rules:
+  # 脚本规则优先：阻断 QUIC 流量
+  - SCRIPT,quic_block,REJECT
+
   - GEOIP,PRIVATE,DIRECT,no-resolve
   # 局域网后缀
   - DOMAIN-SUFFIX,lan,DIRECT
