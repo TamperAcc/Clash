@@ -279,14 +279,14 @@ proxy-groups:
     health-check:
       enable: true
 
-  - name: 国内
+  - name: 国内直连 🎯
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
     proxies:
       - DIRECT
       - 自动选择
       - 负载均衡
-  - name: Google
+  - name: Google Search
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     proxies:
@@ -295,32 +295,32 @@ proxy-groups:
       - 负载均衡
       - DIRECT
 
-  - name: OpenAI
+  - name: ChatGPT
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     proxies:
       - AI自动优选
 
-  - name: Claude
+  - name: Claude AI
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     proxies:
       - AI自动优选
   
-  - name: Gemini
+  - name: Gemini AI
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     proxies:
       - AI自动优选
       - 自动选择
 
-  - name: Copilot
+  - name: Copilot AI
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Bing.png
     proxies:
       - AI自动优选
       - 自动选择
-  - name: 游戏服务
+  - name: 游戏服务 🎮
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png
     include-all: true
@@ -332,14 +332,14 @@ proxy-groups:
     lazy: true
     health-check:
       enable: true
-  - name: YouTube
+  - name: YouTube 4K
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
     proxies:
       - 自动选择
       - 负载均衡
       - AI自动优选
-  - name: 国外通用
+  - name: 全能优选 🚀
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
     proxies:
@@ -359,7 +359,7 @@ rules:
   - DOMAIN-SUFFIX,home.arpa,DIRECT
   
   # macOS 常用软件 (注意：iOS 系统不支持进程匹配，以下规则在 iPhone 上会自动忽略)
-  - PROCESS-NAME,BambuStudio,国内
+  - PROCESS-NAME,BambuStudio,国内直连 🎯
   - PROCESS-NAME,WeChat,DIRECT
   - PROCESS-NAME,QQ,DIRECT
   - PROCESS-NAME,Thunder,DIRECT
@@ -374,24 +374,24 @@ rules:
   # 测速
   - DOMAIN-SUFFIX,speedtest.net,DIRECT
   - DOMAIN-SUFFIX,ookla.com,DIRECT
-  - DOMAIN-SUFFIX,fast.com,国外通用
+  - DOMAIN-SUFFIX,fast.com,全能优选 🚀
   - DST-PORT,123,DIRECT
   - DST-PORT,3478,DIRECT
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
-  - DOMAIN-SUFFIX,github.com,国外通用
+  - DOMAIN-SUFFIX,github.com,全能优选 🚀
   - RULE-SET,reject,REJECT
-  - RULE-SET,games,游戏服务
+  - RULE-SET,games,游戏服务 🎮
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
-  - RULE-SET,openai_classical,OpenAI
-  - RULE-SET,claude_classical,Claude
-  - RULE-SET,gemini_classical,Gemini
+  - RULE-SET,openai_classical,ChatGPT
+  - RULE-SET,claude_classical,Claude AI
+  - RULE-SET,gemini_classical,Gemini AI
   # 更新服务
   - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
   - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
-  - RULE-SET,copilot_classical,Copilot
+  - RULE-SET,copilot_classical,Copilot AI
   - RULE-SET,huggingface,负载均衡
   - RULE-SET,microsoft,自动选择
   # 游戏下载
@@ -400,23 +400,23 @@ rules:
   - DOMAIN-SUFFIX,steamstatic.com,DIRECT
   - DOMAIN-SUFFIX,epicgames.com,DIRECT
   # Bambu Lab
-  - DOMAIN-SUFFIX,bambulab.com,国内
-  - DOMAIN-SUFFIX,bambulab.cn,国内
-  - DOMAIN-SUFFIX,bambulab.co,国内
+  - DOMAIN-SUFFIX,bambulab.com,国内直连 🎯
+  - DOMAIN-SUFFIX,bambulab.cn,国内直连 🎯
+  - DOMAIN-SUFFIX,bambulab.co,国内直连 🎯
   # 社交
-  - RULE-SET,twitter,国外通用
-  - RULE-SET,facebook,国外通用
-  - RULE-SET,telegram_domain,国外通用
+  - RULE-SET,twitter,全能优选 🚀
+  - RULE-SET,facebook,全能优选 🚀
+  - RULE-SET,telegram_domain,全能优选 🚀
   # GitHub资源
-  - DOMAIN-SUFFIX,githubusercontent.com,国外通用
-  - DOMAIN-SUFFIX,github.io,国外通用
+  - DOMAIN-SUFFIX,githubusercontent.com,全能优选 🚀
+  - DOMAIN-SUFFIX,github.io,全能优选 🚀
   
-  - RULE-SET,telegram,国外通用
-  - RULE-SET,youtube_domain,YouTube
-  - RULE-SET,google_domain,Google
-  - RULE-SET,cn_domain,国内
-  - RULE-SET,geolocation_no_cn,国外通用
-  - RULE-SET,google_ip,Google
-  - RULE-SET,cn_ip,国内
-  - GEOIP,CN,国内
-  - MATCH,国外通用
+  - RULE-SET,telegram,全能优选 🚀
+  - RULE-SET,youtube_domain,YouTube 4K
+  - RULE-SET,google_domain,Google Search
+  - RULE-SET,cn_domain,国内直连 🎯
+  - RULE-SET,geolocation_no_cn,全能优选 🚀
+  - RULE-SET,google_ip,Google Search
+  - RULE-SET,cn_ip,国内直连 🎯
+  - GEOIP,CN,国内直连 🎯
+  - MATCH,全能优选 🚀
