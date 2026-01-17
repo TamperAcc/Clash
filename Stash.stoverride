@@ -190,7 +190,7 @@ script:
 # 策略组 (Proxy Groups) - 强制替换模式
 # ==========================================
 proxy-groups: #!replace
-  - name: 自动选择 ⚡
+  - name: 自动选择
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
@@ -203,7 +203,7 @@ proxy-groups: #!replace
     health-check:
       enable: true
 
-  - name: 负载均衡 ⚖️
+  - name: 负载均衡
     type: load-balance
     strategy: consistent-hashing
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png
@@ -215,7 +215,7 @@ proxy-groups: #!replace
     health-check:
       enable: true
 
-  - name: AI自动优选 🤖
+  - name: AI自动优选
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
@@ -228,15 +228,15 @@ proxy-groups: #!replace
     health-check:
       enable: true
 
-  - name: 国内直连 🎯
+  - name: 国内直连
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
     proxies:
       - DIRECT
-      - 负载均衡 ⚖️
-      - 自动选择 ⚡
+      - 负载均衡
+      - 自动选择
   
-  - name: Google自动优选 🔎
+  - name: Google自动优选
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     include-all: true
@@ -249,16 +249,16 @@ proxy-groups: #!replace
     health-check:
       enable: true
 
-  - name: Google Search 🔎
+  - name: Google Search
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     proxies:
-      - Google自动优选 🔎
-      - AI自动优选 🤖
-      - 自动选择 ⚡
+      - Google自动优选
+      - AI自动优选
+      - 自动选择
       - DIRECT
       
-  - name: 游戏服务 🎮
+  - name: 游戏服务
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png
     include-all: true
@@ -270,21 +270,21 @@ proxy-groups: #!replace
     health-check:
       enable: true
 
-  - name: YouTube 4K ▶️
+  - name: YouTube 4K
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
     proxies:
-      - 负载均衡 ⚖️
-      - 自动选择 ⚡
-      - AI自动优选 🤖
+      - 负载均衡
+      - 自动选择
+      - AI自动优选
       
-  - name: 全能优选 🚀
+  - name: 全能优选
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
     proxies:
-      - 负载均衡 ⚖️
-      - 自动选择 ⚡
-      - AI自动优选 🤖
+      - 负载均衡
+      - 自动选择
+      - AI自动优选
 
 # ==========================================
 # 规则集合 (Rule Providers) - 优化版
@@ -413,7 +413,7 @@ rules: #!replace
   - DOMAIN-SUFFIX,home.arpa,DIRECT
   
   # 3. macOS/iOS 常用软件
-  - PROCESS-NAME,BambuStudio,国内直连 🎯
+  - PROCESS-NAME,BambuStudio,国内直连
   - PROCESS-NAME,WeChat,DIRECT
   - PROCESS-NAME,QQ,DIRECT
   - PROCESS-NAME,Thunder,DIRECT
@@ -448,7 +448,7 @@ rules: #!replace
   # 5. 测速服务
   - DOMAIN-SUFFIX,speedtest.net,DIRECT
   - DOMAIN-SUFFIX,ookla.com,DIRECT
-  - DOMAIN-SUFFIX,fast.com,全能优选 🚀
+  - DOMAIN-SUFFIX,fast.com,全能优选
   
   # 🚀 新增：更多国内服务直连优化
   # CDN 服务
@@ -477,15 +477,15 @@ rules: #!replace
   - DST-PORT,51413,DIRECT
 
   # 7. 规则集规则匹配
-  - DOMAIN-SUFFIX,github.com,AI自动优选 🤖
+  - DOMAIN-SUFFIX,github.com,AI自动优选
   - RULE-SET,reject,REJECT
-  - RULE-SET,games,游戏服务 🎮
+  - RULE-SET,games,游戏服务
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
   # ⚡ 优化：统一 AI 服务规则，减少内存占用和匹配延迟
-  - RULE-SET,ai_services,AI自动优选 🤖
-  - RULE-SET,huggingface,负载均衡 ⚖️
-  - RULE-SET,microsoft,负载均衡 ⚖️
+  - RULE-SET,ai_services,AI自动优选
+  - RULE-SET,huggingface,负载均衡
+  - RULE-SET,microsoft,负载均衡
   
   # 8. 游戏下载
   - DOMAIN-SUFFIX,steamserver.net,DIRECT
@@ -494,24 +494,24 @@ rules: #!replace
   - DOMAIN-SUFFIX,epicgames.com,DIRECT
   
   # 9. Bambu Lab 拓竹
-  - DOMAIN-SUFFIX,bambulab.com,国内直连 🎯
-  - DOMAIN-SUFFIX,bambulab.cn,国内直连 🎯
-  - DOMAIN-SUFFIX,bambulab.co,国内直连 🎯
+  - DOMAIN-SUFFIX,bambulab.com,国内直连
+  - DOMAIN-SUFFIX,bambulab.cn,国内直连
+  - DOMAIN-SUFFIX,bambulab.co,国内直连
   
   # 10. 社交媒体 (优化：合并规则集)
-  - RULE-SET,social_media,全能优选 🚀
-  - RULE-SET,telegram_domain,全能优选 🚀
-  - RULE-SET,telegram,全能优选 🚀
+  - RULE-SET,social_media,全能优选
+  - RULE-SET,telegram_domain,全能优选
+  - RULE-SET,telegram,全能优选
   
   # 11. 视频与搜索 (优化：移除冗余 IP 规则)
-  - RULE-SET,youtube_domain,YouTube 4K ▶️
-  - RULE-SET,google_domain,Google Search 🔎
-  - RULE-SET,cn_domain,国内直连 🎯
-  - RULE-SET,geolocation_no_cn,全能优选 🚀
-  - RULE-SET,cn_ip,国内直连 🎯
-  - GEOIP,CN,国内直连 🎯
+  - RULE-SET,youtube_domain,YouTube 4K
+  - RULE-SET,google_domain,Google Search
+  - RULE-SET,cn_domain,国内直连
+  - RULE-SET,geolocation_no_cn,全能优选
+  - RULE-SET,cn_ip,国内直连
+  - GEOIP,CN,国内直连
   
   # 12. 兜底策略
-  - DOMAIN-SUFFIX,githubusercontent.com,全能优选 🚀
-  - DOMAIN-SUFFIX,github.io,全能优选 🚀
-  - MATCH,全能优选 🚀
+  - DOMAIN-SUFFIX,githubusercontent.com,全能优选
+  - DOMAIN-SUFFIX,github.io,全能优选
+  - MATCH,全能优选
