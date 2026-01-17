@@ -419,6 +419,9 @@ rules: #!replace
   - PROCESS-NAME,Thunder,DIRECT
   - PROCESS-NAME,Baichuan,DIRECT
   
+  # 广告拦截 (同步优化：置顶拦截规则以节省开销)
+  - RULE-SET,reject,REJECT
+
   # 4. 微软/系统服务
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
   - DOMAIN,ipv6.msftncsi.com,REJECT
@@ -478,7 +481,6 @@ rules: #!replace
 
   # 7. 规则集规则匹配
   - DOMAIN-SUFFIX,github.com,AI自动优选
-  - RULE-SET,reject,REJECT
   - RULE-SET,games,游戏服务
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
