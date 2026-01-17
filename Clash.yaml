@@ -7,6 +7,10 @@ keep-alive-interval: 1800
 # 优化：允许局域网设备连接（如手机/平板通过电脑代理）
 allow-lan: true
 bind-address: "*"
+# 优化：强制跳过本地回环流量，修复VS Code/浏览器无法连接localhost的问题（如截图中的127.0.0.1报错）
+skip-auth-prefixes:
+  - 127.0.0.1
+  - localhost
 
 geo-auto-update: true
 geo-update-interval: 24
@@ -242,12 +246,12 @@ proxy-groups:
       enable: true
 
   - name: AI自动优选
-    # 优化：增加新加坡节点（低延迟且OpenAI/Google支持好）
-    filter: "(?i)美国|日本|荷兰|新加坡|SG
+    type: url-test
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
     include-all: true
-    filter: "(?i)美国|日本|荷兰"
-    exclude-filter: "(?i)圣何塞"
+    # 优化：增加新加坡节点，并显式排除香港(HK)节点以防OpenAI/Claude封锁
+    filter: "(?i)美国|日本|荷兰|新加坡|SG"
+    exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
     tolerance: 150
@@ -365,14 +369,17 @@ rules:
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
   - RULE-SET,openai_classical,OpenAI
+  - RULE-SET,claude_classical,Claude
   - RULE-SET,gemini_classical,Gemini
-  - RULWindows更新强制直连，防止消耗代理流量
+  # 优化：Windows更新强制直连，防止消耗代理流量
   - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
   - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,tlu.dl.delivery.mp.microsoft.com,DIRECT
-  # 优化：E-SET,copilot_classical,Copilot
+  - RULE-SET,copilot_classical,Copilot
+  # 优化：HuggingFace 模型下载走负载均衡，利用多节点带宽
+  - RULE-SET,huggingface,负载均衡
   # 优化：微软服务走自动选择，修复VS Code登录和同步问题
   - RULE-SET,microsoft,自动选择
   # 优化：Steam/Epic 等游戏平台下载CDN直连
@@ -381,12 +388,13 @@ rules:
   - DOMAIN-SUFFIX,steamstatic.com,DIRECT
   - DOMAIN-SUFFIX,epicgames.com,DIRECT
   # 优化：拓竹Bambu服务强制直连（国内阿里云），避免绕路
-  - DOMAIN-SUFwitter,国外通用
-  - RULE-SET,facebook,国外通用
-  - RULE-SET,telegram_domain,国外通用
-  - RULE-SET,tFIX,bambulab.com,国内
+  - DOMAIN-SUFFIX,bambulab.com,国内
   - DOMAIN-SUFFIX,bambulab.cn,国内
   - DOMAIN-SUFFIX,bambulab.co,国内
+  # 优化：社交软件
+  - RULE-SET,twitter,国外通用
+  - RULE-SET,facebook,国外通用
+  - RULE-SET,telegram_domain,国外通用
   # 优化：GitHub资源服务器
   - DOMAIN-SUFFIX,githubusercontent.com,国外通用
   - DOMAIN-SUFFIX,github.io,国外通用
