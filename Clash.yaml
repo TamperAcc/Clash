@@ -321,13 +321,6 @@ proxy-groups:
       - 自动选择
       - 负载均衡
       - AI自动优选
-  # 优化：常见下载软件和网盘工具直连，避免消耗代理流量和触发P2P审计
-  - PROCESS-NAME,Thunder.exe,DIRECT
-  - PROCESS-NAME,DownloadSdk.exe,DIRECT
-  - PROCESS-NAME,baidunetdisk.exe,DIRECT
-  - PROCESS-NAME,BitComet.exe,DIRECT
-  - PROCESS-NAME,uTorrent.exe,DIRECT
-  - PROCESS-NAME,IDMan.exe,DIRECT
   - name: 国外通用
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Global.png
@@ -349,6 +342,13 @@ rules:
   - PROCESS-NAME,WeChat.exe,DIRECT
   - PROCESS-NAME,WeChatAppEx.exe,DIRECT
   - PROCESS-NAME,QQ.exe,DIRECT
+  # 优化：常见下载软件和网盘工具直连，避免消耗代理流量和触发P2P审计
+  - PROCESS-NAME,Thunder.exe,DIRECT
+  - PROCESS-NAME,DownloadSdk.exe,DIRECT
+  - PROCESS-NAME,baidunetdisk.exe,DIRECT
+  - PROCESS-NAME,BitComet.exe,DIRECT
+  - PROCESS-NAME,uTorrent.exe,DIRECT
+  - PROCESS-NAME,IDMan.exe,DIRECT
   
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
   - DOMAIN,ipv6.msftncsi.com,REJECT
