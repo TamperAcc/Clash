@@ -232,7 +232,7 @@ proxy-groups:
     type: url-test
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Urltest.png
     include-all: true
-    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|expire|traffic|reset|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
     # 优化：降低容差值，让其更积极地切换到低延迟节点 (原 150 -> 50)
@@ -247,18 +247,18 @@ proxy-groups:
     strategy: consistent-hashing
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Roundrobin.png
     include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|印度|土耳其|阿根廷|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
     interval: 180
     lazy: true
     health-check:
       enable: true
 
-  - name: AI 服务
+  - name: AI自动优选
     type: url-test
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
     include-all: true
-    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|Traffic|Expire|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://gemini.google.com"
     interval: 300
     # 优化：降低容差值 (原 150 -> 50)
@@ -268,25 +268,19 @@ proxy-groups:
     health-check:
       enable: true
 
+  - name: AI 服务
+    type: select
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
+    proxies:
+      - AI自动优选
+      - 自动选择
+      - 负载均衡
+
   - name: 国内
     type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/CN.png
-    proxies:
-      - DIRECT
-      - 负载均衡
-      - 自动选择
-
-  - name: Google自动优选
-    type: url-test
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
-    include-all: true
-    # 优化：过滤节点名中包含以下关键词，防止谷歌搜索结果偏向特定地区或被临时/测试节点干扰（不区分大小写）
-    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|Traffic|Expire|群组|频道|@|联系|网站|入群"
-    interval: 300
-    tolerance: 50
-    unified-delay: true
-    lazy: true
-    health-check:
+    proxies:
+      - AI自动优选eck:
       enable: true
 
   - name: Google
