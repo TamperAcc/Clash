@@ -39,7 +39,8 @@ sniffer:
       ports: [443, 8443]
 
 # MitM & Rewrite (Stash 增强功能)
-# 请确保在 Stash 客户端中安装并信任 CA 证书
+# [重要] 首次使用请在 Stash App "配置列表 -> 覆写/MitM" 中生成并信任 CA 证书
+# 否则 Google 重写无法生效，且可能会导致 HTTPS 连接报错
 mitm:
   enable: true
   append-system-trust: true
@@ -248,7 +249,7 @@ rule-providers:
 proxy-groups:
   - name: 自动选择
     type: url-test
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Urltest.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
     url: "https://www.gstatic.com/generate_204"
@@ -262,7 +263,7 @@ proxy-groups:
   - name: 负载均衡
     type: load-balance
     strategy: consistent-hashing
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Roundrobin.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png
     include-all: true
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
     url: "https://www.gstatic.com/generate_204"
@@ -272,7 +273,7 @@ proxy-groups:
 
   - name: AI自动优选
     type: url-test
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
     filter: "(?i)美国|日本|荷兰|新加坡|SG"
     exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire"
@@ -286,14 +287,14 @@ proxy-groups:
 
   - name: 国内
     type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/CN.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
     proxies:
       - DIRECT
       - 自动选择
       - 负载均衡
   - name: Google
     type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     proxies:
       - AI自动优选
       - 自动选择
@@ -302,32 +303,32 @@ proxy-groups:
 
   - name: OpenAI
     type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     proxies:
       - AI自动优选
 
   - name: Claude
     type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     proxies:
       - AI自动优选
   
   - name: Gemini
     type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     proxies:
       - AI自动优选
       - 自动选择
 
   - name: Copilot
     type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Bing.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Bing.png
     proxies:
       - AI自动优选
       - 自动选择
   - name: 游戏服务
     type: url-test
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/GAME.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png
     include-all: true
     filter: "(?i)香港|台湾|新加坡|日本|韩国"
     url: "https://www.gstatic.com/generate_204"
@@ -339,14 +340,14 @@ proxy-groups:
       enable: true
   - name: YouTube
     type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/YouTube.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
     proxies:
       - 自动选择
       - 负载均衡
       - AI自动优选
   - name: 国外通用
     type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Global.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
     proxies:
       - 自动选择
       - 负载均衡
@@ -360,7 +361,7 @@ rules:
   - DOMAIN-SUFFIX,local,DIRECT
   - DOMAIN-SUFFIX,home.arpa,DIRECT
   
-  # macOS/iOS 常用软件 (移除 .exe)
+  # macOS 常用软件 (注意：iOS 系统不支持进程匹配，以下规则在 iPhone 上会自动忽略)
   - PROCESS-NAME,BambuStudio,国内
   - PROCESS-NAME,WeChat,DIRECT
   - PROCESS-NAME,QQ,DIRECT
