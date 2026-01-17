@@ -85,7 +85,8 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
     - https://doh.pub/dns-query
-    - https://dns.alidns.com/dns-query
+    # 优化：升级为 DoQ (DNS over QUIC)，握手几乎 0 延迟且抗干扰
+    - quic://dns.alidns.com:853
   fallback:
     # 优化：使用备用 IP 和 TCP/DoT 协议，避开 1.1.1.1/8.8.8.8 的重灾区
     - https://1.0.0.1/dns-query
@@ -257,7 +258,8 @@ proxy-groups:
     include-all: true
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
     url: "https://www.gstatic.com/generate_204"
-    interval: 300
+    # 优化：延长间隔至 10 分钟，减少 iOS 后台唤醒和耗电
+    interval: 600
     tolerance: 150
     unified-delay: true
     lazy: true
@@ -282,7 +284,8 @@ proxy-groups:
     filter: "(?i)美国|日本|荷兰|新加坡|SG"
     exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire"
     url: "https://www.gstatic.com/generate_204"
-    interval: 300
+    # 优化：延长间隔至 10 分钟，减少 iOS 后台唤醒和耗电
+    interval: 600
     tolerance: 150
     unified-delay: true
     lazy: true
