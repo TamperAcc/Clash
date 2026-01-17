@@ -1,4 +1,8 @@
 # Last Updated: 2025-12-09 [Stash Professional Edition]
+# Stash 元数据
+name: "Stash Professional"
+desc: "针对 iOS 深度优化的专业配置 (DoQ + MitM + AI分流)"
+
 # 专为 iOS/macOS Stash 优化的配置文件
 # 特性：
 # 1. Google CN 重定向修复 (Rewrite + MitM)
