@@ -1,52 +1,14 @@
 # Last Updated: 2025-12-09 [Stash Professional Override]
 # Stash 元数据
 name: "Stash Professional"
-desc: "针对 iOS 深度优化的专业配置 (DoQ + MitM + AI分流 + 省电优化)"
+desc: "针对 iOS 深度优化的专业配置文件 (DoQ + MitM + AI分流 + 省电优化)"
 
-# 进阶网络设置 (DNS/Sniffer)
-sniffer:
-  enable: true
-  parse-pure-ip: true
-  override-destination: true
-  sniff:
-    HTTP:
-      ports: [80, 8080-8880]
-      override-destination: true
-    TLS:
-      ports: [443, 8443]
-    # 优化：关闭 QUIC 嗅探以节省大量电量 (QUIC 流量将回退到 TCP 或直接 IP 分流)
-    # QUIC:
-    #   ports: [443, 8443]
+# ==========================================
+# 核心网络设置 (DNS / MitM / HTTP / Script)
+# ==========================================
 
-# HTTP 引擎设置 (确保重写生效)
-http:
-  force-http-engine-hosts:
-    - "*.google.cn"
-    - "*.google.com.cn"
-
-# MitM & Rewrite (Stash 增强功能)
-mitm:
-  enable: true
-  append-system-trust: true
-  hostname:
-    - "*.google.cn"
-    - "*.google.com.cn"
-    - "www.google.com"
-
-# 重写规则
-rewrite:
-  - match: ^https?://(www\.)?google\.cn
-    replace: https://www.google.com
-    type: 302
-  - match: ^https?://(www\.)?google\.com\.cn
-    replace: https://www.google.com
-    type: 302
-
-# 脚本
-script:
-  shortcuts:
-    quic_block: network == 'udp' and dst_port == 443
-
+# 1. DNS 设置
+# Stash 采用并发查询机制(Concurrent)，不使用 fallback 分组
 dns:
   enable: true
   ipv6: false
@@ -56,32 +18,176 @@ dns:
   fake-ip-filter:
     - "*.lan"
     - "*.local"
-    - "+.msftconnecttest.com"
-    - "+.msftncsi.com"
-    - "+.ntp.org"
-    - "+.pool.ntp.org"
-    - "+.stun.protocol.org"
-    - "time.*.com"
-    - "time.*.gov"
-    - "time.*.edu.cn"
+    - "stun.*"
     - "time.*.apple.com"
     - "time1.cloud.tencent.com"
     - "*.bambulab.com"
     - "*.bambulab.cn"
+  
+  # 强制替换原配置的 DNS
   nameserver: #!replace
+    # 高速公共 DNS (并发查询，Stash 会自动选最快的)
     - 119.29.29.29
+    - 223.5.5.5
+    # DoQ/DoT 加密 DNS (防劫持)
     - quic://dns.alidns.com:853
-  fallback: #!replace
-    - https://1.0.0.1/dns-query
-    - tcp://208.67.222.222:443
     - tls://8.8.4.4:853
-  fallback-filter:
-    geoip: true
-    geoip-code: CN
-    ipcidr:
-      - 240.0.0.0/4
+    - https://1.0.0.1/dns-query
 
-# 规则订阅
+# 2. MitM (中间人攻击) 设置 - 用于解密 HTTPS 流量以进行重写
+mitm:
+  enable: true
+  # 信任 iOS 系统根证书
+  append-system-trust: true
+  hostname:
+    - "*.google.cn"
+    - "*.google.com.cn"
+    - "www.google.com"
+
+# 3. HTTP 引擎 - 强制特定的 Host 走 HTTP 引擎处理
+http:
+  force-http-engine-hosts:
+    - "*.google.cn"
+    - "*.google.com.cn"
+
+# 4. URL 重写 - 解决 Google CN 跳转问题
+rewrite:
+  - match: ^https?://(www\.)?google\.cn
+    replace: https://www.google.com
+    type: 302
+  - match: ^https?://(www\.)?google\.com\.cn
+    replace: https://www.google.com
+    type: 302
+
+# 5. 脚本 Shortcuts - 用于高级流量特征匹配
+script:
+  shortcuts:
+    # QUIC 阻断: 匹配 UDP 443 端口
+    quic_block: network == 'udp' and dst_port == 443
+
+# ==========================================
+# 策略组 (Proxy Groups) - 强制替换模式
+# ==========================================
+# 使用 #!replace 彻底清除订阅自带的杂乱分组
+# 使用 Emoji 后缀确保组名唯一，防止报错
+proxy-groups: #!replace
+  - name: 自动选择 ⚡️
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
+    # 自动包含订阅中的所有节点
+    include-all: true
+    # 排除流量耗尽或无效节点
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
+    url: "https://www.gstatic.com/generate_204"
+    interval: 600
+    tolerance: 150
+    unified-delay: true
+    lazy: true
+    health-check:
+      enable: true
+
+  - name: 负载均衡 ⚖️
+    type: load-balance
+    strategy: consistent-hashing
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png
+    include-all: true
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
+    url: "https://www.gstatic.com/generate_204"
+    interval: 180
+    lazy: true
+    health-check:
+      enable: true
+
+  - name: AI自动优选 🤖
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
+    include-all: true
+    # 正则筛选：优先选美国/新加坡等地区节点
+    filter: "(?i)美国|日本|荷兰|新加坡|SG"
+    exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire"
+    url: "https://www.gstatic.com/generate_204"
+    interval: 600
+    tolerance: 150
+    unified-delay: true
+    lazy: true
+    health-check:
+      enable: true
+
+  - name: 国内直连 🎯
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
+    proxies:
+      - DIRECT
+      - 自动选择 ⚡️
+      - 负载均衡 ⚖️
+  
+  - name: Google Search 🔎
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
+    proxies:
+      - AI自动优选 🤖
+      - 自动选择 ⚡️
+      - 负载均衡 ⚖️
+      - DIRECT
+
+  - name: ChatGPT 🧠
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
+    proxies:
+      - AI自动优选 🤖
+
+  - name: Claude AI
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
+    proxies:
+      - AI自动优选 🤖
+  
+  - name: Gemini AI
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
+    proxies:
+      - AI自动优选 🤖
+      - 自动选择 ⚡️
+
+  - name: Copilot AI
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Bing.png
+    proxies:
+      - AI自动优选 🤖
+      - 自动选择 ⚡️
+      
+  - name: 游戏服务 🎮
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png
+    include-all: true
+    filter: "(?i)香港|台湾|新加坡|日本|韩国"
+    url: "https://www.gstatic.com/generate_204"
+    interval: 180
+    tolerance: 100
+    unified-delay: true
+    lazy: true
+    health-check:
+      enable: true
+
+  - name: YouTube 4K ▶️
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
+    proxies:
+      - 自动选择 ⚡️
+      - 负载均衡 ⚖️
+      - AI自动优选 🤖
+      
+  - name: 全能优选 🚀
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
+    proxies:
+      - 自动选择 ⚡️
+      - 负载均衡 ⚖️
+      - AI自动优选 🤖
+
+# ==========================================
+# 规则集合 (Rule Providers)
+# ==========================================
 rule-providers:
   reject:
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
@@ -224,147 +330,47 @@ rule-providers:
     format: yaml
     type: http
 
-# 分组设置 (强制替换)
-# [重要] 即使使用了 #!replace，如果组名与基础配置完全相同，Stash 也会在合并前报错 "Duplicated group name"。
-# 因此我们必须为核心组名添加 unique 后缀 (如 🚀/🎯) 来彻底避免此错误。
-proxy-groups: #!replace
-  - name: 自动选择 ⚡️
-    type: url-test
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
-    include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
-    url: "https://www.gstatic.com/generate_204"
-    interval: 600
-    tolerance: 150
-    unified-delay: true
-    lazy: true
-    health-check:
-      enable: true
-
-  - name: 负载均衡 ⚖️
-    type: load-balance
-    strategy: consistent-hashing
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png
-    include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
-    url: "https://www.gstatic.com/generate_204"
-    interval: 180
-    lazy: true
-    health-check:
-      enable: true
-
-  - name: AI自动优选 🤖
-    type: url-test
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
-    include-all: true
-    filter: "(?i)美国|日本|荷兰|新加坡|SG"
-    exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire"
-    url: "https://www.gstatic.com/generate_204"
-    interval: 600
-    tolerance: 150
-    unified-delay: true
-    lazy: true
-    health-check:
-      enable: true
-
-  - name: 国内直连 🎯
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
-    proxies:
-      - DIRECT
-      - 自动选择 ⚡️
-      - 负载均衡 ⚖️
-  - name: Google Search 🔎
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
-    proxies:
-      - AI自动优选 🤖
-      - 自动选择 ⚡️
-      - 负载均衡 ⚖️
-      - DIRECT
-
-  - name: ChatGPT 🧠
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
-    proxies:
-      - AI自动优选 🤖
-
-  - name: Claude AI
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
-    proxies:
-      - AI自动优选 🤖
-  
-  - name: Gemini AI
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
-    proxies:
-      - AI自动优选 🤖
-      - 自动选择 ⚡️
-
-  - name: Copilot AI
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Bing.png
-    proxies:
-      - AI自动优选 🤖
-      - 自动选择 ⚡️
-  - name: 游戏服务 🎮
-    type: url-test
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png
-    include-all: true
-    filter: "(?i)香港|台湾|新加坡|日本|韩国"
-    url: "https://www.gstatic.com/generate_204"
-    interval: 180
-    tolerance: 100
-    unified-delay: true
-    lazy: true
-    health-check:
-      enable: true
-  - name: YouTube 4K ▶️
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
-    proxies:
-      - 自动选择 ⚡️
-      - 负载均衡 ⚖️
-      - AI自动优选 🤖
-  - name: 全能优选 🚀
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
-    proxies:
-      - 自动选择 ⚡️
-      - 负载均衡 ⚖️
-      - AI自动优选 🤖
-
-# 规则设置 (强制替换)
+# ==========================================
+# 规则 (Rules) - 强制替换
+# ==========================================
 rules: #!replace
-  # 脚本规则优先
+  # 1. 脚本阻断
   - SCRIPT,quic_block,REJECT
 
+  # 2. 局域网 & 直连
   - GEOIP,PRIVATE,DIRECT,no-resolve
-  # 局域网后缀
   - DOMAIN-SUFFIX,lan,DIRECT
   - DOMAIN-SUFFIX,local,DIRECT
   - DOMAIN-SUFFIX,home.arpa,DIRECT
   
-  # macOS 常用软件
+  # 3. macOS/iOS 常用软件
   - PROCESS-NAME,BambuStudio,国内直连 🎯
   - PROCESS-NAME,WeChat,DIRECT
   - PROCESS-NAME,QQ,DIRECT
   - PROCESS-NAME,Thunder,DIRECT
   - PROCESS-NAME,Baichuan,DIRECT
   
+  # 4. 微软/系统服务
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
   - DOMAIN,ipv6.msftncsi.com,REJECT
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
   - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
   - DOMAIN-SUFFIX,msftncsi.com,DIRECT
-  # 测速
+  - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
+  - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
+
+  # 5. 测速服务
   - DOMAIN-SUFFIX,speedtest.net,DIRECT
   - DOMAIN-SUFFIX,ookla.com,DIRECT
   - DOMAIN-SUFFIX,fast.com,全能优选 🚀
+  
+  # 6. 特殊端口 (NTP, STUN, BT)
   - DST-PORT,123,DIRECT
   - DST-PORT,3478,DIRECT
   - DST-PORT,51413,DIRECT
+
+  # 7. 规则集规则匹配
   - DOMAIN-SUFFIX,github.com,全能优选 🚀
   - RULE-SET,reject,REJECT
   - RULE-SET,games,游戏服务 🎮
@@ -373,31 +379,28 @@ rules: #!replace
   - RULE-SET,openai_classical,ChatGPT 🧠
   - RULE-SET,claude_classical,Claude AI
   - RULE-SET,gemini_classical,Gemini AI
-  # 更新服务
-  - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
-  - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
-  - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
   - RULE-SET,copilot_classical,Copilot AI
   - RULE-SET,huggingface,负载均衡 ⚖️
   - RULE-SET,microsoft,自动选择 ⚡️
-  # 游戏下载
+  
+  # 8. 游戏下载
   - DOMAIN-SUFFIX,steamserver.net,DIRECT
   - DOMAIN-SUFFIX,steamcontent.com,DIRECT
   - DOMAIN-SUFFIX,steamstatic.com,DIRECT
   - DOMAIN-SUFFIX,epicgames.com,DIRECT
-  # Bambu Lab
+  
+  # 9. Bambu Lab 拓竹
   - DOMAIN-SUFFIX,bambulab.com,国内直连 🎯
   - DOMAIN-SUFFIX,bambulab.cn,国内直连 🎯
   - DOMAIN-SUFFIX,bambulab.co,国内直连 🎯
-  # 社交
+  
+  # 10. 社交媒体
   - RULE-SET,twitter,全能优选 🚀
   - RULE-SET,facebook,全能优选 🚀
   - RULE-SET,telegram_domain,全能优选 🚀
-  # GitHub资源
-  - DOMAIN-SUFFIX,githubusercontent.com,全能优选 🚀
-  - DOMAIN-SUFFIX,github.io,全能优选 🚀
-  
   - RULE-SET,telegram,全能优选 🚀
+  
+  # 11. 视频与搜索
   - RULE-SET,youtube_domain,YouTube 4K ▶️
   - RULE-SET,google_domain,Google Search 🔎
   - RULE-SET,cn_domain,国内直连 🎯
@@ -405,4 +408,8 @@ rules: #!replace
   - RULE-SET,google_ip,Google Search 🔎
   - RULE-SET,cn_ip,国内直连 🎯
   - GEOIP,CN,国内直连 🎯
+  
+  # 12. 兜底策略
+  - DOMAIN-SUFFIX,githubusercontent.com,全能优选 🚀
+  - DOMAIN-SUFFIX,github.io,全能优选 🚀
   - MATCH,全能优选 🚀
