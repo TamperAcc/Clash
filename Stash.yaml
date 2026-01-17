@@ -292,15 +292,6 @@ proxy-groups:
       - DIRECT
       - 自动选择
       - 负载均衡
-  
-  # 🎯 优化：统一 AI 服务策略组（OpenAI/Claude/Gemini/Copilot）
-  - name: AI 服务
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
-    proxies:
-      - AI自动优选
-      - 自动选择
-      - 负载均衡
 
   - name: Google
     type: select
@@ -369,13 +360,13 @@ rules:
   - DST-PORT,3478,DIRECT
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
-  - DOMAIN-SUFFIX,github.com,国外通用
+  - DOMAIN-SUFFIX,github.com,AI自动优选
   - RULE-SET,reject,REJECT
   - RULE-SET,games,游戏服务
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
   # 🎯 优化：统一 AI 服务规则集，匹配速度提升 100 倍
-  - RULE-SET,ai_services,AI 服务
+  - RULE-SET,ai_services,AI自动优选
   # 更新服务
   - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
   - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
@@ -395,18 +386,16 @@ rules:
   - RULE-SET,social_media,国外通用
   - RULE-SET,telegram_domain,国外通用
   # GitHub资源
-  - DOMAIN-SUFFIX,githubusercontent.com,国外通用
-  - DOMAIN-SUFFIX,github.io,国外通用
+  - DOMAIN-SUFFIX,githubusercontent.com,AI自动优选
+  - DOMAIN-SUFFIX,github.io,AI自动优选
   
   - RULE-SET,telegram,国外通用
   - RULE-SET,youtube_domain,YouTube
-  - RULE-SET,google_domain,AI 服务
+  - RULE-SET,google_domain,Google
   - RULE-SET,cn_domain,国内
-  - DOMAIN-SUFFIX,github.com,自动选择
-  - DOMAIN-SUFFIX,githubusercontent.com,自动选择
-  - DOMAIN-SUFFIX,github.io,自动选择
+  - RULE-SET,cn_ip,国内
   - RULE-SET,geolocation_no_cn,国外通用
-  # 🎯 优化：移除冗余 google_ip 规则，Domain 规则已足够
+  - MATCH,国外通用
   - RULE-SET,cn_ip,国内
   - GEOIP,CN,国内
   - MATCH,国外通用
