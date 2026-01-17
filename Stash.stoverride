@@ -2,6 +2,7 @@
 # Stash 元数据
 name: "Stash Professional"
 desc: "针对 iOS 深度优化的专业配置文件 (DoQ + MitM + AI分流 + 省电优化)"
+icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 
 # ==========================================
 # 核心网络设置 (DNS / MitM / HTTP / Script)
@@ -23,14 +24,24 @@ dns:
     - "time1.cloud.tencent.com"
     - "*.bambulab.com"
     - "*.bambulab.cn"
+    # 游戏/语音 NAT 优化
+    - "+.stun.*.*"
+    - "+.stun.*"
+    - "+.nintendo.net"
+    - "+.playstation.net"
+    - "+.xboxlive.com"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
   
   # 强制替换原配置的 DNS
   nameserver: #!replace
     # 高速公共 DNS (并发查询，Stash 会自动选最快的)
     - 119.29.29.29
     - 223.5.5.5
-    # DoQ/DoT 加密 DNS (防劫持)
+    # DoQ/DoT 加密 DNS (防劫持双保险)
     - quic://dns.alidns.com:853
+    - quic://dns.pub:853
+    - tls://8.8.4.4:853
     - tls://8.8.4.4:853
     - https://1.0.0.1/dns-query
 
