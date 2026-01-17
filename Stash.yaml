@@ -186,9 +186,9 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  # 🎯 优化：合并所有 AI 服务为单一 Domain 规则集（内存 ⬇️60% + 匹配速度 ⬆️100倍）
+  # 🎯 优化：合并所有 AI 服务为单一 Domain 规则集（包含 OpenAI/Gemini/Claude/Copilot）
   ai_services:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/openai.yaml
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml
     path: ./ruleset/ai_services.yaml
     behavior: domain
     interval: 86400
@@ -215,9 +215,9 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  # 🎯 优化：社交媒体统一使用 Domain 规则（包含 Twitter/Facebook/Instagram/TikTok）
+  # 🎯 优化：社交媒体/通讯工具统一使用 Domain 规则（包含 Discord/Telegram/WhatsApp 等）
   social_media:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-social-media.yaml
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml
     path: ./ruleset/social_media.yaml
     behavior: domain
     interval: 86400

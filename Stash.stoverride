@@ -370,9 +370,9 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  # 🎯 优化：使用 MetaCubeX 的 domain 类型规则替代 classical
+  # 🎯 优化：社交媒体/通讯工具统一使用 Domain 规则（包含 Discord/Telegram/WhatsApp 等）
   social_media:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-social-media.yaml
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml
     path: ./ruleset/social_media.yaml
     behavior: domain
     interval: 86400
