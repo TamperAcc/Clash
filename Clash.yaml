@@ -30,8 +30,9 @@ sniffer:
       override-destination: true
     TLS:
       ports: [443, 8443]
-    QUIC:
-      ports: [443, 8443]
+    # 优化：关闭 QUIC 嗅探以节省不必要的 CPU 占用和内存波动 (QUIC 流量将回退到 TCP 或直接 IP 分流)
+    # QUIC:
+    #   ports: [443, 8443]
 
 dns:
   enable: true
@@ -60,7 +61,8 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
     - https://doh.pub/dns-query
-    - https://dns.alidns.com/dns-query
+    # 优化：升级为 DoQ (DNS over QUIC)，握手几乎 0 延迟
+    - quic://dns.alidns.com:853
   fallback:
     # 优化：使用备用 IP 和 TCP/DoT 协议，避开 1.1.1.1/8.8.8.8 的重灾区
     - https://1.0.0.1/dns-query
@@ -246,6 +248,7 @@ proxy-groups:
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
     url: "https://www.gstatic.com/generate_204"
     interval: 180
+    lazy: true
     health-check:
       enable: true
 
