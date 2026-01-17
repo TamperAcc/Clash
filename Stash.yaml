@@ -1,0 +1,424 @@
+# Last Updated: 2025-12-09 [Stash Professional Edition]
+# 专为 iOS/macOS Stash 优化的配置文件
+# 特性：
+# 1. Google CN 重定向修复 (Rewrite + MitM)
+# 2. 移除 Windows 特有后缀，适配 macOS 进程名
+# 3. 继承 AI 自动优选与分流策略
+
+# 基础设置
+geodata-loader: memconservative
+tcp-concurrent: true
+global-client-fingerprint: edge
+keep-alive-interval: 1800
+allow-lan: true
+bind-address: "*"
+# macOS/iOS 不需要跳过 localhost 验证，但保留无害
+skip-auth-prefixes:
+  - 127.0.0.1
+  - localhost
+
+geo-auto-update: true
+geo-update-interval: 24
+
+profile:
+  store-selected: true
+  auto-update: false
+
+# 进阶网络设置 (DNS/Sniffer/Tun)
+sniffer:
+  enable: true
+  parse-pure-ip: true
+  override-destination: true
+  sniff:
+    HTTP:
+      ports: [80, 8080-8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+
+# MitM & Rewrite (Stash 增强功能)
+# 请确保在 Stash 客户端中安装并信任 CA 证书
+mitm:
+  enable: true
+  append-system-trust: true
+  skip-server-cert-verify: true
+  hostname:
+    - "*.google.cn"
+    - "*.google.com.cn"
+    - "www.google.com"
+
+# 重写规则：解决 Google CN 强制跳转问题
+rewrite:
+  - match: ^https?://(www\.)?google\.cn
+    replace: https://www.google.com
+    type: 302
+  - match: ^https?://(www\.)?google\.com\.cn
+    replace: https://www.google.com
+    type: 302
+
+dns:
+  enable: true
+  ipv6: false
+  listen: 0.0.0.0:1053
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  respect-rules: true
+  fake-ip-filter:
+    - "*.lan"
+    - "*.local"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    - "+.ntp.org"
+    - "+.pool.ntp.org"
+    - "+.stun.protocol.org"
+    - "time.*.com"
+    - "time.*.gov"
+    - "time.*.edu.cn"
+    - "time.*.apple.com"
+    - "time1.cloud.tencent.com"
+    - "*.bambulab.com"
+    - "*.bambulab.cn"
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  fallback:
+    - https://1.1.1.1/dns-query
+    - https://dns.google/dns-query
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    ipcidr:
+      - 240.0.0.0/4
+
+tun:
+  enable: true
+  stack: mixed
+  auto-route: true
+  auto-detect-interface: true
+  strict-route: true
+  dns-hijack:
+    - any:53
+
+# 规则订阅
+rule-providers:
+  reject:
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
+    path: ./ruleset/reject.yaml
+    behavior: domain
+    interval: 86400
+    format: text
+    type: http
+  icloud:
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt
+    path: ./ruleset/icloud.yaml
+    behavior: domain
+    interval: 86600
+    format: text
+    type: http
+  microsoft:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.yaml
+    path: ./ruleset/microsoft.yaml
+    behavior: domain
+    interval: 86800
+    format: yaml
+    type: http
+  apple:
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
+    path: ./ruleset/apple.yaml
+    behavior: domain
+    interval: 87000
+    format: text
+    type: http
+  telegram:
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt
+    path: ./ruleset/telegram.yaml
+    behavior: ipcidr
+    interval: 87200
+    format: text
+    type: http
+  cn_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.yaml
+    path: ./ruleset/cn_domain.yaml
+    behavior: domain
+    interval: 87400
+    format: yaml
+    type: http
+  cn_ip:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.yaml
+    path: ./ruleset/cn_ip.yaml
+    behavior: ipcidr
+    interval: 87600
+    format: yaml
+    type: http
+  google_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.yaml
+    path: ./ruleset/google_domain.yaml
+    behavior: domain
+    interval: 87800
+    format: yaml
+    type: http
+  google_ip:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.yaml
+    path: ./ruleset/google_ip.yaml
+    behavior: ipcidr
+    interval: 88000
+    format: yaml
+    type: http
+  openai_classical:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml
+    path: ./ruleset/openai_classical.yaml
+    behavior: classical
+    interval: 88200
+    format: yaml
+    type: http
+  gemini_classical:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Gemini/Gemini.yaml
+    path: ./ruleset/gemini_classical.yaml
+    behavior: classical
+    interval: 88400
+    format: yaml
+    type: http
+  copilot_classical:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Copilot/Copilot.yaml
+    path: ./ruleset/copilot_classical.yaml
+    behavior: classical
+    interval: 88600
+    format: yaml
+    type: http
+  claude_classical:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Claude/Claude.yaml
+    path: ./ruleset/claude.yaml
+    behavior: classical
+    interval: 88600
+    format: yaml
+    type: http
+  huggingface:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/huggingface.yaml
+    path: ./ruleset/huggingface.yaml
+    behavior: domain
+    interval: 88700
+    format: yaml
+    type: http
+  youtube_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml
+    path: ./ruleset/youtube_domain.yaml
+    behavior: domain
+    interval: 88800
+    format: yaml
+    type: http
+  games:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-games.yaml
+    path: ./ruleset/games.yaml
+    behavior: domain
+    interval: 89000
+    format: yaml
+    type: http
+  twitter:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Twitter/Twitter.yaml
+    path: ./ruleset/twitter.yaml
+    behavior: classical
+    interval: 89300
+    format: yaml
+    type: http
+  facebook:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Facebook/Facebook.yaml
+    path: ./ruleset/facebook.yaml
+    behavior: classical
+    interval: 89400
+    format: yaml
+    type: http
+  telegram_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.yaml
+    path: ./ruleset/telegram_domain.yaml
+    behavior: domain
+    interval: 89500
+    format: yaml
+    type: http
+  geolocation_no_cn:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml
+    path: ./ruleset/geolocation-!cn_domain.yaml
+    behavior: domain
+    interval: 89200
+    format: yaml
+    type: http
+
+# 分组设置
+proxy-groups:
+  - name: 自动选择
+    type: url-test
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Urltest.png
+    include-all: true
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
+    url: "https://www.gstatic.com/generate_204"
+    interval: 300
+    tolerance: 150
+    unified-delay: true
+    lazy: true
+    health-check:
+      enable: true
+
+  - name: 负载均衡
+    type: load-balance
+    strategy: consistent-hashing
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Roundrobin.png
+    include-all: true
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
+    url: "https://www.gstatic.com/generate_204"
+    interval: 180
+    health-check:
+      enable: true
+
+  - name: AI自动优选
+    type: url-test
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
+    include-all: true
+    filter: "(?i)美国|日本|荷兰|新加坡|SG"
+    exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire"
+    url: "https://www.gstatic.com/generate_204"
+    interval: 300
+    tolerance: 150
+    unified-delay: true
+    lazy: true
+    health-check:
+      enable: true
+
+  - name: 国内
+    type: select
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/CN.png
+    proxies:
+      - DIRECT
+      - 自动选择
+      - 负载均衡
+  - name: Google
+    type: select
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
+    proxies:
+      - AI自动优选
+      - 自动选择
+      - 负载均衡
+      - DIRECT
+
+  - name: OpenAI
+    type: select
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
+    proxies:
+      - AI自动优选
+
+  - name: Claude
+    type: select
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
+    proxies:
+      - AI自动优选
+  
+  - name: Gemini
+    type: select
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
+    proxies:
+      - AI自动优选
+      - 自动选择
+
+  - name: Copilot
+    type: select
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Bing.png
+    proxies:
+      - AI自动优选
+      - 自动选择
+  - name: 游戏服务
+    type: url-test
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/GAME.png
+    include-all: true
+    filter: "(?i)香港|台湾|新加坡|日本|韩国"
+    url: "https://www.gstatic.com/generate_204"
+    interval: 180
+    tolerance: 100
+    unified-delay: true
+    lazy: true
+    health-check:
+      enable: true
+  - name: YouTube
+    type: select
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/YouTube.png
+    proxies:
+      - 自动选择
+      - 负载均衡
+      - AI自动优选
+  - name: 国外通用
+    type: select
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Global.png
+    proxies:
+      - 自动选择
+      - 负载均衡
+      - AI自动优选
+
+# 规则设置
+rules:
+  - GEOIP,PRIVATE,DIRECT,no-resolve
+  # 局域网后缀
+  - DOMAIN-SUFFIX,lan,DIRECT
+  - DOMAIN-SUFFIX,local,DIRECT
+  - DOMAIN-SUFFIX,home.arpa,DIRECT
+  
+  # macOS/iOS 常用软件 (移除 .exe)
+  - PROCESS-NAME,BambuStudio,国内
+  - PROCESS-NAME,WeChat,DIRECT
+  - PROCESS-NAME,QQ,DIRECT
+  - PROCESS-NAME,Thunder,DIRECT
+  - PROCESS-NAME,Baichuan,DIRECT
+  # 保留 BaiduNetdisk 等可能的进程名
+  
+  - DOMAIN,ipv6.msftconnecttest.com,REJECT
+  - DOMAIN,ipv6.msftncsi.com,REJECT
+  - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
+  - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
+  - DOMAIN-SUFFIX,msftncsi.com,DIRECT
+  # 测速
+  - DOMAIN-SUFFIX,speedtest.net,DIRECT
+  - DOMAIN-SUFFIX,ookla.com,DIRECT
+  - DOMAIN-SUFFIX,fast.com,国外通用
+  - DST-PORT,123,DIRECT
+  - DST-PORT,3478,DIRECT
+  - DST-PORT,6881-6889,DIRECT
+  - DST-PORT,51413,DIRECT
+  - DOMAIN-SUFFIX,github.com,国外通用
+  - RULE-SET,reject,REJECT
+  - RULE-SET,games,游戏服务
+  - RULE-SET,icloud,DIRECT
+  - RULE-SET,apple,DIRECT
+  - RULE-SET,openai_classical,OpenAI
+  - RULE-SET,claude_classical,Claude
+  - RULE-SET,gemini_classical,Gemini
+  # 更新服务
+  - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
+  - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
+  - RULE-SET,copilot_classical,Copilot
+  - RULE-SET,huggingface,负载均衡
+  - RULE-SET,microsoft,自动选择
+  # 游戏下载
+  - DOMAIN-SUFFIX,steamserver.net,DIRECT
+  - DOMAIN-SUFFIX,steamcontent.com,DIRECT
+  - DOMAIN-SUFFIX,steamstatic.com,DIRECT
+  - DOMAIN-SUFFIX,epicgames.com,DIRECT
+  # Bambu Lab
+  - DOMAIN-SUFFIX,bambulab.com,国内
+  - DOMAIN-SUFFIX,bambulab.cn,国内
+  - DOMAIN-SUFFIX,bambulab.co,国内
+  # 社交
+  - RULE-SET,twitter,国外通用
+  - RULE-SET,facebook,国外通用
+  - RULE-SET,telegram_domain,国外通用
+  # GitHub资源
+  - DOMAIN-SUFFIX,githubusercontent.com,国外通用
+  - DOMAIN-SUFFIX,github.io,国外通用
+  
+  - RULE-SET,telegram,国外通用
+  - RULE-SET,youtube_domain,YouTube
+  - RULE-SET,google_domain,Google
+  - RULE-SET,cn_domain,国内
+  - RULE-SET,geolocation_no_cn,国外通用
+  - RULE-SET,google_ip,Google
+  - RULE-SET,cn_ip,国内
+  - GEOIP,CN,国内
+  - MATCH,国外通用
