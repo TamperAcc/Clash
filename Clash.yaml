@@ -57,11 +57,15 @@ dns:
     - "*.bambulab.com"
     - "*.bambulab.cn"
   nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
     - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query
   fallback:
-    - https://1.1.1.1/dns-query
-    - https://dns.google/dns-query
+    # 优化：使用备用 IP 和 TCP/DoT 协议，避开 1.1.1.1/8.8.8.8 的重灾区
+    - https://1.0.0.1/dns-query
+    - tcp://208.67.222.222:443
+    - tls://8.8.4.4:853
   fallback-filter:
     geoip: true
     geoip-code: CN
@@ -75,15 +79,6 @@ tun:
   strict-route: true
   dns-hijack:
     - any:53
-
-# 优化：URL重写 (Stash/Clash Premium 特性)，解决谷歌国内域名定位漂移问题
-rewrite:
-  - match: ^https?:\/\/(www\.)?g\.cn
-    location: https://www.google.com
-    status: 302
-  - match: ^https?:\/\/(www\.)?google\.cn
-    location: https://www.google.com
-    status: 302
 
 # 规则订阅
 rule-providers:
