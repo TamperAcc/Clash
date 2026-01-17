@@ -219,7 +219,7 @@ proxy-groups: #!replace
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
-    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|Traffic|Expire|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://gemini.google.com"
     interval: 600  # 优化：AI 服务稳定性高，无需频繁检测
     tolerance: 100
@@ -236,21 +236,12 @@ proxy-groups: #!replace
       - 自动选择 ⚡️
       - 负载均衡 ⚖️
   
-  # 🎯 优化：统一 AI 服务策略组（ChatGPT/Claude/Gemini/Copilot）
-  - name: AI 服务 🤖
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
-    proxies:
-      - AI自动优选 🤖
-      - 自动选择 ⚡️
-      - 负载均衡 ⚖️
-  
   - name: Google自动优选 🔎
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     include-all: true
     # 优化：过滤节点名中包含以下关键词，防止谷歌搜索结果偏向特定地区或被临时/测试节点干扰（不区分大小写）
-    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|Traffic|Expire|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     interval: 600
     tolerance: 50
     unified-delay: true
@@ -486,13 +477,13 @@ rules: #!replace
   - DST-PORT,51413,DIRECT
 
   # 7. 规则集规则匹配
-  - DOMAIN-SUFFIX,github.com,AI 服务
+  - DOMAIN-SUFFIX,github.com,AI自动优选 🤖
   - RULE-SET,reject,REJECT
   - RULE-SET,games,游戏服务 🎮
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
   # ⚡ 优化：统一 AI 服务规则，减少内存占用和匹配延迟
-  - RULE-SET,ai_services,AI 服务 🤖
+  - RULE-SET,ai_services,AI自动优选 🤖
   - RULE-SET,huggingface,负载均衡 ⚖️
   - RULE-SET,microsoft,负载均衡 ⚖️
   
