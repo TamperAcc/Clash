@@ -234,7 +234,7 @@ proxy-groups: #!replace
     proxies:
       - DIRECT
       - 负载均衡 ⚖️
-      - 自动选择 ⚡️
+      - 自动选择 ⚡
   
   - name: Google自动优选 🔎
     type: url-test
@@ -255,7 +255,7 @@ proxy-groups: #!replace
     proxies:
       - Google自动优选 🔎
       - AI自动优选 🤖
-      - 自动选择 ⚡️
+      - 自动选择 ⚡
       - DIRECT
       
   - name: 游戏服务 🎮
@@ -275,7 +275,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
     proxies:
       - 负载均衡 ⚖️
-      - 自动选择 ⚡️
+      - 自动选择 ⚡
       - AI自动优选 🤖
       
   - name: 全能优选 🚀
@@ -283,7 +283,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
     proxies:
       - 负载均衡 ⚖️
-      - 自动选择 ⚡️
+      - 自动选择 ⚡
       - AI自动优选 🤖
 
 # ==========================================
