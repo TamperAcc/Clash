@@ -315,8 +315,8 @@ proxy-groups:
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
     proxies:
-      - 自动选择
       - 负载均衡
+      - 自动选择
       - AI自动优选
   - name: 国外通用
     type: select
@@ -395,7 +395,4 @@ rules:
   - RULE-SET,cn_domain,国内
   - RULE-SET,cn_ip,国内
   - RULE-SET,geolocation_no_cn,国外通用
-  - MATCH,国外通用
-  - RULE-SET,cn_ip,国内
-  - GEOIP,CN,国内
   - MATCH,国外通用

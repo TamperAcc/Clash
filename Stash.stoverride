@@ -274,8 +274,8 @@ proxy-groups: #!replace
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
     proxies:
-      - 自动选择 ⚡️
       - 负载均衡 ⚖️
+      - 自动选择 ⚡️
       - AI自动优选 🤖
       
   - name: 全能优选 🚀
