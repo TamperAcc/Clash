@@ -23,6 +23,17 @@
     *   **进程匹配**: 移除 `.exe` 后缀，适配 macOS 应用生态。
 *   **DNS 增强**: 采用 DoQ 协议 (`quic://dns.alidns.com`)，在 4G/5G 切换时连接更稳定。
 
+### 3. [Stash.stoverride](https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash.stoverride)
+> **适用平台**: iOS (Stash) - 终极覆写版 (Ultimate Override)
+
+*   **功能定位**: 基于标准版配置的增强型覆写文件，需在 Stash "配置列表 -> 覆写" 中加载。
+*   **独家增强**:
+    *   **Tile 可视化**: 首页集成 "网络信息"、"节点详情" 面板。
+    *   **脚本控制**: 集成 QUIC 阻断脚本与 TCP 并发优化 (Hybla/BBR 思想)。
+*   **策略同步**: 
+    *   保持与标准版完全一致的 `国内` / `国外通用` 分组逻辑。
+    *   Google 搜索策略精简为 `AI自动优选` -> `自动选择`，移除冗余跳转。
+
 ## 订阅链接 (Subscription Links)
 
 直接将以下链接复制到客户端中“下载/导入配置”：
@@ -59,4 +70,4 @@
     *   **GitHub**: 网页走代理，Raw 资源自动加速。
 
 ---
-*Last Update: 2026-01-17*
+*Last Update: 2026-01-18*
