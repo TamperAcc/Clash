@@ -76,6 +76,15 @@ tun:
   dns-hijack:
     - any:53
 
+# 优化：URL重写 (Stash/Clash Premium 特性)，解决谷歌国内域名定位漂移问题
+rewrite:
+  - match: ^https?:\/\/(www\.)?g\.cn
+    location: https://www.google.com
+    status: 302
+  - match: ^https?:\/\/(www\.)?google\.cn
+    location: https://www.google.com
+    status: 302
+
 # 规则订阅
 rule-providers:
   reject:
