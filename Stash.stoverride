@@ -217,7 +217,7 @@ proxy-groups: #!replace
     # 正则筛选：优先选美国/新加坡/日本
     filter: "(?i)美国|日本|荷兰|新加坡|SG"
     exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire"
-    url: "https://www.gstatic.com/generate_204"
+    url: "https://gemini.google.com"
     interval: 600  # 优化：AI 服务稳定性高，无需频繁检测
     tolerance: 100
     unified-delay: true
