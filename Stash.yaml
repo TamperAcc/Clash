@@ -275,7 +275,6 @@ proxy-groups:
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
-    filter: "(?i)美国|日本|荷兰|新加坡|SG"
     exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire|群组|频道|@|联系|网站|入群"
     url: "https://gemini.google.com"
     interval: 600  # 优化：AI服务稳定性高，10分钟检测一次即可
@@ -306,8 +305,6 @@ proxy-groups:
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     include-all: true
-    # 优化：过滤香港节点，防止谷歌搜索结果出现港版内容或某些功能受限
-    filter: "(?i)台湾|日本|新加坡|韩国|美国|TW|JP|SG|KR|US"
     exclude-filter: "(?i)香港|HK|Hong|Kong|圣何塞|Traffic|Expire|群组|频道|@|联系|网站|入群"
     url: "https://www.google.com/generate_204"
     interval: 600
@@ -332,7 +329,6 @@ proxy-groups:
     include-all: true
     filter: "(?i)香港|台湾|新加坡|日本|韩国"
     url: "https://www.gstatic.com/generate_204"
-    interval: 600  # 优化：游戏节点稳定后无需频繁检测
     tolerance: 80
     unified-delay: true
     lazy: true
