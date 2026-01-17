@@ -278,9 +278,11 @@ proxy-groups: #!replace
       - 自动选择
       - AI自动优选
       
-  - name: 全能优选
+  - name: 国外通用
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
+    include-all: true
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     proxies:
       - 负载均衡
       - 自动选择
@@ -451,7 +453,7 @@ rules: #!replace
   # 5. 测速服务
   - DOMAIN-SUFFIX,speedtest.net,DIRECT
   - DOMAIN-SUFFIX,ookla.com,DIRECT
-  - DOMAIN-SUFFIX,fast.com,全能优选
+  - DOMAIN-SUFFIX,fast.com,国外通用
   
   # 🚀 新增：更多国内服务直连优化
   # CDN 服务
@@ -501,19 +503,19 @@ rules: #!replace
   - DOMAIN-SUFFIX,bambulab.co,国内直连
   
   # 10. 社交媒体 (优化：合并规则集)
-  - RULE-SET,social_media,全能优选
-  - RULE-SET,telegram_domain,全能优选
-  - RULE-SET,telegram,全能优选
+  - RULE-SET,social_media,国外通用
+  - RULE-SET,telegram_domain,国外通用
+  - RULE-SET,telegram,国外通用
   
   # 11. 视频与搜索 (优化：移除冗余 IP 规则)
   - RULE-SET,youtube_domain,YouTube 4K
   - RULE-SET,google_domain,Google Search
   - RULE-SET,cn_domain,国内直连
-  - RULE-SET,geolocation_no_cn,全能优选
+  - RULE-SET,geolocation_no_cn,国外通用
   - RULE-SET,cn_ip,国内直连
   - GEOIP,CN,国内直连
   
   # 12. 兜底策略
-  - DOMAIN-SUFFIX,githubusercontent.com,全能优选
-  - DOMAIN-SUFFIX,github.io,全能优选
-  - MATCH,全能优选
+  - DOMAIN-SUFFIX,githubusercontent.com,国外通用
+  - DOMAIN-SUFFIX,github.io,国外通用
+  - MATCH,国外通用
