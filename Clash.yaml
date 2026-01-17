@@ -4,6 +4,9 @@ geodata-loader: memconservative
 tcp-concurrent: true
 global-client-fingerprint: edge
 keep-alive-interval: 1800
+# 优化：允许局域网设备连接（如手机/平板通过电脑代理）
+allow-lan: true
+bind-address: "*"
 
 geo-auto-update: true
 geo-update-interval: 24
@@ -38,6 +41,17 @@ dns:
     - "*.local"
     - "+.msftconnecttest.com"
     - "+.msftncsi.com"
+    # 优化：防止NTP时间同步和STUN穿透走Fake-IP导致连接失败
+    - "+.ntp.org"
+    - "+.pool.ntp.org"
+    - "+.stun.protocol.org"
+    - "time.*.com"
+    - "time.*.gov"
+    - "time.*.edu.cn"
+    - "time.*.apple.com"
+    - "time1.cloud.tencent.com"
+    - "*.bambulab.com"
+    - "*.bambulab.cn"
   nameserver:
     - https://doh.pub/dns-query
     - https://dns.alidns.com/dns-query
@@ -144,6 +158,20 @@ rule-providers:
     interval: 88600
     format: yaml
     type: http
+  claude_classical:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Claude/Claude.yaml
+    path: ./ruleset/claude.yaml
+    behavior: classical
+    interval: 88600
+    format: yaml
+    type: http
+  huggingface:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/huggingface.yaml
+    path: ./ruleset/huggingface.yaml
+    behavior: domain
+    interval: 88700
+    format: yaml
+    type: http
   youtube_domain:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml
     path: ./ruleset/youtube_domain.yaml
@@ -156,6 +184,27 @@ rule-providers:
     path: ./ruleset/games.yaml
     behavior: domain
     interval: 89000
+    format: yaml
+    type: http
+  twitter:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Twitter/Twitter.yaml
+    path: ./ruleset/twitter.yaml
+    behavior: classical
+    interval: 89300
+    format: yaml
+    type: http
+  facebook:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Facebook/Facebook.yaml
+    path: ./ruleset/facebook.yaml
+    behavior: classical
+    interval: 89400
+    format: yaml
+    type: http
+  telegram_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.yaml
+    path: ./ruleset/telegram_domain.yaml
+    behavior: domain
+    interval: 89500
     format: yaml
     type: http
   geolocation_no_cn:
@@ -174,8 +223,8 @@ proxy-groups:
     include-all: true
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
     url: "https://www.gstatic.com/generate_204"
-    interval: 180
-    tolerance: 50
+    interval: 300
+    tolerance: 150
     unified-delay: true
     lazy: true
     health-check:
@@ -193,14 +242,15 @@ proxy-groups:
       enable: true
 
   - name: AI自动优选
-    type: url-test
+    # 优化：增加新加坡节点（低延迟且OpenAI/Google支持好）
+    filter: "(?i)美国|日本|荷兰|新加坡|SG
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
     include-all: true
     filter: "(?i)美国|日本|荷兰"
     exclude-filter: "(?i)圣何塞"
     url: "https://www.gstatic.com/generate_204"
-    interval: 180
-    tolerance: 50
+    interval: 300
+    tolerance: 150
     unified-delay: true
     lazy: true
     health-check:
@@ -227,8 +277,14 @@ proxy-groups:
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
     proxies:
       - AI自动优选
-      - 自动选择
+      # 移除自动选择，防止回退到香港节点导致Access Denied
 
+  - name: Claude
+    type: select
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
+    proxies:
+      - AI自动优选
+  
   - name: Gemini
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
@@ -258,25 +314,47 @@ proxy-groups:
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/YouTube.png
     proxies:
-      - 负载均衡
       - 自动选择
+      - 负载均衡
       - AI自动优选
+  # 优化：常见下载软件和网盘工具直连，避免消耗代理流量和触发P2P审计
+  - PROCESS-NAME,Thunder.exe,DIRECT
+  - PROCESS-NAME,DownloadSdk.exe,DIRECT
+  - PROCESS-NAME,baidunetdisk.exe,DIRECT
+  - PROCESS-NAME,BitComet.exe,DIRECT
+  - PROCESS-NAME,uTorrent.exe,DIRECT
+  - PROCESS-NAME,IDMan.exe,DIRECT
   - name: 国外通用
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Global.png
     proxies:
-      - 负载均衡
+      # 优化：优先使用“自动选择”而非“负载均衡”，避免IP频繁跳动导致网页需要反复登录或触发验证码
       - 自动选择
+      - 负载均衡
       - AI自动优选
 
 # 规则设置
 rules:
   - GEOIP,PRIVATE,DIRECT,no-resolve
+  # 优化：局域网域名和Windows常用应用进程分流（微信/拓竹直连，防止卡顿）
+  - DOMAIN-SUFFIX,lan,DIRECT
+  - DOMAIN-SUFFIX,local,DIRECT
+  - DOMAIN-SUFFIX,home.arpa,DIRECT
+  - PROCESS-NAME,BambuStudio.exe,国内
+  - PROCESS-NAME,bambu-studio.exe,国内
+  - PROCESS-NAME,WeChat.exe,DIRECT
+  - PROCESS-NAME,WeChatAppEx.exe,DIRECT
+  - PROCESS-NAME,QQ.exe,DIRECT
+  
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
   - DOMAIN,ipv6.msftncsi.com,REJECT
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
   - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
   - DOMAIN-SUFFIX,msftncsi.com,DIRECT
+  # 优化：Speedtest测速强制直连，节省代理流量
+  - DOMAIN-SUFFIX,speedtest.net,DIRECT
+  - DOMAIN-SUFFIX,ookla.com,DIRECT
+  - DOMAIN-SUFFIX,fast.com,国外通用
   - DST-PORT,123,DIRECT
   - DST-PORT,3478,DIRECT
   - DST-PORT,6881-6889,DIRECT
@@ -288,8 +366,31 @@ rules:
   - RULE-SET,apple,DIRECT
   - RULE-SET,openai_classical,OpenAI
   - RULE-SET,gemini_classical,Gemini
-  - RULE-SET,copilot_classical,Copilot
-  - RULE-SET,microsoft,DIRECT
+  - RULWindows更新强制直连，防止消耗代理流量
+  - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
+  - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,tlu.dl.delivery.mp.microsoft.com,DIRECT
+  # 优化：E-SET,copilot_classical,Copilot
+  # 优化：微软服务走自动选择，修复VS Code登录和同步问题
+  - RULE-SET,microsoft,自动选择
+  # 优化：Steam/Epic 等游戏平台下载CDN直连
+  - DOMAIN-SUFFIX,steamserver.net,DIRECT
+  - DOMAIN-SUFFIX,steamcontent.com,DIRECT
+  - DOMAIN-SUFFIX,steamstatic.com,DIRECT
+  - DOMAIN-SUFFIX,epicgames.com,DIRECT
+  # 优化：拓竹Bambu服务强制直连（国内阿里云），避免绕路
+  - DOMAIN-SUFwitter,国外通用
+  - RULE-SET,facebook,国外通用
+  - RULE-SET,telegram_domain,国外通用
+  - RULE-SET,tFIX,bambulab.com,国内
+  - DOMAIN-SUFFIX,bambulab.cn,国内
+  - DOMAIN-SUFFIX,bambulab.co,国内
+  # 优化：GitHub资源服务器
+  - DOMAIN-SUFFIX,githubusercontent.com,国外通用
+  - DOMAIN-SUFFIX,github.io,国外通用
+  
   - RULE-SET,telegram,国外通用
   - RULE-SET,youtube_domain,YouTube
   - RULE-SET,google_domain,Google
