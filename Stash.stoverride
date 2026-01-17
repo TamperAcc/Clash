@@ -314,11 +314,11 @@ rule-providers:
     format: text
     type: http
   telegram:
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/telegramcidr.txt
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.yaml
     path: ./ruleset/telegram.yaml
     behavior: ipcidr
     interval: 86400
-    format: text
+    format: yaml
     type: http
   cn_domain:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.yaml
