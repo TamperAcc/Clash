@@ -12,6 +12,9 @@ icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # 当域名解析出多个IP时，同时发起连接取最快响应
 tcp-concurrent: true
 
+# 模拟浏览器指纹 (帮助通过部分防火墙检测)
+global-client-fingerprint: chrome
+
 # 2. DNS 设置
 # Stash 采用并发查询机制(Concurrent)
 dns:
@@ -36,6 +39,24 @@ dns:
     - "+.xboxlive.com"
     - "+.msftconnecttest.com"
     - "+.msftncsi.com"
+  
+  # 分流解析策略 (特定域名使用特定DNS)
+  # 极大提升 Apple 服务和国内服务的响应速度/稳定性
+  nameserver-policy:
+    # Apple 服务强制走系统 DNS (解决 AppStore/iMessage 转圈问题)
+    '+.apple.com': 'system'
+    '+.icloud.com': 'system'
+    '+.mzstatic.com': 'system'
+    '+.id.apple.com': 'system'
+    '+.itunes.apple.com': 'system'
+    '+.apps.apple.com': 'system'
+    '+.crashlytics.com': 'system'
+    # 国内大厂域名指定国内 DNS (防止被并发查询到国外 DNS 导致 CDN 跑偏)
+    'geosite:cn': '119.29.29.29'
+    '+.bambulab.cn': '119.29.29.29'
+    '+.qq.com': '119.29.29.29'
+    '+.aliyun.com': '223.5.5.5'
+    '+.taobao.com': '223.5.5.5'
   
   # 强制替换原配置的 DNS
   nameserver: #!replace
@@ -90,10 +111,18 @@ script:
       backgroundColor: "#222222"
       # 内联脚本：查询 ip-api.com 获取 IP 信息
       script: |
+        function getFlagEmoji(countryCode) {
+            const codePoints = countryCode
+              .toUpperCase()
+              .split('')
+              .map(char =>  127397 + char.charCodeAt());
+            return String.fromCodePoint(...codePoints);
+        }
         $httpClient.get('http://ip-api.com/json/?lang=zh-CN', function(error, response, data){
             var res = JSON.parse(data);
+            var flag = getFlagEmoji(res.countryCode);
             $done({
-                title: "🌍 " + res.country + " · " + res.regionName,
+                title: flag + " " + res.country + " · " + res.regionName,
                 content: "IP: " + res.query + "\nISP: " + res.isp,
                 icon: "network",
                 backgroundColor: "#222222"
