@@ -486,7 +486,7 @@ rules: #!replace
   - DST-PORT,51413,DIRECT
 
   # 7. 规则集规则匹配
-  - DOMAIN-SUFFIX,github.com,全能优选 🚀
+  - DOMAIN-SUFFIX,github.com,AI 服务
   - RULE-SET,reject,REJECT
   - RULE-SET,games,游戏服务 🎮
   - RULE-SET,icloud,DIRECT

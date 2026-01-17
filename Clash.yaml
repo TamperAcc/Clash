@@ -411,7 +411,7 @@ rules:
   - DST-PORT,3478,DIRECT
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
-  - DOMAIN-SUFFIX,github.com,国外通用
+  - DOMAIN-SUFFIX,github.com,AI 服务
   # 🛠️ 新增：开发工具域名优化
   - DOMAIN-SUFFIX,stackoverflow.com,国外通用
   - DOMAIN-SUFFIX,stackexchange.com,国外通用
@@ -448,8 +448,8 @@ rules:
   - RULE-SET,social_media,国外通用
   - RULE-SET,telegram_domain,国外通用
   # 优化：GitHub资源服务器
-  - DOMAIN-SUFFIX,githubusercontent.com,国外通用
-  - DOMAIN-SUFFIX,github.io,国外通用
+  - DOMAIN-SUFFIX,githubusercontent.com,AI 服务
+  - DOMAIN-SUFFIX,github.io,AI 服务
   
   - RULE-SET,telegram,国外通用
   - RULE-SET,youtube_domain,YouTube
