@@ -3,8 +3,29 @@
 name: "Stash Professional"
 desc: "针对 iOS 深度优化的专业配置 (DoQ + MitM + AI分流 + 省电优化)"
 
-# 专为 iOS/macOS Stash 优化的 F覆写 (.stoverride) 文件
-# 不包含 tun/allow-lan 等基础字段，防止与主配置冲突
+# 基础设置 (已恢复完整功能)
+mixed-port: 7890
+allow-lan: true
+bind-address: '*'
+mode: rule
+log-level: info
+ipv6: false
+external-controller: 127.0.0.1:9090
+
+# Tun 模式 (已恢复)
+tun:
+  enable: true
+  stack: system
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack:
+    - any:53
+    - tcp://any:53
+
+# 配置文件持久化 (已恢复)
+profile:
+  store-selected: true
+  store-fake-ip: true
 
 # 进阶网络设置 (DNS/Sniffer)
 sniffer:
@@ -28,19 +49,15 @@ http:
     - "*.google.com.cn"
 
 # MitM & Rewrite (Stash 增强功能)
-# [重要] 首次使用请在 Stash App "配置列表 -> 覆写/MitM" 中生成并信任 CA 证书
-# 否则 Google 重写无法生效，且可能会导致 HTTPS 连接报错
 mitm:
   enable: true
   append-system-trust: true
-  # 优化：关闭跳过证书验证以提升安全性 (官方不推荐全局开启)
-  # skip-server-cert-verify: true
   hostname:
     - "*.google.cn"
     - "*.google.com.cn"
     - "www.google.com"
 
-# 重写规则：解决 Google CN 强制跳转问题
+# 重写规则
 rewrite:
   - match: ^https?://(www\.)?google\.cn
     replace: https://www.google.com
@@ -49,12 +66,9 @@ rewrite:
     replace: https://www.google.com
     type: 302
 
-# 脚本 (用于高级网络控制)
+# 脚本
 script:
   shortcuts:
-    # 强制禁用 QUIC/HTTP3 协议
-    # 目的：迫使 Google/YouTube 等服务回退到 TCP 协议
-    # 收益：1. 节省 CPU 解密 UDP 包的电量 2. TCP 在代理隧道中速度更稳定
     quic_block: network == 'udp' and dst_port == 443
 
 dns:
@@ -79,11 +93,9 @@ dns:
     - "*.bambulab.com"
     - "*.bambulab.cn"
   nameserver: #!replace
-    # 优化：仅保留 2 个最强 DNS 以降低系统功耗 (官方最佳实践)
     - 119.29.29.29
     - quic://dns.alidns.com:853
   fallback: #!replace
-    # 优化：使用备用 IP 和 TCP/DoT 协议，避开 1.1.1.1/8.8.8.8 的重灾区
     - https://1.0.0.1/dns-query
     - tcp://208.67.222.222:443
     - tls://8.8.4.4:853
@@ -236,15 +248,14 @@ rule-providers:
     format: yaml
     type: http
 
-# 分组设置
-proxy-groups:
+# 分组设置 (强制替换)
+proxy-groups: #!replace
   - name: 自动选择
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset"
     url: "https://www.gstatic.com/generate_204"
-    # 优化：延长间隔至 10 分钟，减少 iOS 后台唤醒和耗电
     interval: 600
     tolerance: 150
     unified-delay: true
@@ -271,7 +282,6 @@ proxy-groups:
     filter: "(?i)美国|日本|荷兰|新加坡|SG"
     exclude-filter: "(?i)圣何塞|HK|Hong|Kong|Traffic|Expire"
     url: "https://www.gstatic.com/generate_204"
-    # 优化：延长间隔至 10 分钟，减少 iOS 后台唤醒和耗电
     interval: 600
     tolerance: 150
     unified-delay: true
@@ -279,14 +289,14 @@ proxy-groups:
     health-check:
       enable: true
 
-  - name: 国内直连 🎯
+  - name: 国内
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
     proxies:
       - DIRECT
       - 自动选择
       - 负载均衡
-  - name: Google Search
+  - name: Google
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     proxies:
@@ -295,32 +305,32 @@ proxy-groups:
       - 负载均衡
       - DIRECT
 
-  - name: ChatGPT
+  - name: OpenAI
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     proxies:
       - AI自动优选
 
-  - name: Claude AI
+  - name: Claude
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     proxies:
       - AI自动优选
   
-  - name: Gemini AI
+  - name: Gemini
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     proxies:
       - AI自动优选
       - 自动选择
 
-  - name: Copilot AI
+  - name: Copilot
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Bing.png
     proxies:
       - AI自动优选
       - 自动选择
-  - name: 游戏服务 🎮
+  - name: 游戏服务
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png
     include-all: true
@@ -332,14 +342,14 @@ proxy-groups:
     lazy: true
     health-check:
       enable: true
-  - name: YouTube 4K
+  - name: YouTube
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
     proxies:
       - 自动选择
       - 负载均衡
       - AI自动优选
-  - name: 全能优选 🚀
+  - name: 国外通用
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
     proxies:
@@ -347,9 +357,9 @@ proxy-groups:
       - 负载均衡
       - AI自动优选
 
-# 规则设置
-rules:
-  # 脚本规则优先：阻断 QUIC 流量
+# 规则设置 (强制替换)
+rules: #!replace
+  # 脚本规则优先
   - SCRIPT,quic_block,REJECT
 
   - GEOIP,PRIVATE,DIRECT,no-resolve
@@ -358,13 +368,12 @@ rules:
   - DOMAIN-SUFFIX,local,DIRECT
   - DOMAIN-SUFFIX,home.arpa,DIRECT
   
-  # macOS 常用软件 (注意：iOS 系统不支持进程匹配，以下规则在 iPhone 上会自动忽略)
-  - PROCESS-NAME,BambuStudio,国内直连 🎯
+  # macOS 常用软件
+  - PROCESS-NAME,BambuStudio,国内
   - PROCESS-NAME,WeChat,DIRECT
   - PROCESS-NAME,QQ,DIRECT
   - PROCESS-NAME,Thunder,DIRECT
   - PROCESS-NAME,Baichuan,DIRECT
-  # 保留 BaiduNetdisk 等可能的进程名
   
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
   - DOMAIN,ipv6.msftncsi.com,REJECT
@@ -374,24 +383,24 @@ rules:
   # 测速
   - DOMAIN-SUFFIX,speedtest.net,DIRECT
   - DOMAIN-SUFFIX,ookla.com,DIRECT
-  - DOMAIN-SUFFIX,fast.com,全能优选 🚀
+  - DOMAIN-SUFFIX,fast.com,国外通用
   - DST-PORT,123,DIRECT
   - DST-PORT,3478,DIRECT
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
-  - DOMAIN-SUFFIX,github.com,全能优选 🚀
+  - DOMAIN-SUFFIX,github.com,国外通用
   - RULE-SET,reject,REJECT
-  - RULE-SET,games,游戏服务 🎮
+  - RULE-SET,games,游戏服务
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
-  - RULE-SET,openai_classical,ChatGPT
-  - RULE-SET,claude_classical,Claude AI
-  - RULE-SET,gemini_classical,Gemini AI
+  - RULE-SET,openai_classical,OpenAI
+  - RULE-SET,claude_classical,Claude
+  - RULE-SET,gemini_classical,Gemini
   # 更新服务
   - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
   - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
-  - RULE-SET,copilot_classical,Copilot AI
+  - RULE-SET,copilot_classical,Copilot
   - RULE-SET,huggingface,负载均衡
   - RULE-SET,microsoft,自动选择
   # 游戏下载
@@ -400,23 +409,23 @@ rules:
   - DOMAIN-SUFFIX,steamstatic.com,DIRECT
   - DOMAIN-SUFFIX,epicgames.com,DIRECT
   # Bambu Lab
-  - DOMAIN-SUFFIX,bambulab.com,国内直连 🎯
-  - DOMAIN-SUFFIX,bambulab.cn,国内直连 🎯
-  - DOMAIN-SUFFIX,bambulab.co,国内直连 🎯
+  - DOMAIN-SUFFIX,bambulab.com,国内
+  - DOMAIN-SUFFIX,bambulab.cn,国内
+  - DOMAIN-SUFFIX,bambulab.co,国内
   # 社交
-  - RULE-SET,twitter,全能优选 🚀
-  - RULE-SET,facebook,全能优选 🚀
-  - RULE-SET,telegram_domain,全能优选 🚀
+  - RULE-SET,twitter,国外通用
+  - RULE-SET,facebook,国外通用
+  - RULE-SET,telegram_domain,国外通用
   # GitHub资源
-  - DOMAIN-SUFFIX,githubusercontent.com,全能优选 🚀
-  - DOMAIN-SUFFIX,github.io,全能优选 🚀
+  - DOMAIN-SUFFIX,githubusercontent.com,国外通用
+  - DOMAIN-SUFFIX,github.io,国外通用
   
-  - RULE-SET,telegram,全能优选 🚀
-  - RULE-SET,youtube_domain,YouTube 4K
-  - RULE-SET,google_domain,Google Search
-  - RULE-SET,cn_domain,国内直连 🎯
-  - RULE-SET,geolocation_no_cn,全能优选 🚀
-  - RULE-SET,google_ip,Google Search
-  - RULE-SET,cn_ip,国内直连 🎯
-  - GEOIP,CN,国内直连 🎯
-  - MATCH,全能优选 🚀
+  - RULE-SET,telegram,国外通用
+  - RULE-SET,youtube_domain,YouTube
+  - RULE-SET,google_domain,Google
+  - RULE-SET,cn_domain,国内
+  - RULE-SET,geolocation_no_cn,国外通用
+  - RULE-SET,google_ip,Google
+  - RULE-SET,cn_ip,国内
+  - GEOIP,CN,国内
+  - MATCH,国外通用
