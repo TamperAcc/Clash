@@ -1,4 +1,4 @@
-# Last Updated: 2026-01-17 [Stash Professional Override - Ultimate Edition]
+# Last Updated: 2026-01-18 [Stash Professional Override - Ultimate Edition]
 # Stash 元数据
 name: "Stash Professional Ultimate"
 desc: "iOS 终极版 | 0Classical | 3个Tile面板 | 隐私增强 | 流量监控 | 省电+60%"
@@ -11,6 +11,13 @@ icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # 1. TCP 并发优化 (Hyper Traffic 核心)
 # 当域名解析出多个IP时，同时发起连接取最快响应
 tcp-concurrent: true
+
+# 🚀 优化：使用国内加速镜像下载 GEO 数据库，减少 iOS 流量消耗并提升更新成功率
+geodata-mode: true
+geox-url:
+  geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb"
+  geosite: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
+  mmdb: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
 
 # 模拟浏览器指纹 (帮助通过部分防火墙检测)
 global-client-fingerprint: chrome
