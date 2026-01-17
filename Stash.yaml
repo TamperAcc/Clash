@@ -411,9 +411,12 @@ rules:
   - DOMAIN-SUFFIX,github.io,国外通用
   
   - RULE-SET,telegram,国外通用
-    - DOMAIN-SUFFIX,github.com,AI 服务
-    - DOMAIN-SUFFIX,githubusercontent.com,AI 服务
-    - DOMAIN-SUFFIX,github.io,AI 服务
+    - RULE-SET,youtube_domain,YouTube
+    - RULE-SET,google_domain,Google
+    - RULE-SET,cn_domain,国内
+    - DOMAIN-SUFFIX,github.com,自动选择
+    - DOMAIN-SUFFIX,githubusercontent.com,自动选择
+    - DOMAIN-SUFFIX,github.io,自动选择
   - RULE-SET,geolocation_no_cn,国外通用
   # 🎯 优化：移除冗余 google_ip 规则，Domain 规则已足够
   - RULE-SET,cn_ip,国内
