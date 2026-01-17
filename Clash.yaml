@@ -238,7 +238,7 @@ proxy-groups:
     health-check:
       enable: true
 
-  - name: AI自动优选
+  - name: AI 服务
     type: url-test
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
     include-all: true
@@ -264,37 +264,10 @@ proxy-groups:
     type: select
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
     proxies:
-      - AI自动优选
+      - AI 服务
       - 自动选择
       - 负载均衡
       - DIRECT
-
-  - name: OpenAI
-    type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
-    proxies:
-      - AI自动优选
-      # 移除自动选择，防止回退到香港节点导致Access Denied
-
-  - name: Claude
-    type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
-    proxies:
-      - AI自动优选
-  
-  - name: Gemini
-    type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
-    proxies:
-      - AI自动优选
-      - 自动选择
-
-  - name: Copilot
-    type: select
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Bing.png
-    proxies:
-      - AI自动优选
-      - 自动选择
   - name: 游戏服务
     type: url-test
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/GAME.png
