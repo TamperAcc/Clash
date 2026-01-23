@@ -266,7 +266,7 @@ proxy-groups:
     include-all: true
     exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://gemini.google.com"
-    interval: 600  # 优化：AI服务稳定性高，10分钟检测一次即可
+    interval: 300  # 修复：从 600s 缩短至 300s，在节点不稳定时更灵敏地切换
     tolerance: 100
     unified-delay: true
     lazy: true
@@ -368,6 +368,10 @@ rules:
   - DOMAIN-SUFFIX,github.com,AI自动优选
   - DOMAIN-SUFFIX,githubusercontent.com,AI自动优选
   - DOMAIN-SUFFIX,github.io,AI自动优选
+  # Copilot & Bing AI 补丁 (防止部分鉴权/API流量落入负载均衡)
+  - DOMAIN,sydney.bing.com,AI自动优选
+  - DOMAIN,edgeservices.bing.com,AI自动优选
+  - DOMAIN-SUFFIX,visualstudio.com,AI自动优选
 
   - RULE-SET,games,游戏服务
   - RULE-SET,icloud,DIRECT
