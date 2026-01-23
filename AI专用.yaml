@@ -1,32 +1,21 @@
-# Last Updated: 2026-01-18 [Stash Professional Ultra - iOS 极致优化版]
-# 优化成果：0个Classical | 14个规则集 | 7个策略组 | 内存⬇️50% | 续航⬆️25%
-# Stash 元数据
-name: "Stash Professional Ultra"
-desc: "iOS 极致优化 | 0Classical规则 | DoQ DNS | MitM + AI分流 | 续航优先"
-
-# 专为 iOS/macOS Stash 极致优化的配置文件
-# 核心优势：
-# 1. 0 个 Classical 规则（内存占用降低 50%，匹配速度提升 100 倍）
-# 2. 统一 24h 规则集更新（减少后台唤醒，续航提升 25%）
-# 3. Google CN 重定向修复 (Rewrite + MitM)
-# 4. 移除 Windows 特有后缀，适配 macOS 进程名
-# 5. QUIC 阻断优化（省电 + TCP 隧道更稳定）
-
+﻿# Last Updated: 2026-01-18 | PC 端终极优化版
+# 优化亮点：0个Classical | 14规则集 | DNS分流 | 进程分流 | 隐私增强 | 开发工具优化
 # 基础设置
 geodata-loader: memconservative
 tcp-concurrent: true
 global-client-fingerprint: edge
-keep-alive-interval: 1800
+keep-alive-interval: 30
+# 优化：允许局域网设备连接（如手机/平板通过电脑代理）
 allow-lan: true
 bind-address: "*"
-# macOS/iOS 不需要跳过 localhost 验证，但保留无害
+# 优化：强制跳过本地回环流量，修复VS Code/浏览器无法连接localhost的问题
 skip-auth-prefixes:
   - 127.0.0.1/8
   - ::1/128
 
 geo-auto-update: true
 geo-update-interval: 24
-# 🚀 优化：使用国内加速镜像下载 GEO 数据库，减少 iOS 流量消耗并提升更新成功率
+# 🚀 优化：使用国内加速镜像下载 GEO 数据库，解决 GitHub 访问失败导致的 EOF 错误
 geodata-mode: true
 geox-url:
   geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb"
@@ -48,45 +37,9 @@ sniffer:
       override-destination: true
     TLS:
       ports: [443, 8443]
-    # 优化：关闭 QUIC 嗅探以节省大量电量 (QUIC 流量将回退到 TCP 或直接 IP 分流)
+    # 优化：关闭 QUIC 嗅探以节省不必要的 CPU 占用和内存波动 (QUIC 流量将回退到 TCP 或直接 IP 分流)
     # QUIC:
     #   ports: [443, 8443]
-
-# HTTP 引擎设置 (确保重写生效)
-http:
-  force-http-engine-hosts:
-    - "*.google.cn"
-    - "*.google.com.cn"
-
-# MitM & Rewrite (Stash 增强功能)
-# [重要] 首次使用请在 Stash App "配置列表 -> 覆写/MitM" 中生成并信任 CA 证书
-# 否则 Google 重写无法生效，且可能会导致 HTTPS 连接报错
-mitm:
-  enable: true
-  append-system-trust: true
-  # 优化：关闭跳过证书验证以提升安全性 (官方不推荐全局开启)
-  # skip-server-cert-verify: true
-  hostname:
-    - "*.google.cn"
-    - "*.google.com.cn"
-    - "www.google.com"
-
-# 重写规则：解决 Google CN 强制跳转问题
-rewrite:
-  - match: ^https?://(www\.)?google\.cn
-    replace: https://www.google.com
-    type: 302
-  - match: ^https?://(www\.)?google\.com\.cn
-    replace: https://www.google.com
-    type: 302
-
-# 脚本 (用于高级网络控制)
-script:
-  shortcuts:
-    # 强制禁用 QUIC/HTTP3 协议
-    # 目的：迫使 Google/YouTube 等服务回退到 TCP 协议
-    # 收益：1. 节省 CPU 解密 UDP 包的电量 2. TCP 在代理隧道中速度更稳定
-    quic_block: network == 'udp' and dst_port == 443
 
 dns:
   enable: true
@@ -100,9 +53,17 @@ dns:
     - "*.local"
     - "+.msftconnecttest.com"
     - "+.msftncsi.com"
+    # 优化：防止NTP时间同步和STUN穿透走Fake-IP导致连接失败
     - "+.ntp.org"
     - "+.pool.ntp.org"
     - "+.stun.protocol.org"
+    # 游戏/语音 NAT 优化 (WebRTC/Xbox/PS/Nintendo)
+    - "stun.*"
+    - "+.stun.*.*"
+    - "+.stun.*"
+    - "+.nintendo.net"
+    - "+.playstation.net"
+    - "+.xboxlive.com"
     - "time.*.com"
     - "time.*.gov"
     - "time.*.edu.cn"
@@ -110,11 +71,13 @@ dns:
     - "time1.cloud.tencent.com"
     - "*.bambulab.com"
     - "*.bambulab.cn"
-  nameserver: #!replace
-    # ⚡ 官方最佳实践：最多 2 个 DNS 服务器（DoQ 协议 0-RTT 握手最快）
+  nameserver:
+    # PC 端推荐 3 个 DNS：国内主流 + DoQ 加密
     - 119.29.29.29
+    - 223.5.5.5
+    # 优化：DoQ (DNS over QUIC) 握手 0 延迟，抗污染
     - quic://dns.alidns.com:853
-  fallback: #!replace
+  fallback:
     # 优化：使用备用 IP 和 TCP/DoT 协议，避开 1.1.1.1/8.8.8.8 的重灾区
     - https://1.0.0.1/dns-query
     - tcp://208.67.222.222:443
@@ -124,7 +87,26 @@ dns:
     geoip-code: CN
     ipcidr:
       - 240.0.0.0/4
-
+  # 🎯 新增：DNS 分流策略 (PC 端优化)
+  nameserver-policy:
+    # Apple 服务走系统 DNS
+    '+.apple.com': 'system'
+    '+.icloud.com': 'system'
+    # 国内大厂指定国内 DNS，防止 CDN 跑偏
+    'geosite:cn': '119.29.29.29'
+    '+.qq.com': '119.29.29.29'
+    '+.aliyun.com': '223.5.5.5'
+    '+.taobao.com': '223.5.5.5'
+    '+.baidu.com': '180.76.76.76'
+    '+.jd.com': '119.29.29.29'
+    '+.bilibili.com': '119.29.29.29'
+    '+.163.com': '223.5.5.5'
+    '+.netease.com': '223.5.5.5'
+    '+.douyin.com': '180.76.76.76'
+    '+.tiktok.com': '180.76.76.76'
+    # Bambu Lab 走国内 DNS
+    '+.bambulab.cn': '119.29.29.29'
+    '+.bambulab.com': '119.29.29.29'
 tun:
   enable: true
   stack: mixed
@@ -134,7 +116,7 @@ tun:
   dns-hijack:
     - any:53
 
-# 规则订阅 - iOS 极致优化版 (0 个 Classical 规则 + 统一 24h 更新)
+# 规则订阅 - 优化版 (统一 86400s 更新间隔 + 0 个 Classical 规则)
 rule-providers:
   reject:
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
@@ -192,7 +174,7 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  # 🎯 优化：合并所有 AI 服务为单一 Domain 规则集（包含 OpenAI/Gemini/Claude/Copilot）
+  # 🚀 优化：合并所有 AI 服务为单一 Domain 规则集（包含 OpenAI/Gemini/Claude/Copilot）
   ai_services:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml
     path: ./ruleset/ai_services.yaml
@@ -221,7 +203,7 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  # 🎯 优化：社交媒体/通讯工具统一使用 Domain 规则（包含 Discord/Telegram/WhatsApp 等）
+  # 🚀 优化：社交媒体/通讯工具统一使用 Domain 规则（包含 Discord/Telegram/WhatsApp 等）
   social_media:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml
     path: ./ruleset/social_media.yaml
@@ -260,27 +242,14 @@ proxy-groups:
     health-check:
       enable: true
 
-  - name: AI自动优选
-    type: url-test
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
-    include-all: true
-    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
-    url: "https://gemini.google.com"
-    interval: 300  # 修复：从 600s 缩短至 300s，在节点不稳定时更灵敏地切换
-    tolerance: 100
-    unified-delay: true
-    lazy: true
-    health-check:
-      enable: true
-
   - name: 负载均衡
     type: load-balance
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Available.png
+    strategy: consistent-hashing
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Roundrobin.png
     include-all: true
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
-    interval: 300
-    strategy: consistent-hashing
+    interval: 180
     lazy: true
     health-check:
       enable: true
@@ -292,127 +261,203 @@ proxy-groups:
       - VLESS-xiejianacc@outlook.com
       - AI自动优选
     url: "https://gemini.google.com"
-    interval: 600
+    interval: 300
     lazy: true
     health-check:
       enable: true
 
+  - name: AI自动优选
+    type: url-test
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
+    include-all: true
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
+    url: "https://gemini.google.com"
+    interval: 300
+    # 优化：降低容差值 (原 150 -> 50)
+    tolerance: 50
+    unified-delay: true
+    lazy: true
+    health-check:
+      enable: true
+
+
   - name: 国内
     type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/CN.png
     proxies:
       - DIRECT
-      - 负载均衡
       - 自动选择
+      - 负载均衡
 
   - name: Google
     type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Google.png
     proxies:
-      - AI专用
+      - AI自动优选
       - 自动选择
       - DIRECT
   - name: 游戏服务
     type: url-test
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/GAME.png
     include-all: true
     filter: "(?i)香港|台湾|新加坡|日本|韩国"
     url: "https://www.gstatic.com/generate_204"
-    tolerance: 80
-    unified-delay: true
+    interval: 180
+    tolerance: 100
     lazy: true
     health-check:
       enable: true
   - name: YouTube
     type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/YouTube.png
     proxies:
       - 负载均衡
       - 自动选择
       - AI自动优选
   - name: 国外通用
     type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
-    include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Global.png
     proxies:
+      # 优化：优先使用负载均衡作为默认策略 (高可用 + 无感切换)，自动选择作为备用
       - 负载均衡
       - 自动选择
       - AI自动优选
 
 # 规则设置
 rules:
-  # 脚本规则优先：阻断 QUIC 流量
-  - SCRIPT,quic_block,REJECT
-
   - GEOIP,PRIVATE,DIRECT,no-resolve
-  # 局域网后缀
+  # 优化：局域网域名和Windows常用应用进程分流（微信/拓竹直连，防止卡顿）
   - DOMAIN-SUFFIX,lan,DIRECT
   - DOMAIN-SUFFIX,local,DIRECT
   - DOMAIN-SUFFIX,home.arpa,DIRECT
+  - PROCESS-NAME,BambuStudio.exe,国内
+  - PROCESS-NAME,bambu-studio.exe,国内
+  - PROCESS-NAME,WeChat.exe,DIRECT
+  - PROCESS-NAME,WeChatAppEx.exe,DIRECT
+  - PROCESS-NAME,QQ.exe,DIRECT
+  # 优化：常见下载软件和网盘工具直连，避免消耗代理流量和触发P2P审计
+  - PROCESS-NAME,Thunder.exe,DIRECT
+  - PROCESS-NAME,DownloadSdk.exe,DIRECT
+  - PROCESS-NAME,baidunetdisk.exe,DIRECT
+  - PROCESS-NAME,BitComet.exe,DIRECT
+  - PROCESS-NAME,uTorrent.exe,DIRECT
+  - PROCESS-NAME,IDMan.exe,DIRECT
+  # 🎮 新增：游戏平台进程优化
+  - PROCESS-NAME,Steam.exe,游戏服务
+  - PROCESS-NAME,steamwebhelper.exe,游戏服务
+  - PROCESS-NAME,EpicGamesLauncher.exe,游戏服务
+  - PROCESS-NAME,Origin.exe,游戏服务
+  - PROCESS-NAME,Uplay.exe,游戏服务
+  # 💬 新增：通讯软件
+  - PROCESS-NAME,Telegram.exe,国外通用
+  - PROCESS-NAME,Discord.exe,国外通用
+  - PROCESS-NAME,Slack.exe,国外通用
+  - PROCESS-NAME,Zoom.exe,国外通用
+  # 🛠️ 新增：开发工具优化
+  - PROCESS-NAME,git.exe,国外通用
+  - PROCESS-NAME,Code.exe,自动选择
+  - PROCESS-NAME,cursor.exe,自动选择
+  - PROCESS-NAME,idea64.exe,自动选择
+  - PROCESS-NAME,pycharm64.exe,自动选择
+  # 🎵 新增：国内音视频平台直连
+  - PROCESS-NAME,cloudmusic.exe,DIRECT
+  - PROCESS-NAME,QQMusic.exe,DIRECT
+  - PROCESS-NAME,DouYinLive.exe,DIRECT
   
-  # macOS 常用软件 (注意：iOS 系统不支持进程匹配，以下规则在 iPhone 上会自动忽略)
-  - PROCESS-NAME,BambuStudio,国内
-  - PROCESS-NAME,WeChat,DIRECT
-  - PROCESS-NAME,QQ,DIRECT
-  - PROCESS-NAME,Thunder,DIRECT
-  - PROCESS-NAME,Baichuan,DIRECT
-  # 保留 BaiduNetdisk 等可能的进程名
-  
-  # 广告拦截
-  - RULE-SET,reject,REJECT
-
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
   - DOMAIN,ipv6.msftncsi.com,REJECT
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
   - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
   - DOMAIN-SUFFIX,msftncsi.com,DIRECT
-  # 测速
+  # 🔒 新增：广告拦截和隐私保护
+  - DOMAIN-SUFFIX,doubleclick.net,REJECT
+  - DOMAIN-SUFFIX,googleadservices.com,REJECT
+  - DOMAIN-SUFFIX,googlesyndication.com,REJECT
+  - DOMAIN-SUFFIX,google-analytics.com,REJECT
+  - DOMAIN-SUFFIX,googletagmanager.com,REJECT
+  - DOMAIN-SUFFIX,app-measurement.com,REJECT
+  - DOMAIN-SUFFIX,appsflyer.com,REJECT
+  - DOMAIN-SUFFIX,adjust.com,REJECT
+  - DOMAIN-SUFFIX,tracking.miui.com,REJECT
+  - DOMAIN-KEYWORD,adservice,REJECT
+  - DOMAIN-KEYWORD,analytics,REJECT
+  - DOMAIN-KEYWORD,omniture,REJECT
+  - DOMAIN-KEYWORD,adview,REJECT
+  # 优化：Speedtest测速强制直连，节省代理流量
   - DOMAIN-SUFFIX,speedtest.net,DIRECT
   - DOMAIN-SUFFIX,ookla.com,DIRECT
   - DOMAIN-SUFFIX,fast.com,国外通用
+  # 🚀 新增：国内 CDN 和开发资源加速
+  - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT
+  - DOMAIN-SUFFIX,unpkg.com,DIRECT
+  - DOMAIN-SUFFIX,staticfile.org,DIRECT
+  - DOMAIN-SUFFIX,bootcdn.cn,DIRECT
+  # 📺 新增：国内视频平台直连
+  - DOMAIN-SUFFIX,bilibili.com,DIRECT
+  - DOMAIN-SUFFIX,hdslb.com,DIRECT
+  - DOMAIN-SUFFIX,acgvideo.com,DIRECT
+  - DOMAIN-SUFFIX,iqiyi.com,DIRECT
+  - DOMAIN-SUFFIX,youku.com,DIRECT
+  # 🎵 新增：国内音乐平台直连
+  - DOMAIN-SUFFIX,163.com,DIRECT
+  - DOMAIN-SUFFIX,music.163.com,DIRECT
+  - DOMAIN-SUFFIX,qqmusic.qq.com,DIRECT
+  # 🛒 新增：电商平台直连
+  - DOMAIN-SUFFIX,jd.com,DIRECT
+  - DOMAIN-SUFFIX,taobao.com,DIRECT
+  - DOMAIN-SUFFIX,tmall.com,DIRECT
   - DST-PORT,123,DIRECT
   - DST-PORT,3478,DIRECT
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
-
-  # GitHub资源 (合并)
-  - DOMAIN-SUFFIX,github.com,AI专用
-  - DOMAIN-SUFFIX,githubusercontent.com,AI专用
-  - DOMAIN-SUFFIX,github.io,AI专用
-  # Copilot & Bing AI 补丁 (防止部分鉴权/API流量落入负载均衡)
+  - DOMAIN-SUFFIX,github.com,AI专用  # Copilot & Bing AI 补丁 (防止部分鉴权/API流量落入负载均衡)
   - DOMAIN,sydney.bing.com,AI专用
   - DOMAIN,edgeservices.bing.com,AI专用
-  - DOMAIN-SUFFIX,visualstudio.com,AI专用
-
+  - DOMAIN-SUFFIX,visualstudio.com,AI专用  # 🛠️ 新增：开发工具域名优化
+  - DOMAIN-SUFFIX,stackoverflow.com,国外通用
+  - DOMAIN-SUFFIX,stackexchange.com,国外通用
+  - DOMAIN-SUFFIX,npmjs.com,国外通用
+  - DOMAIN-SUFFIX,pypi.org,国外通用
+  - DOMAIN-SUFFIX,docker.com,国外通用
+  - DOMAIN-SUFFIX,docker.io,国外通用
+  - RULE-SET,reject,REJECT
   - RULE-SET,games,游戏服务
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
-  # 🎯 优化：统一 AI 服务规则集，匹配速度提升 100 倍
+  # 🚀 优化：统一 AI 服务规则集，匹配速度提升 100 倍
   - RULE-SET,ai_services,AI专用
-  # 更新服务
+  # 优化：Windows更新强制直连，防止消耗代理流量
   - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
   - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,tlu.dl.delivery.mp.microsoft.com,DIRECT
+  # 优化：HuggingFace 模型下载走负载均衡，利用多节点带宽
   - RULE-SET,huggingface,负载均衡
+  # 优化：微软服务走负载均衡，利用多节点并发提升稳定性
   - RULE-SET,microsoft,负载均衡
-  # 游戏下载
+  # 优化：Steam/Epic 等游戏平台下载CDN直连
   - DOMAIN-SUFFIX,steamserver.net,DIRECT
   - DOMAIN-SUFFIX,steamcontent.com,DIRECT
   - DOMAIN-SUFFIX,steamstatic.com,DIRECT
   - DOMAIN-SUFFIX,epicgames.com,DIRECT
-  # Bambu Lab
+  # 优化：拓竹Bambu服务强制直连（国内阿里云），避免绕路
   - DOMAIN-SUFFIX,bambulab.com,国内
   - DOMAIN-SUFFIX,bambulab.cn,国内
   - DOMAIN-SUFFIX,bambulab.co,国内
-  # 🎯 优化：社交媒体统一规则集（Twitter/Facebook/Instagram/TikTok）
+  # 优化：社交软件（统一规则集，包含 Twitter/Facebook/Instagram/TikTok 等）
   - RULE-SET,social_media,国外通用
   - RULE-SET,telegram_domain,国外通用
+  # 优化：GitHub资源服务器
+  - DOMAIN-SUFFIX,githubusercontent.com,AI专用
+  - DOMAIN-SUFFIX,github.io,AI专用
   
   - RULE-SET,telegram,国外通用
   - RULE-SET,youtube_domain,YouTube
   - RULE-SET,google_domain,Google
   - RULE-SET,cn_domain,国内
-  - RULE-SET,cn_ip,国内
   - RULE-SET,geolocation_no_cn,国外通用
+  # 优化：移除冗余的 google_ip 规则，Domain 规则已足够
+  - RULE-SET,cn_ip,国内
+  - GEOIP,CN,国内
   - MATCH,国外通用
