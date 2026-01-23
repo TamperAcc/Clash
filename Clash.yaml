@@ -398,8 +398,10 @@ rules:
   - DST-PORT,3478,DIRECT
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
-  - DOMAIN-SUFFIX,github.com,AI自动优选
-  # 🛠️ 新增：开发工具域名优化
+  - DOMAIN-SUFFIX,github.com,AI自动优选  # Copilot & Bing AI 补丁 (防止部分鉴权/API流量落入负载均衡)
+  - DOMAIN,sydney.bing.com,AI自动优选
+  - DOMAIN,edgeservices.bing.com,AI自动优选
+  - DOMAIN-SUFFIX,visualstudio.com,AI自动优选  # 🛠️ 新增：开发工具域名优化
   - DOMAIN-SUFFIX,stackoverflow.com,国外通用
   - DOMAIN-SUFFIX,stackexchange.com,国外通用
   - DOMAIN-SUFFIX,npmjs.com,国外通用
