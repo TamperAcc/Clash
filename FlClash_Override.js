@@ -1,4 +1,6 @@
 // FLClash / Mihomo Party 配置文件覆写脚本
+// 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/FlClash_Override.js
+// 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/FlClash_Override.js
 // 版本: v1.6 (自动更新版) | 更新日期: 2026-01-24
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
