@@ -320,53 +320,148 @@ proxy-groups:
       - 自动选择
       - AI自动优选
 
-# 规则设置
+# 规则设置 (注意先后顺序：从上到下匹配，匹配即停止)
 rules:
+  # --------------------------------------------------------------------------
+  # 1. 基础网络规则 (局域网、特殊IP等)
+  # --------------------------------------------------------------------------
   - GEOIP,PRIVATE,DIRECT,no-resolve
-  # 优化：局域网域名和Windows常用应用进程分流（微信/拓竹直连，防止卡顿）
   - DOMAIN-SUFFIX,lan,DIRECT
   - DOMAIN-SUFFIX,local,DIRECT
   - DOMAIN-SUFFIX,home.arpa,DIRECT
-  - PROCESS-NAME,BambuStudio.exe,国内
-  - PROCESS-NAME,bambu-studio.exe,国内
+  - DOMAIN,ipv6.msftconnecttest.com,REJECT
+  - DOMAIN,ipv6.msftncsi.com,REJECT
+  - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
+  - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
+  - DOMAIN-SUFFIX,msftncsi.com,DIRECT
+  - RULE-SET,reject,REJECT
+
+  # --------------------------------------------------------------------------
+  # 2. 进程级分流 (PROCESS-NAME)
+  # --------------------------------------------------------------------------
+  # 通讯与办公
   - PROCESS-NAME,WeChat.exe,DIRECT
   - PROCESS-NAME,WeChatAppEx.exe,DIRECT
   - PROCESS-NAME,QQ.exe,DIRECT
-  # 优化：常见下载软件和网盘工具直连，避免消耗代理流量和触发P2P审计
+  - PROCESS-NAME,Telegram.exe,国外通用
+  - PROCESS-NAME,Discord.exe,国外通用
+  - PROCESS-NAME,Slack.exe,国外通用
+  - PROCESS-NAME,Zoom.exe,国外通用
+  
+  # 生产力工具
+  - PROCESS-NAME,BambuStudio.exe,国内
+  - PROCESS-NAME,bambu-studio.exe,国内
+  
+  # 下载工具 (P2P/网盘)
   - PROCESS-NAME,Thunder.exe,DIRECT
   - PROCESS-NAME,DownloadSdk.exe,DIRECT
   - PROCESS-NAME,baidunetdisk.exe,DIRECT
   - PROCESS-NAME,BitComet.exe,DIRECT
   - PROCESS-NAME,uTorrent.exe,DIRECT
   - PROCESS-NAME,IDMan.exe,DIRECT
-  # 🎮 新增：游戏平台进程优化
-  - PROCESS-NAME,Steam.exe,游戏服务
-  - PROCESS-NAME,steamwebhelper.exe,游戏服务
-  - PROCESS-NAME,EpicGamesLauncher.exe,游戏服务
-  - PROCESS-NAME,Origin.exe,游戏服务
-  - PROCESS-NAME,Uplay.exe,游戏服务
-  # 💬 新增：通讯软件
-  - PROCESS-NAME,Telegram.exe,国外通用
-  - PROCESS-NAME,Discord.exe,国外通用
-  - PROCESS-NAME,Slack.exe,国外通用
-  - PROCESS-NAME,Zoom.exe,国外通用
-  # 🛠️ 新增：开发工具优化
+
+  # 开发工具
   - PROCESS-NAME,git.exe,国外通用
   - PROCESS-NAME,Code.exe,自动选择
   - PROCESS-NAME,cursor.exe,自动选择
   - PROCESS-NAME,idea64.exe,自动选择
   - PROCESS-NAME,pycharm64.exe,自动选择
-  # 🎵 新增：国内音视频平台直连
+
+  # 游戏平台
+  - PROCESS-NAME,Steam.exe,游戏服务
+  - PROCESS-NAME,steamwebhelper.exe,游戏服务
+  - PROCESS-NAME,EpicGamesLauncher.exe,游戏服务
+  - PROCESS-NAME,Origin.exe,游戏服务
+  - PROCESS-NAME,Uplay.exe,游戏服务
+
+  # 娱乐媒体
   - PROCESS-NAME,cloudmusic.exe,DIRECT
   - PROCESS-NAME,QQMusic.exe,DIRECT
   - PROCESS-NAME,DouYinLive.exe,DIRECT
+
+  # --------------------------------------------------------------------------
+  # 3. AI 核心服务 (高优先级)
+  # --------------------------------------------------------------------------
+  # GitHub Copilot & OpenAI & Claude 等
+  - DOMAIN,copilot-proxy.githubusercontent.com,AI专用
+  - DOMAIN,api.github.com,AI专用
+  - DOMAIN-SUFFIX,githubcopilot.com,AI专用
+  - DOMAIN-SUFFIX,github.com,AI专用
+  - DOMAIN-SUFFIX,githubusercontent.com,AI专用
+  - DOMAIN-SUFFIX,github.io,AI专用
+  - DOMAIN-SUFFIX,visualstudio.com,AI专用
+  - DOMAIN,sydney.bing.com,AI专用
+  - DOMAIN,edgeservices.bing.com,AI专用
+  - RULE-SET,ai_services,AI专用
+  - RULE-SET,huggingface,负载均衡
+
+  # --------------------------------------------------------------------------
+  # 4. 国内直连优化 (各大厂、视频、电商)
+  # --------------------------------------------------------------------------
+  # 国内资源加速 (CDN/NPM)
+  - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT
+  - DOMAIN-SUFFIX,unpkg.com,DIRECT
+  - DOMAIN-SUFFIX,staticfile.org,DIRECT
+  - DOMAIN-SUFFIX,bootcdn.cn,DIRECT
   
-  - DOMAIN,ipv6.msftconnecttest.com,REJECT
-  - DOMAIN,ipv6.msftncsi.com,REJECT
-  - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
-  - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
-  - DOMAIN-SUFFIX,msftncsi.com,DIRECT
-  # 🔒 新增：广告拦截和隐私保护
+  # 视频/音乐/电商
+  - DOMAIN-SUFFIX,bilibili.com,DIRECT
+  - DOMAIN-SUFFIX,hdslb.com,DIRECT
+  - DOMAIN-SUFFIX,acgvideo.com,DIRECT
+  - DOMAIN-SUFFIX,iqiyi.com,DIRECT
+  - DOMAIN-SUFFIX,youku.com,DIRECT
+  - DOMAIN-SUFFIX,163.com,DIRECT
+  - DOMAIN-SUFFIX,music.163.com,DIRECT
+  - DOMAIN-SUFFIX,qqmusic.qq.com,DIRECT
+  - DOMAIN-SUFFIX,jd.com,DIRECT
+  - DOMAIN-SUFFIX,taobao.com,DIRECT
+  - DOMAIN-SUFFIX,tmall.com,DIRECT
+
+  # --------------------------------------------------------------------------
+  # 5. 特定服务优化 (开发、微软、苹果、游戏)
+  # --------------------------------------------------------------------------
+  # 开发社区
+  - DOMAIN-SUFFIX,stackoverflow.com,国外通用
+  - DOMAIN-SUFFIX,stackexchange.com,国外通用
+  - DOMAIN-SUFFIX,npmjs.com,国外通用
+  - DOMAIN-SUFFIX,pypi.org,国外通用
+  - DOMAIN-SUFFIX,docker.com,国外通用
+  - DOMAIN-SUFFIX,docker.io,国外通用
+
+  # 微软服务
+  - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
+  - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,tlu.dl.delivery.mp.microsoft.com,DIRECT
+  - RULE-SET,microsoft,负载均衡
+
+  # 苹果服务
+  - RULE-SET,icloud,DIRECT
+  - RULE-SET,apple,DIRECT
+
+  # 游戏下载加速
+  - DOMAIN-SUFFIX,steamserver.net,DIRECT
+  - DOMAIN-SUFFIX,steamcontent.com,DIRECT
+  - DOMAIN-SUFFIX,steamstatic.com,DIRECT
+  - DOMAIN-SUFFIX,epicgames.com,DIRECT
+  - RULE-SET,games,游戏服务
+
+  # Bambu Lab
+  - DOMAIN-SUFFIX,bambulab.com,国内
+  - DOMAIN-SUFFIX,bambulab.cn,国内
+  - DOMAIN-SUFFIX,bambulab.co,国内
+
+  # 社交媒体
+  - RULE-SET,social_media,国外通用
+  - RULE-SET,telegram_domain,国外通用
+  - RULE-SET,telegram,国外通用
+  - RULE-SET,youtube_domain,YouTube
+
+  # --------------------------------------------------------------------------
+  # 6. 通用兜底规则
+  # --------------------------------------------------------------------------
+  # 隐私保护
   - DOMAIN-SUFFIX,doubleclick.net,REJECT
   - DOMAIN-SUFFIX,googleadservices.com,REJECT
   - DOMAIN-SUFFIX,googlesyndication.com,REJECT
@@ -380,85 +475,22 @@ rules:
   - DOMAIN-KEYWORD,analytics,REJECT
   - DOMAIN-KEYWORD,omniture,REJECT
   - DOMAIN-KEYWORD,adview,REJECT
-  # 优化：Speedtest测速强制直连，节省代理流量
+  
+  # 测速
   - DOMAIN-SUFFIX,speedtest.net,DIRECT
   - DOMAIN-SUFFIX,ookla.com,DIRECT
   - DOMAIN-SUFFIX,fast.com,国外通用
-  # 🚀 新增：国内 CDN 和开发资源加速
-  - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT
-  - DOMAIN-SUFFIX,unpkg.com,DIRECT
-  - DOMAIN-SUFFIX,staticfile.org,DIRECT
-  - DOMAIN-SUFFIX,bootcdn.cn,DIRECT
-  # 📺 新增：国内视频平台直连
-  - DOMAIN-SUFFIX,bilibili.com,DIRECT
-  - DOMAIN-SUFFIX,hdslb.com,DIRECT
-  - DOMAIN-SUFFIX,acgvideo.com,DIRECT
-  - DOMAIN-SUFFIX,iqiyi.com,DIRECT
-  - DOMAIN-SUFFIX,youku.com,DIRECT
-  # 🎵 新增：国内音乐平台直连
-  - DOMAIN-SUFFIX,163.com,DIRECT
-  - DOMAIN-SUFFIX,music.163.com,DIRECT
-  - DOMAIN-SUFFIX,qqmusic.qq.com,DIRECT
-  # 🛒 新增：电商平台直连
-  - DOMAIN-SUFFIX,jd.com,DIRECT
-  - DOMAIN-SUFFIX,taobao.com,DIRECT
-  - DOMAIN-SUFFIX,tmall.com,DIRECT
+
+  # 端口直连 (BT/NTP)
   - DST-PORT,123,DIRECT
   - DST-PORT,3478,DIRECT
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
-  # GitHub & Copilot (AI 核心服务)
-  - DOMAIN,copilot-proxy.githubusercontent.com,AI专用
-  - DOMAIN,api.github.com,AI专用
-  - DOMAIN-SUFFIX,githubcopilot.com,AI专用
-  - DOMAIN-SUFFIX,github.com,AI专用
-  - DOMAIN-SUFFIX,githubusercontent.com,AI专用
-  - DOMAIN-SUFFIX,github.io,AI专用
-  - DOMAIN-SUFFIX,visualstudio.com,AI专用
-  - DOMAIN,sydney.bing.com,AI专用
-  - DOMAIN,edgeservices.bing.com,AI专用
-  
-  - DOMAIN-SUFFIX,stackoverflow.com,国外通用
-  - DOMAIN-SUFFIX,stackexchange.com,国外通用
-  - DOMAIN-SUFFIX,npmjs.com,国外通用
-  - DOMAIN-SUFFIX,pypi.org,国外通用
-  - DOMAIN-SUFFIX,docker.com,国外通用
-  - DOMAIN-SUFFIX,docker.io,国外通用
-  - RULE-SET,reject,REJECT
-  - RULE-SET,games,游戏服务
-  - RULE-SET,icloud,DIRECT
-  - RULE-SET,apple,DIRECT
-  # 🚀 优化：统一 AI 服务规则集，匹配速度提升 100 倍
-  - RULE-SET,ai_services,AI专用
-  # 优化：Windows更新强制直连，防止消耗代理流量
-  - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
-  - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
-  - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
-  - DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT
-  - DOMAIN-SUFFIX,tlu.dl.delivery.mp.microsoft.com,DIRECT
-  # 优化：HuggingFace 模型下载走负载均衡，利用多节点带宽
-  - RULE-SET,huggingface,负载均衡
-  # 优化：微软服务走负载均衡，利用多节点并发提升稳定性
-  - RULE-SET,microsoft,负载均衡
-  # 优化：Steam/Epic 等游戏平台下载CDN直连
-  - DOMAIN-SUFFIX,steamserver.net,DIRECT
-  - DOMAIN-SUFFIX,steamcontent.com,DIRECT
-  - DOMAIN-SUFFIX,steamstatic.com,DIRECT
-  - DOMAIN-SUFFIX,epicgames.com,DIRECT
-  # 优化：拓竹Bambu服务强制直连（国内阿里云），避免绕路
-  - DOMAIN-SUFFIX,bambulab.com,国内
-  - DOMAIN-SUFFIX,bambulab.cn,国内
-  - DOMAIN-SUFFIX,bambulab.co,国内
-  # 优化：社交软件（统一规则集，包含 Twitter/Facebook/Instagram/TikTok 等）
-  - RULE-SET,social_media,国外通用
-  - RULE-SET,telegram_domain,国外通用
-  
-  - RULE-SET,telegram,国外通用
-  - RULE-SET,youtube_domain,YouTube
+
+  # 兜底匹配
   - RULE-SET,google_domain,Google
   - RULE-SET,cn_domain,国内
-  - RULE-SET,geolocation_no_cn,国外通用
-  # 优化：移除冗余的 google_ip 规则，Domain 规则已足够
   - RULE-SET,cn_ip,国内
+  - RULE-SET,geolocation_no_cn,国外通用
   - GEOIP,CN,国内
   - MATCH,国外通用
