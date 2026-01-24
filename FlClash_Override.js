@@ -1,12 +1,11 @@
 // FLClash / Mihomo Party 配置文件覆写脚本
+// 版本: v1.3 (自动更新版) | 更新日期: 2026-01-24
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
-// 功能：
-// 1. 强制关闭高并发负载均衡，防机场封号 (改为 URL-Test)
-// 2. DNS 深度优化 (BambuLab/国内走阿里，国外走 DoQ)
-// 3. 进程级分流 (3D打印/开发工具/游戏)
-// 4. Rule Providers 动态加载
 
 function main(config) {
+  // 打印日志方便调试 (在软件日志中可见)
+  console.log("🔵 [Script] 正在应用 FlClash 覆写脚本 v1.3...");
+
   // 1. 基础设置优化
   config["tcp-concurrent"] = true;
   config["global-client-fingerprint"] = "edge";
