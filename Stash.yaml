@@ -342,7 +342,7 @@ proxy-groups:
     lazy: true
     health-check:
       enable: true
-  - name: YouTube
+  - name: YouTube 视频
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
     proxies:
@@ -463,7 +463,7 @@ rules:
   - RULE-SET,social_media,国外通用
   - RULE-SET,telegram_domain,国外通用
   - RULE-SET,telegram,国外通用
-  - RULE-SET,youtube_domain,YouTube
+  - RULE-SET,youtube_domain,YouTube 视频
 
   # --------------------------------------------------------------------------
   # 6. 通用兜底规则
