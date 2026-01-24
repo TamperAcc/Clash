@@ -161,6 +161,7 @@ function main(config) {
       "type": "url-test",
       "include-all": true,
       "exclude-filter": "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|联系|网站|入群|专线",
+      "proxies": ["负载均衡"],
       "url": "https://www.gstatic.com/generate_204",
       "interval": 300,
       "tolerance": 50,
@@ -169,7 +170,8 @@ function main(config) {
     },
     {
       "name": "负载均衡", 
-      "type": "url-test",
+      "type": "load-balance",
+      "strategy": "consistent-hashing",
       "include-all": true,
       "exclude-filter": "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|联系|网站|入群",
       "url": "https://www.gstatic.com/generate_204",
@@ -202,13 +204,13 @@ function main(config) {
       "name": "国内",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png",
-      "proxies": ["DIRECT", "自动选择", "负载均衡"]
+      "proxies": ["DIRECT", "负载均衡", "自动选择"]
     },
     {
       "name": "Google Search",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
-      "proxies": ["AI专用", "自动选择"] 
+      "proxies": ["AI专用", "AI自动优选"] 
     },
     {
       "name": "游戏服务",
@@ -224,13 +226,13 @@ function main(config) {
       "name": "YouTube",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png",
-      "proxies": ["负载均衡", "自动选择", "AI自动优选"]
+      "proxies": ["负载均衡", "AI自动优选", "自动选择"]
     },
     {
       "name": "国外通用",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png",
-      "proxies": ["负载均衡", "自动选择", "AI自动优选"]
+      "proxies": ["负载均衡", "AI自动优选", "自动选择"]
     }
   ];
 
