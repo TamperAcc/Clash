@@ -259,7 +259,6 @@ proxy-groups:
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
     proxies:
       - VLESS-xiejianacc@outlook.com
-      - AI自动优选
     url: "https://gemini.google.com"
     interval: 300
     lazy: true
