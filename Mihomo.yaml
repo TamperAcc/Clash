@@ -234,7 +234,7 @@ proxy-groups:
     include-all: true
     exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
-    interval: 300
+    interval: 600
     # 优化：降低容差值，让其更积极地切换到低延迟节点 (原 150 -> 50)
     tolerance: 50
     unified-delay: true
@@ -243,13 +243,16 @@ proxy-groups:
       enable: true
 
   - name: 负载均衡
-    type: load-balance
-    strategy: consistent-hashing
+    # 紧急修改：降级为自动选择，避免同时连接过多节点触发机场风控
+    type: url-test
+    # type: load-balance
+    # strategy: consistent-hashing
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Roundrobin.png
     include-all: true
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
-    interval: 180
+    interval: 600
+    tolerance: 50
     lazy: true
     health-check:
       enable: true
@@ -260,7 +263,7 @@ proxy-groups:
     include-all: true
     exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://gemini.google.com"
-    interval: 300
+    interval: 600
     # 优化：降低容差值 (原 150 -> 50)
     tolerance: 50
     unified-delay: true
