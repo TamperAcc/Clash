@@ -1,10 +1,10 @@
 // Mihomo Party 专用配置文件覆写脚本
-// 版本: v1.5 (自动更新版) | 更新日期: 2026-01-24
+// 版本: v1.6 (自动更新版) | 更新日期: 2026-01-24
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印日志方便调试 (在软件日志中可见)
-  console.log("🔵 [Script] 正在应用 Mihomo Party 覆写脚本 v1.5...");
+  console.log("🔵 [Script] 正在应用 Mihomo Party 覆写脚本 v1.6...");
 
 
 
@@ -136,8 +136,7 @@ function main(config) {
       ...val,
       "path": `./ruleset/${key}.${val.format === 'text' ? 'list' : 'yaml'}`,
       "interval": 86400,
-      "type": "http",
-      "header": { "User-Agent": "mihomo/1.18.3" }
+      "type": "http"
     };
   }
 
