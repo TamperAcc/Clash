@@ -13,6 +13,11 @@ function main(config) {
   config["keep-alive-interval"] = 30;
   config["allow-lan"] = true;
   config["bind-address"] = "*";
+  config["find-process-mode"] = "strict"; // 优化：Windows 下更精准的进程匹配
+  config["profile"] = {
+    "store-selected": true, // 优化：记住手动选择的节点
+    "auto-update": true
+  };
   
   // 修复本地回环问题
   config["skip-auth-prefixes"] = ["127.0.0.1/8", "::1/128"];
