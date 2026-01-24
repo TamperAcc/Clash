@@ -1,4 +1,4 @@
-# Last Updated: 2026-01-24 [Stash Professional Override - Ultimate Edition]
+# Last Updated: 2026-01-18 [Stash Professional Override - Ultimate Edition]
 # Stash 元数据
 name: "Stash Professional Ultimate"
 desc: "iOS 终极版 | 0Classical | 3个Tile面板 | 隐私增强 | 流量监控 | 省电+60%"
@@ -228,14 +228,6 @@ proxy-groups: #!replace
     health-check:
       enable: true
 
-  - name: AI专用
-    type: fallback
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
-    proxies: ["AI自动优选"]
-    include-all: true
-    filter: "xiejianacc@outlook\\.com|AI自动优选"
-    # Stash 特性：Fallback 组如果不写 url/interval，会死锁在第一个可用节点
-    
   - name: 国内
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
@@ -248,7 +240,7 @@ proxy-groups: #!replace
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     proxies:
-      - AI专用
+      - AI自动优选
       - 自动选择
       - DIRECT
       
@@ -476,12 +468,12 @@ rules: #!replace
   - DST-PORT,51413,DIRECT
 
   # 7. 规则集规则匹配
-  - DOMAIN-SUFFIX,github.com,AI专用
+  - DOMAIN-SUFFIX,github.com,AI自动优选
   - RULE-SET,games,游戏服务
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
   # ⚡ 优化：统一 AI 服务规则，减少内存占用和匹配延迟
-  - RULE-SET,ai_services,AI专用
+  - RULE-SET,ai_services,AI自动优选
   - RULE-SET,huggingface,负载均衡
   - RULE-SET,microsoft,负载均衡
   
