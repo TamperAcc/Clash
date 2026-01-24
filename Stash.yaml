@@ -309,8 +309,9 @@ proxy-groups:
   - name: AI专用
     type: fallback
     icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
-    proxies:
-      - VLESS-xiejianacc@outlook.com
+    include-all: true
+    # 修复：使用 Filter 动态匹配节点，而不是硬编码节点名称 (避免节点缺失导致报错)
+    filter: "xiejianacc@outlook\\.com"
     url: "https://gemini.google.com"
     interval: 600
     lazy: true
