@@ -1,5 +1,5 @@
-# Last Updated: 2026-01-24 [Stash Override v1.11]
-# 移植自 PC 端 Mihomo_Override.js v1.11
+# Last Updated: 2026-01-24 [Stash Override v1.12]
+# 移植自 PC 端 Mihomo_Override.js v1.12
 # Stash 元数据
 name: "Stash Override AI+"
 desc: "iOS/macOS 专用 | AI 死锁优先逻辑 | 0Classical | 省电优化"
@@ -166,7 +166,7 @@ proxy-groups: #!replace
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
-    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|expire|traffic|reset|群组|频道|@|联系|网站|入群|专线"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|expire|traffic|reset|群组|频道|联系|网站|入群|专线"
     url: "https://www.gstatic.com/generate_204"
     interval: 600
     tolerance: 50
@@ -177,7 +177,7 @@ proxy-groups: #!replace
     type: url-test # 降级为 url-test 以提升稳定性
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png
     include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|印度|土耳其|阿根廷|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|印度|土耳其|阿根廷|群组|频道|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
     interval: 600
     lazy: true
@@ -186,7 +186,7 @@ proxy-groups: #!replace
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
-    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|联系|网站|入群"
     url: "https://gemini.google.com"
     interval: 300
     tolerance: 50
@@ -199,7 +199,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     proxies: ["AI自动优选"]
     include-all: true
-    filter: "xiejianacc@outlook\\.com"
+    filter: "(?i)xiejianacc"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
     lazy: true
