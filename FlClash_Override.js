@@ -177,13 +177,14 @@ function main(config) {
     },
     {
       "name": "AI专用",
-      "type": "select", // 改回 select (手动选择/固定)，利用默认排序实现"有则优先"
+      "type": "fallback", // 使用 Fallback (故障转移) 模式
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
-      "proxies": ["AI自动优选"], // 备选：如果没有专属节点，这里就是唯一的选项
+      "proxies": ["AI自动优选"], // 备选方案
       "include-all": true,
-      "filter": "xiejianacc@outlook\\.com|AI自动优选", // 正则匹配，专属节点排在前面
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": 300
+      "filter": "xiejianacc@outlook\\.com|AI自动优选",
+      // 👇 关键：删除了 url/interval/tolerance
+      // 这意味着 Clash 不会进行测速，也就不知道节点是否挂了
+      // 从而实现：只要节点存在，就死锁在它身上，绝不切换
     },
     {
       "name": "国内",
