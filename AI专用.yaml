@@ -117,21 +117,6 @@ tun:
   dns-hijack:
     - any:53
 
-# ==========================================
-# 节点订阅 (关键步骤：请替换下方链接)
-# ==========================================
-proxy-providers:
-  MyAirport:
-    type: http
-    # ⚠️ 请将下方的 url 替换为你自己的机场订阅链接
-    url: "https://example.com/api/v1/client/subscribe?token=xxx"
-    interval: 3600
-    path: ./profiles/my_airport.yaml
-    health-check:
-      enable: true
-      interval: 600
-      url: http://www.gstatic.com/generate_204
-
 # 规则订阅 - 优化版 (统一 86400s 更新间隔 + 0 个 Classical 规则)
 rule-providers:
   reject:
@@ -248,9 +233,6 @@ proxy-groups:
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
-    # 确保包含我们刚刚定义的 Provider
-    use:
-      - MyAirport
     exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
