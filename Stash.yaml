@@ -374,6 +374,8 @@ rules:
   - DST-PORT,51413,DIRECT
 
   # GitHub资源 (合并)
+  - DOMAIN,copilot-proxy.githubusercontent.com,AI专用
+  - DOMAIN,api.github.com,AI专用
   - DOMAIN-SUFFIX,githubcopilot.com,AI专用
   - DOMAIN-SUFFIX,github.com,AI专用
   - DOMAIN-SUFFIX,githubusercontent.com,AI专用
