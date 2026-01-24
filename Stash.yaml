@@ -125,6 +125,27 @@ dns:
     ipcidr:
       - 240.0.0.0/4
 
+  # 🎯 新增：DNS 分流策略 (iOS/macOS 端优化)
+  nameserver-policy:
+    # Apple 服务走系统 DNS
+    '+.apple.com': 'system'
+    '+.icloud.com': 'system'
+    # 国内大厂指定国内 DNS
+    'geosite:cn': '119.29.29.29'
+    '+.qq.com': '119.29.29.29'
+    '+.aliyun.com': '223.5.5.5'
+    '+.taobao.com': '223.5.5.5'
+    '+.baidu.com': '180.76.76.76'
+    '+.jd.com': '119.29.29.29'
+    '+.bilibili.com': '119.29.29.29'
+    '+.163.com': '223.5.5.5'
+    '+.netease.com': '223.5.5.5'
+    '+.douyin.com': '180.76.76.76'
+    '+.tiktok.com': '180.76.76.76'
+    # Bambu Lab
+    '+.bambulab.cn': '119.29.29.29'
+    '+.bambulab.com': '119.29.29.29'
+
 tun:
   enable: true
   stack: mixed
@@ -337,43 +358,39 @@ proxy-groups:
       - 自动选择
       - AI自动优选
 
-# 规则设置
+# 规则设置 (注意先后顺序：从上到下匹配，匹配即停止)
 rules:
-  # 脚本规则优先：阻断 QUIC 流量
+  # --------------------------------------------------------------------------
+  # 1. 基础网络规则 (局域网、特殊IP等)
+  # --------------------------------------------------------------------------
+  # 脚本规则优先：阻断 QUIC 流量 (iOS/Stash 特有)
   - SCRIPT,quic_block,REJECT
-
+  
   - GEOIP,PRIVATE,DIRECT,no-resolve
-  # 局域网后缀
   - DOMAIN-SUFFIX,lan,DIRECT
   - DOMAIN-SUFFIX,local,DIRECT
   - DOMAIN-SUFFIX,home.arpa,DIRECT
-  
-  # macOS 常用软件 (注意：iOS 系统不支持进程匹配，以下规则在 iPhone 上会自动忽略)
-  - PROCESS-NAME,BambuStudio,国内
-  - PROCESS-NAME,WeChat,DIRECT
-  - PROCESS-NAME,QQ,DIRECT
-  - PROCESS-NAME,Thunder,DIRECT
-  - PROCESS-NAME,Baichuan,DIRECT
-  # 保留 BaiduNetdisk 等可能的进程名
-  
-  # 广告拦截
-  - RULE-SET,reject,REJECT
-
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
   - DOMAIN,ipv6.msftncsi.com,REJECT
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
   - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
   - DOMAIN-SUFFIX,msftncsi.com,DIRECT
-  # 测速
-  - DOMAIN-SUFFIX,speedtest.net,DIRECT
-  - DOMAIN-SUFFIX,ookla.com,DIRECT
-  - DOMAIN-SUFFIX,fast.com,国外通用
-  - DST-PORT,123,DIRECT
-  - DST-PORT,3478,DIRECT
-  - DST-PORT,6881-6889,DIRECT
-  - DST-PORT,51413,DIRECT
+  - RULE-SET,reject,REJECT
 
-  # GitHub资源 (合并) & Copilot AI 补丁
+  # --------------------------------------------------------------------------
+  # 2. 进程级分流/macOS 应用匹配
+  # --------------------------------------------------------------------------
+  # 注意：iOS 系统不支持进程匹配，这些规则在 iPhone 上会被忽略，但对 macOS 有效
+  - PROCESS-NAME,BambuStudio,国内
+  - PROCESS-NAME,WeChat,DIRECT
+  - PROCESS-NAME,QQ,DIRECT
+  - PROCESS-NAME,Thunder,DIRECT
+  - PROCESS-NAME,Baichuan,DIRECT
+
+  # --------------------------------------------------------------------------
+  # 3. AI 核心服务 (高优先级)
+  # --------------------------------------------------------------------------
+  # GitHub Copilot & OpenAI & Claude 等 (关键：提升至国内规则前)
   - DOMAIN,copilot-proxy.githubusercontent.com,AI专用
   - DOMAIN,api.github.com,AI专用
   - DOMAIN-SUFFIX,githubcopilot.com,AI专用
@@ -383,33 +400,96 @@ rules:
   - DOMAIN-SUFFIX,visualstudio.com,AI专用
   - DOMAIN,sydney.bing.com,AI专用
   - DOMAIN,edgeservices.bing.com,AI专用
-
-  - RULE-SET,games,游戏服务
-  - RULE-SET,icloud,DIRECT
-  - RULE-SET,apple,DIRECT
-  # 🎯 优化：统一 AI 服务规则集，匹配速度提升 100 倍
   - RULE-SET,ai_services,AI专用
-  # 更新服务
+  - RULE-SET,huggingface,负载均衡
+
+  # --------------------------------------------------------------------------
+  # 4. 国内直连优化 (各大厂、视频、电商)
+  # --------------------------------------------------------------------------
+  # 国内资源加速
+  - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT
+  - DOMAIN-SUFFIX,unpkg.com,DIRECT
+  - DOMAIN-SUFFIX,staticfile.org,DIRECT
+  - DOMAIN-SUFFIX,bootcdn.cn,DIRECT
+
+  # 视频/音乐/电商
+  - DOMAIN-SUFFIX,bilibili.com,DIRECT
+  - DOMAIN-SUFFIX,hdslb.com,DIRECT
+  - DOMAIN-SUFFIX,acgvideo.com,DIRECT
+  - DOMAIN-SUFFIX,iqiyi.com,DIRECT
+  - DOMAIN-SUFFIX,youku.com,DIRECT
+  - DOMAIN-SUFFIX,163.com,DIRECT
+  - DOMAIN-SUFFIX,music.163.com,DIRECT
+  - DOMAIN-SUFFIX,qqmusic.qq.com,DIRECT
+  - DOMAIN-SUFFIX,jd.com,DIRECT
+  - DOMAIN-SUFFIX,taobao.com,DIRECT
+  - DOMAIN-SUFFIX,tmall.com,DIRECT
+
+  # --------------------------------------------------------------------------
+  # 5. 特定服务优化 (开发、微软、苹果、游戏)
+  # --------------------------------------------------------------------------
+  # 开发社区
+  - DOMAIN-SUFFIX,stackoverflow.com,国外通用
+  - DOMAIN-SUFFIX,stackexchange.com,国外通用
+  - DOMAIN-SUFFIX,npmjs.com,国外通用
+  - DOMAIN-SUFFIX,pypi.org,国外通用
+  - DOMAIN-SUFFIX,docker.com,国外通用
+  - DOMAIN-SUFFIX,docker.io,国外通用
+
+  # 微软服务
   - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
   - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
-  - RULE-SET,huggingface,负载均衡
   - RULE-SET,microsoft,负载均衡
-  # 游戏下载
+
+  # 苹果服务
+  - RULE-SET,icloud,DIRECT
+  - RULE-SET,apple,DIRECT
+
+  # 游戏下载加速
   - DOMAIN-SUFFIX,steamserver.net,DIRECT
   - DOMAIN-SUFFIX,steamcontent.com,DIRECT
   - DOMAIN-SUFFIX,steamstatic.com,DIRECT
   - DOMAIN-SUFFIX,epicgames.com,DIRECT
+  - RULE-SET,games,游戏服务
+
   # Bambu Lab
   - DOMAIN-SUFFIX,bambulab.com,国内
   - DOMAIN-SUFFIX,bambulab.cn,国内
   - DOMAIN-SUFFIX,bambulab.co,国内
-  # 🎯 优化：社交媒体统一规则集（Twitter/Facebook/Instagram/TikTok）
+
+  # 社交媒体
   - RULE-SET,social_media,国外通用
   - RULE-SET,telegram_domain,国外通用
-  
   - RULE-SET,telegram,国外通用
   - RULE-SET,youtube_domain,YouTube
+
+  # --------------------------------------------------------------------------
+  # 6. 通用兜底规则
+  # --------------------------------------------------------------------------
+  # 隐私保护
+  - DOMAIN-SUFFIX,doubleclick.net,REJECT
+  - DOMAIN-SUFFIX,googleadservices.com,REJECT
+  - DOMAIN-SUFFIX,googlesyndication.com,REJECT
+  - DOMAIN-SUFFIX,google-analytics.com,REJECT
+  - DOMAIN-SUFFIX,googletagmanager.com,REJECT
+  - DOMAIN-SUFFIX,app-measurement.com,REJECT
+  - DOMAIN-SUFFIX,appsflyer.com,REJECT
+  - DOMAIN-SUFFIX,adjust.com,REJECT
+  - DOMAIN-SUFFIX,tracking.miui.com,REJECT
+  
+  # 测速
+  - DOMAIN-SUFFIX,speedtest.net,DIRECT
+  - DOMAIN-SUFFIX,ookla.com,DIRECT
+  - DOMAIN-SUFFIX,fast.com,国外通用
+
+  # 端口直连
+  - DST-PORT,123,DIRECT
+  - DST-PORT,3478,DIRECT
+  - DST-PORT,6881-6889,DIRECT
+  - DST-PORT,51413,DIRECT
+
+  # 兜底匹配
   - RULE-SET,google_domain,Google
   - RULE-SET,cn_domain,国内
   - RULE-SET,cn_ip,国内
