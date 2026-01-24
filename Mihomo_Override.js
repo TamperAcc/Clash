@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.12 (自动更新版) | 更新日期: 2026-01-24
+// 版本: v1.13 (自动更新版) | 更新日期: 2026-01-24
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印日志方便调试 (在软件日志中可见)
-  console.log("🔵 [Script] 正在应用 Mihomo Party 覆写脚本 v1.12...");
+  console.log("🔵 [Script] 正在应用 Mihomo Party 覆写脚本 v1.13...");
 
 
 
@@ -199,7 +199,7 @@ function main(config) {
       "name": "Google",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
-      "proxies": ["AI专用", "负载均衡", "自动选择"] 
+      "proxies": ["AI专用", "自动选择"] 
     },
     {
       "name": "游戏服务",
