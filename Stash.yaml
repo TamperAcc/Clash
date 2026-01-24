@@ -373,17 +373,16 @@ rules:
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
 
-  # GitHub资源 (合并)
+  # GitHub资源 (合并) & Copilot AI 补丁
   - DOMAIN,copilot-proxy.githubusercontent.com,AI专用
   - DOMAIN,api.github.com,AI专用
   - DOMAIN-SUFFIX,githubcopilot.com,AI专用
   - DOMAIN-SUFFIX,github.com,AI专用
   - DOMAIN-SUFFIX,githubusercontent.com,AI专用
   - DOMAIN-SUFFIX,github.io,AI专用
-  # Copilot & Bing AI 补丁 (防止部分鉴权/API流量落入负载均衡)
+  - DOMAIN-SUFFIX,visualstudio.com,AI专用
   - DOMAIN,sydney.bing.com,AI专用
   - DOMAIN,edgeservices.bing.com,AI专用
-  - DOMAIN-SUFFIX,visualstudio.com,AI专用
 
   - RULE-SET,games,游戏服务
   - RULE-SET,icloud,DIRECT

@@ -407,13 +407,17 @@ rules:
   - DST-PORT,3478,DIRECT
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
+  # GitHub & Copilot (AI 核心服务)
   - DOMAIN,copilot-proxy.githubusercontent.com,AI专用
   - DOMAIN,api.github.com,AI专用
   - DOMAIN-SUFFIX,githubcopilot.com,AI专用
-  - DOMAIN-SUFFIX,github.com,AI专用  # Copilot & Bing AI 补丁 (防止部分鉴权/API流量落入负载均衡)
+  - DOMAIN-SUFFIX,github.com,AI专用
+  - DOMAIN-SUFFIX,githubusercontent.com,AI专用
+  - DOMAIN-SUFFIX,github.io,AI专用
+  - DOMAIN-SUFFIX,visualstudio.com,AI专用
   - DOMAIN,sydney.bing.com,AI专用
   - DOMAIN,edgeservices.bing.com,AI专用
-  - DOMAIN-SUFFIX,visualstudio.com,AI专用  # 🛠️ 新增：开发工具域名优化
+  
   - DOMAIN-SUFFIX,stackoverflow.com,国外通用
   - DOMAIN-SUFFIX,stackexchange.com,国外通用
   - DOMAIN-SUFFIX,npmjs.com,国外通用
@@ -448,9 +452,6 @@ rules:
   # 优化：社交软件（统一规则集，包含 Twitter/Facebook/Instagram/TikTok 等）
   - RULE-SET,social_media,国外通用
   - RULE-SET,telegram_domain,国外通用
-  # 优化：GitHub资源服务器
-  - DOMAIN-SUFFIX,githubusercontent.com,AI专用
-  - DOMAIN-SUFFIX,github.io,AI专用
   
   - RULE-SET,telegram,国外通用
   - RULE-SET,youtube_domain,YouTube
