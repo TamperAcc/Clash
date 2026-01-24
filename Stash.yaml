@@ -80,13 +80,88 @@ rewrite:
     replace: https://www.google.com
     type: 302
 
-# 脚本 (用于高级网络控制)
+# 脚本 (用于高级网络控制 & 首页可视化)
 script:
+  # 1. 流量特征 shortcuts
   shortcuts:
     # 强制禁用 QUIC/HTTP3 协议
     # 目的：迫使 Google/YouTube 等服务回退到 TCP 协议
     # 收益：1. 节省 CPU 解密 UDP 包的电量 2. TCP 在代理隧道中速度更稳定
     quic_block: network == 'udp' and dst_port == 443
+
+  # 2. 首页数据面板 (Tiles) - 增强版
+  # 此功能会在 Stash 首页显示多个卡片，实时展示网络信息
+  tiles:
+    # Tile 1: 网络信息
+    - name: "Network Info"
+      interval: 600
+      title: "🌍 网络信息"
+      content: "刷新中..."
+      icon: "network"
+      backgroundColor: "#222222"
+      script: |
+        function getFlagEmoji(countryCode) {
+            const codePoints = countryCode
+              .toUpperCase()
+              .split('')
+              .map(char =>  127397 + char.charCodeAt());
+            return String.fromCodePoint(...codePoints);
+        }
+        $httpClient.get('http://ip-api.com/json/?lang=zh-CN', function(error, response, data){
+            var res = JSON.parse(data);
+            var flag = getFlagEmoji(res.countryCode);
+            $done({
+                title: flag + " " + res.country + " · " + res.regionName,
+                content: "IP: " + res.query + "\nISP: " + res.isp,
+                icon: "network",
+                backgroundColor: "#222222"
+            });
+        });
+    
+    # Tile 2: 流量统计
+    - name: "Traffic Stats"
+      interval: 300
+      title: "📈 流量统计"
+      content: "加载中..."
+      icon: "arrow.up.arrow.down"
+      backgroundColor: "#1a472a"
+      script: |
+        let traffic = $surge.traffic();
+        let up = (traffic.up / 1024 / 1024).toFixed(2);
+        let down = (traffic.down / 1024 / 1024).toFixed(2);
+        $done({
+            title: "📈 流量统计",
+            content: "⬆️ 上行: " + up + " MB\n⬇️ 下行: " + down + " MB",
+            icon: "arrow.up.arrow.down",
+            backgroundColor: "#1a472a"
+        });
+    
+    # Tile 3: 节点延迟
+    - name: "Proxy Delay"
+      interval: 300
+      title: "⚡ 节点延迟"
+      content: "测速中..."
+      icon: "speedometer"
+      backgroundColor: "#2c3e50"
+      script: |
+        let info = $surge.selectGroupDetails();
+        if (info && info.now) {
+            let delay = info.now.delay || "N/A";
+            let status = delay === "N/A" ? "🔴" : (delay < 100 ? "🟢" : delay < 300 ? "🟡" : "🟠");
+            $done({
+                title: status + " 当前节点",
+                content: info.now.name + "\n延迟: " + delay + " ms",
+                icon: "speedometer",
+                backgroundColor: "#2c3e50"
+            });
+        } else {
+            $done({
+                title: "⚡ 节点延迟",
+                content: "未选择节点",
+                icon: "speedometer",
+                backgroundColor: "#2c3e50"
+            });
+        }
 
 dns:
   enable: true
@@ -269,7 +344,7 @@ rule-providers:
 proxy-groups: #!replace
   - name: 自动选择
     type: url-test
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Urltest.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
     exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
     url: "https://www.gstatic.com/generate_204"
@@ -308,7 +383,7 @@ proxy-groups: #!replace
 
   - name: AI专用
     type: fallback
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
     # 修复：使用 Filter 动态匹配节点，而不是硬编码节点名称 (避免节点缺失导致报错)
     filter: "xiejianacc@outlook\\.com"
