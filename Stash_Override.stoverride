@@ -1,5 +1,7 @@
 # Last Updated: 2026-01-24 [Stash Override v1.12]
 # 移植自 PC 端 Mihomo_Override.js v1.12
+# 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
+# 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
 name: "Stash Override AI+"
 desc: "iOS/macOS 专用 | AI 死锁优先逻辑 | 0Classical | 省电优化"
