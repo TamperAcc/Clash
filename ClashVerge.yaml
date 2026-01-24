@@ -1,4 +1,4 @@
-﻿# Last Updated: 2026-01-18 | PC 端终极优化版
+# Last Updated: 2026-01-18 | PC 端终极优化版
 # 优化亮点：0个Classical | 14规则集 | DNS分流 | 进程分流 | 隐私增强 | 开发工具优化
 # 基础设置
 geodata-loader: memconservative
@@ -121,18 +121,22 @@ tun:
 rule-providers:
   reject:
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
-    path: ./ruleset/reject.yaml
+    path: ./ruleset/reject.list
     behavior: domain
     interval: 86400
     format: text
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   icloud:
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt
-    path: ./ruleset/icloud.yaml
+    path: ./ruleset/icloud.list
     behavior: domain
     interval: 86400
     format: text
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   microsoft:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.yaml
     path: ./ruleset/microsoft.yaml
@@ -140,13 +144,17 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   apple:
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
-    path: ./ruleset/apple.yaml
+    path: ./ruleset/apple.list
     behavior: domain
     interval: 86400
     format: text
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   telegram:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.yaml
     path: ./ruleset/telegram.yaml
@@ -154,6 +162,8 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   cn_domain:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.yaml
     path: ./ruleset/cn_domain.yaml
@@ -161,6 +171,8 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   cn_ip:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.yaml
     path: ./ruleset/cn_ip.yaml
@@ -168,6 +180,8 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   google_domain:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.yaml
     path: ./ruleset/google_domain.yaml
@@ -175,6 +189,8 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   # 🚀 优化：合并所有 AI 服务为单一 Domain 规则集（包含 OpenAI/Gemini/Claude/Copilot）
   ai_services:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml
@@ -183,6 +199,8 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   huggingface:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/huggingface.yaml
     path: ./ruleset/huggingface.yaml
@@ -190,6 +208,8 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   youtube_domain:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml
     path: ./ruleset/youtube_domain.yaml
@@ -197,6 +217,8 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   games:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-games.yaml
     path: ./ruleset/games.yaml
@@ -204,6 +226,8 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   # 🚀 优化：社交媒体/通讯工具统一使用 Domain 规则（包含 Discord/Telegram/WhatsApp 等）
   social_media:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml
@@ -212,6 +236,8 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   telegram_domain:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.yaml
     path: ./ruleset/telegram_domain.yaml
@@ -219,6 +245,8 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
   geolocation_no_cn:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml
     path: ./ruleset/geolocation-!cn_domain.yaml
@@ -226,6 +254,8 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
+    header:
+      User-Agent: "mihomo/1.18.3"
 
 # 分组设置
 proxy-groups:
