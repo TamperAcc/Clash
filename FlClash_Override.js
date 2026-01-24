@@ -36,6 +36,10 @@ function main(config) {
     "enhanced-mode": "fake-ip",
     "fake-ip-range": "198.18.0.1/16",
     "respect-rules": true,
+    "proxy-server-nameserver": [
+      "223.5.5.5",
+      "119.29.29.29"
+    ],
     "fake-ip-filter": [
       "*.lan", "*.local", "+.msftconnecttest.com", "+.msftncsi.com",
       "+.ntp.org", "+.pool.ntp.org", "+.stun.protocol.org",
