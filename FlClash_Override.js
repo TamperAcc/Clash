@@ -177,15 +177,13 @@ function main(config) {
     },
     {
       "name": "AI专用",
-      "type": "url-test", // 改为自动测速，实现 "有特定节点用节点，没有(或节点慢)用自动优选"
+      "type": "select", // 改回 select (手动选择/固定)，利用默认排序实现"有则优先"
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
-      "proxies": ["AI自动优选"], // 👈 核心：将自动优选组作为备选加入
+      "proxies": ["AI自动优选"], // 备选：如果没有专属节点，这里就是唯一的选项
       "include-all": true,
-      "filter": "xiejianacc@outlook\\.com|AI自动优选", // 允许特定节点和自动优选组通过
+      "filter": "xiejianacc@outlook\\.com|AI自动优选", // 正则匹配，专属节点排在前面
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "tolerance": 50, // 优先度容差
-      "lazy": true
+      "interval": 300
     },
     {
       "name": "国内",
