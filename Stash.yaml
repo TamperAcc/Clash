@@ -187,8 +187,11 @@ dns:
     - "*.bambulab.cn"
   nameserver: #!replace
     # ⚡ 官方最佳实践：最多 2 个 DNS 服务器（DoQ 协议 0-RTT 握手最快）
+    # 优化：增加标准 UDP/TCP DNS 以备 QUIC 失败
+    - 223.5.5.5
     - 119.29.29.29
     - quic://dns.alidns.com:853
+    - https://doh.pub/dns-query
   fallback: #!replace
     # 优化：使用备用 IP 和 TCP/DoT 协议，避开 1.1.1.1/8.8.8.8 的重灾区
     - https://1.0.0.1/dns-query
@@ -439,8 +442,8 @@ rules:
   # --------------------------------------------------------------------------
   # 1. 基础网络规则 (局域网、特殊IP等)
   # --------------------------------------------------------------------------
-  # 脚本规则优先：阻断 QUIC 流量 (iOS/Stash 特有)
-  - SCRIPT,quic_block,REJECT
+  # 脚本规则：阻断 QUIC 流量 (优化：下移至国内规则后，避免国内 QUIC 应用不稳定)
+  # - SCRIPT,quic_block,REJECT
   
   - GEOIP,PRIVATE,DIRECT,no-resolve
   - DOMAIN-SUFFIX,lan,DIRECT
@@ -504,6 +507,9 @@ rules:
   # --------------------------------------------------------------------------
   # 5. 特定服务优化 (开发、微软、苹果、游戏)
   # --------------------------------------------------------------------------
+  # 脚本规则：阻断 QUIC 流量 (在此处拦截国外 QUIC 流量)
+  - SCRIPT,quic_block,REJECT
+
   # 开发社区
   - DOMAIN-SUFFIX,stackoverflow.com,国外通用
   - DOMAIN-SUFFIX,stackexchange.com,国外通用
