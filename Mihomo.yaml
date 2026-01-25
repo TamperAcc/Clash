@@ -272,6 +272,19 @@ proxy-groups:
     health-check:
       enable: true
 
+  - name: AI专用
+    type: fallback
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/OpenAI.png
+    proxies:
+      - AI自动优选
+    include-all: true
+    filter: "(?i)VELSS-Reality"
+    url: "https://gemini.google.com"
+    interval: 300
+    lazy: true
+    health-check:
+      enable: true
+
 
   - name: 国内
     type: select
@@ -400,10 +413,12 @@ rules:
   - DST-PORT,3478,DIRECT
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
-  - DOMAIN-SUFFIX,github.com,AI自动优选  # Copilot & Bing AI 补丁 (防止部分鉴权/API流量落入负载均衡)
-  - DOMAIN,sydney.bing.com,AI自动优选
-  - DOMAIN,edgeservices.bing.com,AI自动优选
-  - DOMAIN-SUFFIX,visualstudio.com,AI自动优选  # 🛠️ 新增：开发工具域名优化
+  - DOMAIN-SUFFIX,github.com,AI专用  # Copilot & Bing AI 补丁 (防止部分鉴权/API流量落入负载均衡)
+  - DOMAIN,sydney.bing.com,AI专用
+  - DOMAIN,edgeservices.bing.com,AI专用
+  - DOMAIN-SUFFIX,claude.ai,AI专用
+  - DOMAIN-SUFFIX,anthropic.com,AI专用
+  - DOMAIN-SUFFIX,visualstudio.com,AI专用  # 🛠️ 新增：开发工具域名优化
   - DOMAIN-SUFFIX,stackoverflow.com,国外通用
   - DOMAIN-SUFFIX,stackexchange.com,国外通用
   - DOMAIN-SUFFIX,npmjs.com,国外通用
@@ -415,7 +430,7 @@ rules:
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
   # 🚀 优化：统一 AI 服务规则集，匹配速度提升 100 倍
-  - RULE-SET,ai_services,AI自动优选
+  - RULE-SET,ai_services,AI专用
   # 优化：Windows更新强制直连，防止消耗代理流量
   - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
   - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
@@ -439,8 +454,8 @@ rules:
   - RULE-SET,social_media,国外通用
   - RULE-SET,telegram_domain,国外通用
   # 优化：GitHub资源服务器
-  - DOMAIN-SUFFIX,githubusercontent.com,AI自动优选
-  - DOMAIN-SUFFIX,github.io,AI自动优选
+  - DOMAIN-SUFFIX,githubusercontent.com,AI专用
+  - DOMAIN-SUFFIX,github.io,AI专用
   
   - RULE-SET,telegram,国外通用
   - RULE-SET,youtube_domain,YouTube

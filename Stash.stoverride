@@ -233,7 +233,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     proxies: ["AI自动优选"]
     include-all: true
-    filter: "(?i)xiejianacc"
+    filter: "(?i)VELSS-Reality"
     url: "https://gemini.google.com"
     interval: 300
     lazy: true
@@ -245,7 +245,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     proxies: ["AI自动优选"]
     include-all: true
-    filter: "(?i)xiejianacc"
+    filter: "(?i)VELSS-Reality"
     url: "https://gemini.google.com"
     interval: 600
     lazy: true

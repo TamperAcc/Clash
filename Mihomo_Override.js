@@ -186,7 +186,7 @@ function main(config) {
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
       "proxies": ["AI自动优选"],
       "include-all": true,
-      "filter": "(?i)xiejianacc",
+      "filter": "(?i)VELSS-Reality",
       "url": "https://www.gstatic.com/generate_204",
       "interval": 300,
       "lazy": true
@@ -281,6 +281,8 @@ function main(config) {
     "DOMAIN-SUFFIX,visualstudio.com,AI专用",
     "DOMAIN,sydney.bing.com,AI专用",
     "DOMAIN,edgeservices.bing.com,AI专用",
+    "DOMAIN-SUFFIX,claude.ai,AI专用",
+    "DOMAIN-SUFFIX,anthropic.com,AI专用",
     "RULE-SET,ai_services,AI专用",
     "RULE-SET,huggingface,负载均衡",
 

@@ -393,7 +393,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
     # 修复：使用 Filter 动态匹配节点，而不是硬编码节点名称 (避免节点缺失导致报错)
-    filter: "xiejianacc@outlook\\.com"
+    filter: "VELSS-Reality"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
     lazy: true
@@ -484,6 +484,8 @@ rules:
   - DOMAIN-SUFFIX,visualstudio.com,AI专用
   - DOMAIN,sydney.bing.com,AI专用
   - DOMAIN,edgeservices.bing.com,AI专用
+  - DOMAIN-SUFFIX,claude.ai,AI专用
+  - DOMAIN-SUFFIX,anthropic.com,AI专用
   - RULE-SET,ai_services,AI专用
   - RULE-SET,huggingface,负载均衡
 
