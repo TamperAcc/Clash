@@ -183,7 +183,7 @@ proxy-groups: #!replace
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
-    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|expire|traffic|reset|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
     url: "https://www.gstatic.com/generate_204"
     interval: 600  # 优化：10分钟检测一次，减少后台唤醒
     tolerance: 80
@@ -196,7 +196,7 @@ proxy-groups: #!replace
     strategy: consistent-hashing
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png
     include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|expire|traffic|reset|印度|土耳其|阿根廷|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
     url: "https://www.gstatic.com/generate_204"
     interval: 600  # 优化：10分钟检测一次
     lazy: true
@@ -206,7 +206,7 @@ proxy-groups: #!replace
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
-    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
     url: "https://gemini.google.com"
     interval: 300
     tolerance: 100
@@ -273,7 +273,7 @@ proxy-groups: #!replace
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
     include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
+    exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
     proxies:
       - 负载均衡
       - AI自动优选
