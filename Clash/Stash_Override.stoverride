@@ -405,7 +405,7 @@ rules: #!replace
   - DST-PORT,123,DIRECT
   - DST-PORT,3478,DIRECT
   - DST-PORT,51413,DIRECT
-  # ⚡ 核心：AI 服务走 AI 专用组
+  # ⚡ 核心：AI 服务走 AI 自动优选
   - DOMAIN,copilot-proxy.githubusercontent.com,AI自动优选
   - DOMAIN,api.github.com,AI自动优选
   - DOMAIN-SUFFIX,githubcopilot.com,AI自动优选
