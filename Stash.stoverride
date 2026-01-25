@@ -1,27 +1,22 @@
-# Last Updated: 2026-01-25 [Stash Professional Override - Ultimate Edition]
+﻿# Last Updated: 2026-01-25 [Stash Professional Override - Ultimate Edition]
 # Stash 元数据
 name: "Stash Professional Ultimate"
 desc: "iOS 终极版 | 0Classical | 3个Tile面板 | 隐私增强 | 流量监控 | 省电+60%"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
-
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
 # ==========================================
-
 # 1. TCP 并发优化 (Hyper Traffic 核心)
 # 当域名解析出多个IP时，同时发起连接取最快响应
 tcp-concurrent: true
-
 # 🚀 优化：使用国内加速镜像下载 GEO 数据库，减少 iOS 流量消耗并提升更新成功率
 geodata-mode: true
 geox-url:
   geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb"
   geosite: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
   mmdb: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
-
 # 模拟浏览器指纹 (帮助通过部分防火墙检测)
 global-client-fingerprint: chrome
-
 # 2. DNS 设置
 # Stash 采用并发查询机制(Concurrent)
 dns:
@@ -79,7 +74,6 @@ dns:
     # 使用 DoQ (DNS over QUIC) 协议 - 0-RTT 握手，比 DoH/DoT 更快
     - 119.29.29.29
     - quic://dns.alidns.com:853
-
 # 3. MitM (HTTPS 解密)
 mitm:
   enable: true
@@ -88,13 +82,11 @@ mitm:
     - "*.google.cn"
     - "*.google.com.cn"
     - "www.google.com"
-
 # 4. HTTP 引擎
 http:
   force-http-engine-hosts:
     - "*.google.cn"
     - "*.google.com.cn"
-
 # 5. URL 重写
 rewrite:
   - match: ^https?://(www\.)?google\.cn
@@ -103,7 +95,6 @@ rewrite:
   - match: ^https?://(www\.)?google\.com\.cn
     replace: https://www.google.com
     type: 302
-
 # ==========================================
 # 脚本 & 可视化面板 (Tiles)
 # ==========================================
@@ -111,7 +102,6 @@ script:
   # 1. 流量特征 shortcuts
   shortcuts:
     quic_block: network == 'udp' and dst_port == 443
-
   # 2. 首页数据面板 (Tiles) - 增强版
   # 此功能会在 Stash 首页显示多个卡片，实时展示网络信息
   tiles:
@@ -185,7 +175,6 @@ script:
                 backgroundColor: "#2c3e50"
             });
         }
-
 # ==========================================
 # 策略组 (Proxy Groups) - 强制替换模式
 # ==========================================
@@ -202,7 +191,6 @@ proxy-groups: #!replace
     lazy: true
     health-check:
       enable: true
-
   - name: 负载均衡
     type: load-balance
     strategy: consistent-hashing
@@ -214,7 +202,6 @@ proxy-groups: #!replace
     lazy: true
     health-check:
       enable: true
-
   - name: AI自动优选
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
@@ -227,7 +214,6 @@ proxy-groups: #!replace
     lazy: true
     health-check:
       enable: true
-
   - name: AI专用
     type: fallback
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
@@ -239,7 +225,6 @@ proxy-groups: #!replace
     lazy: true
     health-check:
       enable: true
-
   - name: AI专用
     type: fallback
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
@@ -249,7 +234,6 @@ proxy-groups: #!replace
     url: "https://gemini.google.com"
     interval: 600
     lazy: true
-
   - name: 国内
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
@@ -277,7 +261,6 @@ proxy-groups: #!replace
     lazy: true
     health-check:
       enable: true
-
   - name: YouTube 4K
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
@@ -295,7 +278,6 @@ proxy-groups: #!replace
       - 负载均衡
       - AI自动优选
       - 自动选择
-
 # ==========================================
 # 规则集合 (Rule Providers) - 优化版
 # 统一更新间隔 86400s (24h)，减少网络请求和电量消耗
@@ -408,14 +390,12 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-
 # ==========================================
 # 规则 (Rules) - 强制替换
 # ==========================================
 rules: #!replace
   # 1. 脚本阻断
   - SCRIPT,quic_block,REJECT
-
   # 2. 局域网 & 直连
   - GEOIP,PRIVATE,DIRECT,no-resolve
   - DOMAIN-SUFFIX,lan,DIRECT
@@ -431,7 +411,6 @@ rules: #!replace
   
   # 广告拦截 (同步优化：置顶拦截规则以节省开销)
   - RULE-SET,reject,REJECT
-
   # 4. 微软/系统服务
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
   - DOMAIN,ipv6.msftncsi.com,REJECT
@@ -457,7 +436,6 @@ rules: #!replace
   # iOS 应用内追踪
   - DOMAIN-SUFFIX,appsflyer.com,REJECT
   - DOMAIN-SUFFIX,adjust.com,REJECT
-
   # 5. 测速服务
   - DOMAIN-SUFFIX,speedtest.net,DIRECT
   - DOMAIN-SUFFIX,ookla.com,DIRECT
@@ -488,7 +466,6 @@ rules: #!replace
   - DST-PORT,123,DIRECT
   - DST-PORT,3478,DIRECT
   - DST-PORT,51413,DIRECT
-
   # 7. 规则集规则匹配
   - DOMAIN-SUFFIX,github.com,AI自动优选
   - RULE-SET,games,游戏服务

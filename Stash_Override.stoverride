@@ -1,4 +1,4 @@
-# Last Updated: 2026-01-25 [Stash Override v1.15]
+﻿# Last Updated: 2026-01-25 [Stash Override v1.15]
 # 移植自 PC 端 Mihomo_Override.js v1.16
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
@@ -6,16 +6,13 @@
 name: "Stash Override v1.15"
 desc: "v1.15 | iOS/macOS 专用 | AI 死锁优先 | github.com/TamperAcc/Clash"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
-
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
 # ==========================================
-
 # 1. TCP 并发 & 基础优化
 tcp-concurrent: true
 allow-lan: true
 bind-address: "*"
-
 # 2. GeoData 内存优化模式
 geodata-mode: true
 geodata-loader: memconservative
@@ -23,10 +20,8 @@ geox-url:
   geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb"
   geosite: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
   mmdb: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
-
 # 3. 模拟指纹
 global-client-fingerprint: chrome
-
 # 4. DNS 设置
 dns:
   enable: true
@@ -74,7 +69,6 @@ dns:
   nameserver: #!replace
     - 119.29.29.29
     - quic://dns.alidns.com:853
-
 # 4.1 Sniffer 嗅探 (精准识别流量)
 sniffer:
   enable: true
@@ -86,7 +80,6 @@ sniffer:
       override-destination: true
     TLS:
       ports: [443, 8443]
-
 # 5. MitM (HTTPS 解密)
 mitm:
   enable: true
@@ -95,13 +88,11 @@ mitm:
     - "*.google.cn"
     - "*.google.com.cn"
     - "www.google.com"
-
 # 6. HTTP 引擎
 http:
   force-http-engine-hosts:
     - "*.google.cn"
     - "*.google.com.cn"
-
 rewrite:
   - match: ^https?://(www\.)?google\.cn
     replace: https://www.google.com
@@ -109,14 +100,12 @@ rewrite:
   - match: ^https?://(www\.)?google\.com\.cn
     replace: https://www.google.com
     type: 302
-
 # ==========================================
 # 脚本 & 面板
 # ==========================================
 script:
   shortcuts:
     quic_block: network == 'udp' and dst_port == 443
-
   tiles:
     - name: "Network Info"
       interval: 600
@@ -159,7 +148,6 @@ script:
             icon: "arrow.up.arrow.down",
             backgroundColor: "#1a472a"
         });
-
 # ==========================================
 # 策略组 (Proxy Groups) - 核心逻辑移植
 # ==========================================
@@ -176,7 +164,6 @@ proxy-groups: #!replace
     tolerance: 100
     unified-delay: true
     lazy: true
-
   - name: 负载均衡
     type: load-balance
     strategy: consistent-hashing
@@ -186,7 +173,6 @@ proxy-groups: #!replace
     url: "https://www.gstatic.com/generate_204"
     interval: 600
     lazy: true
-
   - name: AI自动优选
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
@@ -197,7 +183,6 @@ proxy-groups: #!replace
     tolerance: 50
     unified-delay: true
     lazy: true
-
   # 🌟 核心：移植 PC 端的 AI 专用死锁逻辑
   - name: AI专用
     type: fallback
@@ -208,7 +193,6 @@ proxy-groups: #!replace
     url: "https://gemini.google.com"
     interval: 300
     lazy: true
-
   - name: 国内
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
@@ -233,7 +217,6 @@ proxy-groups: #!replace
     tolerance: 80
     unified-delay: true
     lazy: true
-
   - name: YouTube 4K
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
@@ -249,7 +232,6 @@ proxy-groups: #!replace
       - 负载均衡
       - AI专用
       - 自动选择
-
 # ==========================================
 # 规则集合 (Rule Providers) 
 # ==========================================
@@ -359,7 +341,6 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-
 # ==========================================
 # 规则 (Rules)
 # ==========================================
@@ -389,7 +370,6 @@ rules: #!replace
   - PROCESS-NAME,QQMusic,DIRECT
   
   - RULE-SET,reject,REJECT
-
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
   - DOMAIN,ipv6.msftncsi.com,REJECT
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
@@ -410,7 +390,6 @@ rules: #!replace
   - DOMAIN-KEYWORD,adview,REJECT
   - DOMAIN-SUFFIX,appsflyer.com,REJECT
   - DOMAIN-SUFFIX,adjust.com,REJECT
-
   - DOMAIN-SUFFIX,speedtest.net,DIRECT
   - DOMAIN-SUFFIX,ookla.com,DIRECT
   - DOMAIN-SUFFIX,fast.com,国外通用
@@ -434,7 +413,6 @@ rules: #!replace
   - DST-PORT,123,DIRECT
   - DST-PORT,3478,DIRECT
   - DST-PORT,51413,DIRECT
-
   # ⚡ 核心：AI 服务走 AI 专用组
   - DOMAIN,copilot-proxy.githubusercontent.com,AI专用
   - DOMAIN,api.github.com,AI专用
