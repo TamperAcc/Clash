@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-01-25 [Stash Override v1.15]
-# 移植自 PC 端 Mihomo_Override.js v1.16
+﻿# Last Updated: 2026-01-26 [Stash Override v1.16]
+# 移植自 PC 端 Mihomo_Override.js v1.17
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Clash/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Clash/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.15"
-desc: "v1.15 | iOS/macOS 专用 | AI 死锁优先 | github.com/TamperAcc/Clash"
+name: "Stash Override v1.16"
+desc: "v1.16 | iOS/macOS 专用 | AI 死锁优先 | github.com/TamperAcc/Clash"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
