@@ -245,10 +245,10 @@ function main(config) {
     "PROCESS-NAME,WeChat.exe,DIRECT",
     "PROCESS-NAME,WeChatAppEx.exe,DIRECT",
     "PROCESS-NAME,QQ.exe,DIRECT",
-    "PROCESS-NAME,Telegram.exe,国外通用",
-    "PROCESS-NAME,Discord.exe,国外通用",
-    "PROCESS-NAME,Slack.exe,国外通用",
-    "PROCESS-NAME,Zoom.exe,国外通用",
+    "PROCESS-NAME,Telegram.exe,自动选择",
+    "PROCESS-NAME,Discord.exe,自动选择",
+    "PROCESS-NAME,Slack.exe,自动选择",
+    "PROCESS-NAME,Zoom.exe,自动选择",
     "PROCESS-NAME,BambuStudio.exe,国内",
     "PROCESS-NAME,bambu-studio.exe,国内",
     "PROCESS-NAME,Thunder.exe,DIRECT",
@@ -304,12 +304,12 @@ function main(config) {
     "DOMAIN-SUFFIX,tmall.com,DIRECT",
 
     // 开发者/微软
-    "DOMAIN-SUFFIX,stackoverflow.com,国外通用",
-    "DOMAIN-SUFFIX,stackexchange.com,国外通用",
-    "DOMAIN-SUFFIX,npmjs.com,国外通用",
-    "DOMAIN-SUFFIX,pypi.org,国外通用",
-    "DOMAIN-SUFFIX,docker.com,国外通用",
-    "DOMAIN-SUFFIX,docker.io,国外通用",
+    "DOMAIN-SUFFIX,stackoverflow.com,自动选择",
+    "DOMAIN-SUFFIX,stackexchange.com,自动选择",
+    "DOMAIN-SUFFIX,npmjs.com,自动选择",
+    "DOMAIN-SUFFIX,pypi.org,自动选择",
+    "DOMAIN-SUFFIX,docker.com,自动选择",
+    "DOMAIN-SUFFIX,docker.io,自动选择",
     "DOMAIN-SUFFIX,windowsupdate.com,DIRECT",
     "DOMAIN-SUFFIX,update.microsoft.com,DIRECT",
     "DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT",
@@ -330,9 +330,9 @@ function main(config) {
     "DOMAIN-SUFFIX,bambulab.co,国内",
 
     // 社交
-    "RULE-SET,social_media,国外通用",
-    "RULE-SET,telegram_domain,国外通用",
-    "RULE-SET,telegram,国外通用",
+    "RULE-SET,social_media,自动选择",
+    "RULE-SET,telegram_domain,自动选择",
+    "RULE-SET,telegram,自动选择",
     "RULE-SET,youtube_domain,YouTube",
 
     // 隐私与兜底
@@ -351,18 +351,18 @@ function main(config) {
     "DOMAIN-KEYWORD,adview,REJECT",
     "DOMAIN-SUFFIX,speedtest.net,DIRECT",
     "DOMAIN-SUFFIX,ookla.com,DIRECT",
-    "DOMAIN-SUFFIX,fast.com,国外通用",
+    "DOMAIN-SUFFIX,fast.com,自动选择",
     "DST-PORT,123,DIRECT",
     "DST-PORT,3478,DIRECT",
     "DST-PORT,51413,DIRECT",
     
     // 最终匹配
-    "RULE-SET,google_domain,Google",
+    "RULE-SET,google_domain,AI自动优选",
     "RULE-SET,cn_domain,国内",
     "RULE-SET,cn_ip,国内",
-    "RULE-SET,geolocation_no_cn,国外通用",
+    "RULE-SET,geolocation_no_cn,自动选择",
     "GEOIP,CN,国内",
-    "MATCH,国外通用"
+    "MATCH,自动选择"
   ];
 
   return config;
