@@ -1,10 +1,10 @@
-# Last Updated: 2026-01-25 [Stash Override v1.14]
-# 移植自 PC 端 Mihomo_Override.js v1.14
+# Last Updated: 2026-01-25 [Stash Override v1.15]
+# 移植自 PC 端 Mihomo_Override.js v1.16
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.14"
-desc: "v1.14 | iOS/macOS 专用 | AI 死锁优先 | github.com/TamperAcc/Clash"
+name: "Stash Override v1.15"
+desc: "v1.15 | iOS/macOS 专用 | AI 死锁优先 | github.com/TamperAcc/Clash"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 
 # ==========================================
@@ -173,7 +173,7 @@ proxy-groups: #!replace
       - 负载均衡
     url: "https://www.gstatic.com/generate_204"
     interval: 600
-    tolerance: 50
+    tolerance: 100
     unified-delay: true
     lazy: true
 
