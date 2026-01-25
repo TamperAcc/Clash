@@ -1,4 +1,4 @@
-# Last Updated: 2026-01-18 [Stash Professional Ultra - iOS 极致优化版]
+# Last Updated: 2026-01-25 [Stash Professional Ultra - iOS 极致优化版 v1.14]
 # 优化成果：0个Classical | 14个规则集 | 7个策略组 | 内存⬇️50% | 续航⬆️25%
 # Stash 元数据
 name: "Stash Professional Ultra"
@@ -393,7 +393,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
     # 修复：使用 Filter 动态匹配节点，而不是硬编码节点名称 (避免节点缺失导致报错)
-    filter: "VELSS-Reality"
+    filter: "(?i)(AI自动优选|VELSS-Reality)"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
     lazy: true

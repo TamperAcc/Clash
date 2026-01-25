@@ -1,4 +1,4 @@
-# Last Updated: 2026-01-18 [Stash Professional Override - Ultimate Edition]
+# Last Updated: 2026-01-25 [Stash Professional Override - Ultimate Edition]
 # Stash 元数据
 name: "Stash Professional Ultimate"
 desc: "iOS 终极版 | 0Classical | 3个Tile面板 | 隐私增强 | 流量监控 | 省电+60%"
@@ -233,7 +233,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     proxies: ["AI自动优选"]
     include-all: true
-    filter: "(?i)VELSS-Reality"
+    filter: "(?i)(AI自动优选|VELSS-Reality)"
     url: "https://gemini.google.com"
     interval: 300
     lazy: true
@@ -245,7 +245,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     proxies: ["AI自动优选"]
     include-all: true
-    filter: "(?i)VELSS-Reality"
+    filter: "(?i)(AI自动优选|VELSS-Reality)"
     url: "https://gemini.google.com"
     interval: 600
     lazy: true
