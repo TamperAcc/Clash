@@ -366,7 +366,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
     exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群"
-    url: "https://www.gstatic.com/generate_204"
+    url: "https://gemini.google.com"
     interval: 300  # 修复：从 600s 缩短至 300s，在节点不稳定时更灵敏地切换
     tolerance: 100
     unified-delay: true
