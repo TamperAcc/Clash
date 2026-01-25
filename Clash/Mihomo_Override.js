@@ -1,12 +1,12 @@
-﻿// FLClash / Mihomo Party 配置文件覆写脚本
-// 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/FlClash_Override.js
-// 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/FlClash_Override.js
-// 版本: v1.13 (自动更新版) | 更新日期: 2026-01-25
+﻿// Mihomo Party 专用配置文件覆写脚本
+// 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
+// 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
+// 版本: v1.16 (自动更新版) | 更新日期: 2026-01-25
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印日志方便调试 (在软件日志中可见)
-  console.log("🔵 [Script] 正在应用 FlClash 覆写脚本 v1.13...");
+  console.log("🔵 [Script] 正在应用 Mihomo Party 覆写脚本 v1.16...");
 
 
 
@@ -158,17 +158,6 @@ function main(config) {
       "lazy": true
     },
     {
-      "name": "负载均衡",
-      "type": "load-balance",
-      "strategy": "consistent-hashing",
-      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png",
-      "include-all": true,
-      "exclude-filter": "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "lazy": true
-    },
-    {
       "name": "AI自动优选",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
@@ -184,13 +173,13 @@ function main(config) {
       "name": "国内",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png",
-      "proxies": ["DIRECT", "负载均衡", "自动选择"]
+      "proxies": ["DIRECT", "自动选择"]
     },
     {
       "name": "Google",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
-      "proxies": ["AI自动优选", "AI自动优选"] 
+      "proxies": ["AI自动优选", "自动选择"] 
     },
     {
       "name": "游戏服务",
@@ -206,13 +195,13 @@ function main(config) {
       "name": "YouTube",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png",
-      "proxies": ["负载均衡", "AI自动优选", "自动选择"]
+      "proxies": ["AI自动优选", "自动选择"]
     },
     {
       "name": "国外通用",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png",
-      "proxies": ["负载均衡", "AI自动优选", "自动选择"]
+      "proxies": ["AI自动优选", "自动选择"]
     }
   ];
 
@@ -234,10 +223,10 @@ function main(config) {
     "PROCESS-NAME,WeChat.exe,DIRECT",
     "PROCESS-NAME,WeChatAppEx.exe,DIRECT",
     "PROCESS-NAME,QQ.exe,DIRECT",
-    "PROCESS-NAME,Telegram.exe,国外通用",
-    "PROCESS-NAME,Discord.exe,国外通用",
-    "PROCESS-NAME,Slack.exe,国外通用",
-    "PROCESS-NAME,Zoom.exe,国外通用",
+    "PROCESS-NAME,Telegram.exe,自动选择",
+    "PROCESS-NAME,Discord.exe,自动选择",
+    "PROCESS-NAME,Slack.exe,自动选择",
+    "PROCESS-NAME,Zoom.exe,自动选择",
     "PROCESS-NAME,BambuStudio.exe,国内",
     "PROCESS-NAME,bambu-studio.exe,国内",
     "PROCESS-NAME,Thunder.exe,DIRECT",
@@ -266,14 +255,13 @@ function main(config) {
     "DOMAIN-SUFFIX,githubcopilot.com,AI自动优选",
     "DOMAIN-SUFFIX,github.com,AI自动优选",
     "DOMAIN-SUFFIX,githubusercontent.com,AI自动优选",
-    "DOMAIN-SUFFIX,github.io,AI自动优选",
     "DOMAIN-SUFFIX,visualstudio.com,AI自动优选",
     "DOMAIN,sydney.bing.com,AI自动优选",
     "DOMAIN,edgeservices.bing.com,AI自动优选",
     "DOMAIN-SUFFIX,claude.ai,AI自动优选",
     "DOMAIN-SUFFIX,anthropic.com,AI自动优选",
     "RULE-SET,ai_services,AI自动优选",
-    "RULE-SET,huggingface,负载均衡",
+    "RULE-SET,huggingface,AI自动优选",
 
     // 国内直连优化
     "DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT",
@@ -293,18 +281,18 @@ function main(config) {
     "DOMAIN-SUFFIX,tmall.com,DIRECT",
 
     // 开发者/微软
-    "DOMAIN-SUFFIX,stackoverflow.com,国外通用",
-    "DOMAIN-SUFFIX,stackexchange.com,国外通用",
-    "DOMAIN-SUFFIX,npmjs.com,国外通用",
-    "DOMAIN-SUFFIX,pypi.org,国外通用",
-    "DOMAIN-SUFFIX,docker.com,国外通用",
-    "DOMAIN-SUFFIX,docker.io,国外通用",
+    "DOMAIN-SUFFIX,stackoverflow.com,自动选择",
+    "DOMAIN-SUFFIX,stackexchange.com,自动选择",
+    "DOMAIN-SUFFIX,npmjs.com,自动选择",
+    "DOMAIN-SUFFIX,pypi.org,自动选择",
+    "DOMAIN-SUFFIX,docker.com,自动选择",
+    "DOMAIN-SUFFIX,docker.io,自动选择",
     "DOMAIN-SUFFIX,windowsupdate.com,DIRECT",
     "DOMAIN-SUFFIX,update.microsoft.com,DIRECT",
     "DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT",
     "DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT",
     "DOMAIN-SUFFIX,tlu.dl.delivery.mp.microsoft.com,DIRECT",
-    "RULE-SET,microsoft,负载均衡",
+    "RULE-SET,microsoft,自动选择",
     "RULE-SET,icloud,DIRECT",
     "RULE-SET,apple,DIRECT",
 
@@ -319,9 +307,9 @@ function main(config) {
     "DOMAIN-SUFFIX,bambulab.co,国内",
 
     // 社交
-    "RULE-SET,social_media,国外通用",
-    "RULE-SET,telegram_domain,国外通用",
-    "RULE-SET,telegram,国外通用",
+    "RULE-SET,social_media,自动选择",
+    "RULE-SET,telegram_domain,自动选择",
+    "RULE-SET,telegram,自动选择",
     "RULE-SET,youtube_domain,YouTube",
 
     // 隐私与兜底
@@ -340,18 +328,18 @@ function main(config) {
     "DOMAIN-KEYWORD,adview,REJECT",
     "DOMAIN-SUFFIX,speedtest.net,DIRECT",
     "DOMAIN-SUFFIX,ookla.com,DIRECT",
-    "DOMAIN-SUFFIX,fast.com,国外通用",
+    "DOMAIN-SUFFIX,fast.com,自动选择",
     "DST-PORT,123,DIRECT",
     "DST-PORT,3478,DIRECT",
     "DST-PORT,51413,DIRECT",
     
     // 最终匹配
-    "RULE-SET,google_domain,Google",
+    "RULE-SET,google_domain,AI自动优选",
     "RULE-SET,cn_domain,国内",
     "RULE-SET,cn_ip,国内",
-    "RULE-SET,geolocation_no_cn,国外通用",
+    "RULE-SET,geolocation_no_cn,自动选择",
     "GEOIP,CN,国内",
-    "MATCH,国外通用"
+    "MATCH,自动选择"
   ];
 
   return config;

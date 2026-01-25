@@ -44,6 +44,13 @@ dns:
     - "+.xboxlive.com"
     - "+.msftconnecttest.com"
     - "+.msftncsi.com"
+    # ⬇️ 同步 Mihomo: 补充 NTP 和 协议相关过滤
+    - "+.ntp.org"
+    - "+.pool.ntp.org"
+    - "+.stun.protocol.org"
+    - "time.*.com"
+    - "time.*.gov"
+    - "time.*.edu.cn"
   
   nameserver-policy:
     '+.apple.com': 'system'
@@ -55,6 +62,8 @@ dns:
     '+.crashlytics.com': 'system'
     'geosite:cn': '119.29.29.29'
     '+.bambulab.cn': '119.29.29.29'
+    # ⬇️ 同步 Mihomo: 补充 Bambu Global 域名
+    '+.bambulab.com': '119.29.29.29'
     '+.qq.com': '119.29.29.29'
     '+.aliyun.com': '223.5.5.5'
     '+.taobao.com': '223.5.5.5'
@@ -157,21 +166,10 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
     exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
-    proxies:
-      - 负载均衡
     url: "https://www.gstatic.com/generate_204"
     interval: 600
     tolerance: 100
     unified-delay: true
-    lazy: true
-  - name: 负载均衡
-    type: load-balance
-    strategy: consistent-hashing
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png
-    include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
-    url: "https://www.gstatic.com/generate_204"
-    interval: 600
     lazy: true
   - name: AI自动优选
     type: url-test
@@ -180,33 +178,22 @@ proxy-groups: #!replace
     exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
     url: "https://gemini.google.com"
     interval: 300
-    tolerance: 50
+    tolerance: 100
     unified-delay: true
-    lazy: true
-  # 🌟 核心：移植 PC 端的 AI 专用死锁逻辑
-  - name: AI专用
-    type: fallback
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
-    proxies: ["AI自动优选"]
-    include-all: true
-    filter: "(?i)(AI自动优选|VELSS-Reality)"
-    url: "https://gemini.google.com"
-    interval: 300
     lazy: true
   - name: 国内
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
     proxies:
       - DIRECT
-      - 负载均衡
       - 自动选择
   
   - name: Google Search
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     proxies:
-      - AI专用      # 使用新的 AI 专用组
       - AI自动优选
+      - 自动选择
       
   - name: 游戏服务
     type: url-test
@@ -221,16 +208,14 @@ proxy-groups: #!replace
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
     proxies:
-      - 负载均衡
-      - AI专用
+      - AI自动优选
       - 自动选择
       
   - name: 国外通用
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
     proxies:
-      - 负载均衡
-      - AI专用
+      - AI自动优选
       - 自动选择
 # ==========================================
 # 规则集合 (Rule Providers) 
@@ -357,10 +342,10 @@ rules: #!replace
   - PROCESS-NAME,QQ,DIRECT
   - PROCESS-NAME,Thunder,DIRECT
   - PROCESS-NAME,Baichuan,DIRECT
-  - PROCESS-NAME,Telegram,国外通用
-  - PROCESS-NAME,Discord,国外通用
-  - PROCESS-NAME,Slack,国外通用
-  - PROCESS-NAME,Zoom,国外通用
+  - PROCESS-NAME,Telegram,自动选择
+  - PROCESS-NAME,Discord,自动选择
+  - PROCESS-NAME,Slack,自动选择
+  - PROCESS-NAME,Zoom,自动选择
   - PROCESS-NAME,git,国外通用
   - PROCESS-NAME,Code,自动选择
   - PROCESS-NAME,Cursor,自动选择
@@ -397,6 +382,7 @@ rules: #!replace
   - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT
   - DOMAIN-SUFFIX,unpkg.com,DIRECT
   - DOMAIN-SUFFIX,staticfile.org,DIRECT
+  - DOMAIN-SUFFIX,bootcdn.cn,DIRECT
   - DOMAIN-SUFFIX,bilibili.com,DIRECT
   - DOMAIN-SUFFIX,hdslb.com,DIRECT
   - DOMAIN-SUFFIX,acgvideo.com,DIRECT
@@ -404,34 +390,40 @@ rules: #!replace
   - DOMAIN-SUFFIX,youku.com,DIRECT
   - DOMAIN-SUFFIX,163.com,DIRECT
   - DOMAIN-SUFFIX,music.163.com,DIRECT
-  - DOMAIN-SUFFIX,qq.com,DIRECT
   - DOMAIN-SUFFIX,qqmusic.qq.com,DIRECT
   - DOMAIN-SUFFIX,jd.com,DIRECT
   - DOMAIN-SUFFIX,taobao.com,DIRECT
   - DOMAIN-SUFFIX,tmall.com,DIRECT
   
+  - DOMAIN-SUFFIX,stackoverflow.com,自动选择
+  - DOMAIN-SUFFIX,stackexchange.com,自动选择
+  - DOMAIN-SUFFIX,npmjs.com,自动选择
+  - DOMAIN-SUFFIX,pypi.org,自动选择
+  - DOMAIN-SUFFIX,docker.com,自动选择
+  - DOMAIN-SUFFIX,docker.io,自动选择
+  
   - DST-PORT,123,DIRECT
   - DST-PORT,3478,DIRECT
   - DST-PORT,51413,DIRECT
   # ⚡ 核心：AI 服务走 AI 专用组
-  - DOMAIN,copilot-proxy.githubusercontent.com,AI专用
-  - DOMAIN,api.github.com,AI专用
-  - DOMAIN-SUFFIX,githubcopilot.com,AI专用
-  - DOMAIN-SUFFIX,github.com,AI专用
-  - DOMAIN-SUFFIX,githubusercontent.com,AI专用
-  - DOMAIN-SUFFIX,github.io,AI专用
-  - DOMAIN-SUFFIX,visualstudio.com,AI专用
-  - DOMAIN,sydney.bing.com,AI专用
-  - DOMAIN,edgeservices.bing.com,AI专用
-  - DOMAIN-SUFFIX,claude.ai,AI专用
-  - DOMAIN-SUFFIX,anthropic.com,AI专用
-  - RULE-SET,ai_services,AI专用
+  - DOMAIN,copilot-proxy.githubusercontent.com,AI自动优选
+  - DOMAIN,api.github.com,AI自动优选
+  - DOMAIN-SUFFIX,githubcopilot.com,AI自动优选
+  - DOMAIN-SUFFIX,github.com,AI自动优选
+  - DOMAIN-SUFFIX,githubusercontent.com,AI自动优选
+  - DOMAIN-SUFFIX,github.io,AI自动优选
+  - DOMAIN-SUFFIX,visualstudio.com,AI自动优选
+  - DOMAIN,sydney.bing.com,AI自动优选
+  - DOMAIN,edgeservices.bing.com,AI自动优选
+  - DOMAIN-SUFFIX,claude.ai,AI自动优选
+  - DOMAIN-SUFFIX,anthropic.com,AI自动优选
+  - RULE-SET,ai_services,AI自动优选
   
   - RULE-SET,games,游戏服务
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
-  - RULE-SET,huggingface,负载均衡
-  - RULE-SET,microsoft,负载均衡
+  - RULE-SET,huggingface,AI自动优选
+  - RULE-SET,microsoft,自动选择
   
   - DOMAIN-SUFFIX,steamserver.net,DIRECT
   - DOMAIN-SUFFIX,steamcontent.com,DIRECT
@@ -442,17 +434,15 @@ rules: #!replace
   - DOMAIN-SUFFIX,bambulab.cn,国内
   - DOMAIN-SUFFIX,bambulab.co,国内
   
-  - RULE-SET,social_media,国外通用
-  - RULE-SET,telegram_domain,国外通用
-  - RULE-SET,telegram,国外通用
+  - RULE-SET,social_media,自动选择
+  - RULE-SET,telegram_domain,自动选择
+  - RULE-SET,telegram,自动选择
   
   - RULE-SET,youtube_domain,YouTube 4K
   - RULE-SET,google_domain,Google Search
   - RULE-SET,cn_domain,国内
-  - RULE-SET,geolocation_no_cn,国外通用
+  - RULE-SET,geolocation_no_cn,自动选择
   - RULE-SET,cn_ip,国内
   - GEOIP,CN,国内
   
-  - DOMAIN-SUFFIX,githubusercontent.com,国外通用
-  - DOMAIN-SUFFIX,github.io,国外通用
-  - MATCH,国外通用
+  - MATCH,自动选择

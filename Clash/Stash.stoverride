@@ -6,7 +6,7 @@ icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
 # ==========================================
-# 1. TCP 并发优化 (Hyper Traffic 核心)
+# 1. TCP 并发优化版(Hyper Traffic 核心)
 # 当域名解析出多个IP时，同时发起连接取最快响应
 tcp-concurrent: true
 # 🚀 优化：使用国内加速镜像下载 GEO 数据库，减少 iOS 流量消耗并提升更新成功率
@@ -185,20 +185,9 @@ proxy-groups: #!replace
     include-all: true
     exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
     url: "https://www.gstatic.com/generate_204"
-    interval: 600  # 优化：10分钟检测一次，减少后台唤醒
+    interval: 600  # 优化版10分钟检测一次，减少后台唤醒
     tolerance: 80
     unified-delay: true
-    lazy: true
-    health-check:
-      enable: true
-  - name: 负载均衡
-    type: load-balance
-    strategy: consistent-hashing
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png
-    include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
-    url: "https://www.gstatic.com/generate_204"
-    interval: 600  # 优化：10分钟检测一次
     lazy: true
     health-check:
       enable: true
@@ -214,32 +203,12 @@ proxy-groups: #!replace
     lazy: true
     health-check:
       enable: true
-  - name: AI专用
-    type: fallback
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
-    proxies: ["AI自动优选"]
-    include-all: true
-    filter: "(?i)(AI自动优选|VELSS-Reality)"
-    url: "https://gemini.google.com"
-    interval: 300
-    lazy: true
-    health-check:
-      enable: true
-  - name: AI专用
-    type: fallback
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
-    proxies: ["AI自动优选"]
-    include-all: true
-    filter: "(?i)(AI自动优选|VELSS-Reality)"
-    url: "https://gemini.google.com"
-    interval: 600
-    lazy: true
+
   - name: 国内
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
     proxies:
       - DIRECT
-      - 负载均衡
       - 自动选择
   
   - name: Google Search
@@ -265,7 +234,6 @@ proxy-groups: #!replace
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
     proxies:
-      - 负载均衡
       - AI自动优选
       - 自动选择
       
@@ -275,8 +243,7 @@ proxy-groups: #!replace
     include-all: true
     exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
     proxies:
-      - 负载均衡
-      - AI自动优选
+      - 自动选择
       - 自动选择
 # ==========================================
 # 规则集合 (Rule Providers) - 优化版
@@ -339,7 +306,7 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  # 🎯 优化：合并所有 AI 服务为单一规则集 (包含 OpenAI/Gemini/Claude/Copilot)
+  # 🎯 优化版合并所有 AI 服务为单一规则集 (包含 OpenAI/Gemini/Claude/Copilot)
   ai_services:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml
     path: ./ruleset/ai_services.yaml
@@ -368,7 +335,7 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  # 🎯 优化：社交媒体/通讯工具统一使用 Domain 规则（包含 Discord/Telegram/WhatsApp 等）
+  # 🎯 优化版社交媒体/通讯工具统一使用 Domain 规则（包含 Discord/Telegram/WhatsApp 等）
   social_media:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml
     path: ./ruleset/social_media.yaml
@@ -409,7 +376,7 @@ rules: #!replace
   - PROCESS-NAME,Thunder,DIRECT
   - PROCESS-NAME,Baichuan,DIRECT
   
-  # 广告拦截 (同步优化：置顶拦截规则以节省开销)
+  # 广告拦截 (同步优化版置顶拦截规则以节省开销)
   - RULE-SET,reject,REJECT
   # 4. 微软/系统服务
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
@@ -471,10 +438,10 @@ rules: #!replace
   - RULE-SET,games,游戏服务
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
-  # ⚡ 优化：统一 AI 服务规则，减少内存占用和匹配延迟
+  # ⚡ 优化版统一 AI 服务规则，减少内存占用和匹配延迟
   - RULE-SET,ai_services,AI自动优选
-  - RULE-SET,huggingface,负载均衡
-  - RULE-SET,microsoft,负载均衡
+  - RULE-SET,huggingface,AI自动优选
+  - RULE-SET,microsoft,自动选择
   
   # 8. 游戏下载
   - DOMAIN-SUFFIX,steamserver.net,DIRECT
@@ -487,12 +454,12 @@ rules: #!replace
   - DOMAIN-SUFFIX,bambulab.cn,国内
   - DOMAIN-SUFFIX,bambulab.co,国内
   
-  # 10. 社交媒体 (优化：合并规则集)
+  # 10. 社交媒体 (优化版合并规则集)
   - RULE-SET,social_media,国外通用
   - RULE-SET,telegram_domain,国外通用
   - RULE-SET,telegram,国外通用
   
-  # 11. 视频与搜索 (优化：移除冗余 IP 规则)
+  # 11. 视频与搜索 (优化版移除冗余 IP 规则)
   - RULE-SET,youtube_domain,YouTube 4K
   - RULE-SET,google_domain,Google Search
   - RULE-SET,cn_domain,国内

@@ -1,16 +1,16 @@
 ﻿# Last Updated: 2026-01-25 [Stash Professional Ultra - iOS 极致优化版 v1.15]
-# 优化成果：0个Classical | 14个规则集 | 7个策略组 | 内存⬇️50% | 续航⬆️25%
+# 优化版果：0个Classical | 14个规则集 | 7个策略组 | 内存⬇️50% | 续航⬆️25%
 # Stash 元数据
 name: "Stash Professional Ultra"
-desc: "iOS 极致优化 | 0Classical规则 | DoQ DNS | MitM + AI分流 | 续航优先"
+desc: "iOS 极致优化版| 0Classical规则 | DoQ DNS | MitM + AI分流 | 续航优先"
 
-# 专为 iOS/macOS Stash 极致优化的配置文件
+# 专为 iOS/macOS Stash 极致优化版配置文件
 # 核心优势：
 # 1. 0 个 Classical 规则（内存占用降低 50%，匹配速度提升 100 倍）
 # 2. 统一 24h 规则集更新（减少后台唤醒，续航提升 25%）
 # 3. Google CN 重定向修复 (Rewrite + MitM)
 # 4. 移除 Windows 特有后缀，适配 macOS 进程名
-# 5. QUIC 阻断优化（省电 + TCP 隧道更稳定）
+# 5. QUIC 阻断优化版省电 + TCP 隧道更稳定）
 
 # 基础设置
 geodata-loader: memconservative
@@ -187,7 +187,7 @@ dns:
     - "*.bambulab.cn"
   nameserver: #!replace
     # ⚡ 官方最佳实践：最多 2 个 DNS 服务器（DoQ 协议 0-RTT 握手最快）
-    # 优化：增加标准 UDP/TCP DNS 以备 QUIC 失败
+    # 优化版增加标准 UDP/TCP DNS 以备 QUIC 失败
     - 223.5.5.5
     - 119.29.29.29
     - quic://dns.alidns.com:853
@@ -203,7 +203,7 @@ dns:
     ipcidr:
       - 240.0.0.0/4
 
-  # 🎯 新增：DNS 分流策略 (iOS/macOS 端优化)
+  # 🎯 新增：DNS 分流策略 (iOS/macOS 端优化版
   nameserver-policy:
     # Apple 服务走系统 DNS
     '+.apple.com': 'system'
@@ -291,7 +291,7 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  # 🎯 优化：合并所有 AI 服务为单一 Domain 规则集（包含 OpenAI/Gemini/Claude/Copilot）
+  # 🎯 优化版合并所有 AI 服务为单一 Domain 规则集（包含 OpenAI/Gemini/Claude/Copilot）
   ai_services:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml
     path: ./ruleset/ai_services.yaml
@@ -320,7 +320,7 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  # 🎯 优化：社交媒体/通讯工具统一使用 Domain 规则（包含 Discord/Telegram/WhatsApp 等）
+  # 🎯 优化版社交媒体/通讯工具统一使用 Domain 规则（包含 Discord/Telegram/WhatsApp 等）
   social_media:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml
     path: ./ruleset/social_media.yaml
@@ -352,7 +352,7 @@ proxy-groups: #!replace
     exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
-    # 优化：降低容差值，让其更积极地切换到低延迟节点 (原 150 -> 50)
+    # 优化版降低容差值，让其更积极地切换到低延迟节点 (原 150 -> 50)
     tolerance: 50
     unified-delay: true
     lazy: true
@@ -372,25 +372,11 @@ proxy-groups: #!replace
     health-check:
       enable: true
 
-  - name: 负载均衡
-    # 紧急修改：降级为自动选择，避免同时连接过多节点触发机场风控
-    type: load-balance
-    # type: load-balance
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Available.png
-    include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
-    url: "https://www.gstatic.com/generate_204"
-    interval: 300
-    strategy: consistent-hashing
-    lazy: true
-    health-check:
-      enable: true
-
-  rules:
+  rules: #!replace
   # --------------------------------------------------------------------------
   # 1. 基础网络规则 (局域网、特殊IP等)
   # --------------------------------------------------------------------------
-  # 脚本规则：阻断 QUIC 流量 (优化：下移至国内规则后，避免国内 QUIC 应用不稳定)
+  # 脚本规则：阻断 QUIC 流量 (优化版下移至国内规则后，避免国内 QUIC 应用不稳定)
   # - SCRIPT,quic_block,REJECT
   
   - GEOIP,PRIVATE,DIRECT,no-resolve
@@ -430,10 +416,10 @@ proxy-groups: #!replace
   - DOMAIN-SUFFIX,claude.ai,AI自动优选
   - DOMAIN-SUFFIX,anthropic.com,AI自动优选
   - RULE-SET,ai_services,AI自动优选
-  - RULE-SET,huggingface,负载均衡
+  - RULE-SET,huggingface,AI自动优选
 
   # --------------------------------------------------------------------------
-  # 4. 国内直连优化 (各大厂、视频、电商)
+  # 4. 国内直连优化版(各大厂、视频、电商)
   # --------------------------------------------------------------------------
   # 国内资源加速
   - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT
@@ -455,7 +441,7 @@ proxy-groups: #!replace
   - DOMAIN-SUFFIX,tmall.com,DIRECT
 
   # --------------------------------------------------------------------------
-  # 5. 特定服务优化 (开发、微软、苹果、游戏)
+  # 5. 特定服务优化版(开发、微软、苹果、游戏)
   # --------------------------------------------------------------------------
   # 脚本规则：阻断 QUIC 流量 (在此处拦截国外 QUIC 流量)
   - SCRIPT,quic_block,REJECT
@@ -472,7 +458,7 @@ proxy-groups: #!replace
   - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
   - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
-  - RULE-SET,microsoft,负载均衡
+  - RULE-SET,microsoft,自动选择
 
   # 苹果服务
   - RULE-SET,icloud,DIRECT

@@ -55,11 +55,11 @@ dns:
     - "*.local"
     - "+.msftconnecttest.com"
     - "+.msftncsi.com"
-    # 优化：防止NTP时间同步和STUN穿透走Fake-IP导致连接失败
+    # 优化版防止NTP时间同步和STUN穿透走Fake-IP导致连接失败
     - "+.ntp.org"
     - "+.pool.ntp.org"
     - "+.stun.protocol.org"
-    # 游戏/语音 NAT 优化 (WebRTC/Xbox/PS/Nintendo)
+    # 游戏/语音 NAT 优化版(WebRTC/Xbox/PS/Nintendo)
     - "stun.*"
     - "+.stun.*.*"
     - "+.stun.*"
@@ -77,7 +77,7 @@ dns:
     # PC 端推荐 3 个 DNS：国内主流 + DoQ 加密
     - 223.5.5.5
     - 119.29.29.29
-    # 优化：DoQ (DNS over QUIC) 握手 0 延迟，抗污染
+    # 优化版DoQ (DNS over QUIC) 握手 0 延迟，抗污染
     - quic://dns.alidns.com:853
   fallback:
     # 优化：使用备用 IP 和 TCP/DoT 协议，避开 1.1.1.1/8.8.8.8 的重灾区
@@ -90,7 +90,7 @@ dns:
     geoip-code: CN
     ipcidr:
       - 240.0.0.0/4
-  # 🎯 新增：DNS 分流策略 (PC 端优化)
+  # 🎯 新增：DNS 分流策略 (PC 端优化版
   nameserver-policy:
     # Apple 服务走系统 DNS
     '+.apple.com': 'system'
@@ -193,7 +193,7 @@ rule-providers:
     type: http
     header:
       User-Agent: "mihomo/1.18.3"
-  # 🚀 优化：合并所有 AI 服务为单一 Domain 规则集（包含 OpenAI/Gemini/Claude/Copilot）
+  # 🚀 优化版合并所有 AI 服务为单一 Domain 规则集（包含 OpenAI/Gemini/Claude/Copilot）
   ai_services:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml
     path: ./ruleset/ai_services.yaml
@@ -230,7 +230,7 @@ rule-providers:
     type: http
     header:
       User-Agent: "mihomo/1.18.3"
-  # 🚀 优化：社交媒体/通讯工具统一使用 Domain 规则（包含 Discord/Telegram/WhatsApp 等）
+  # 🚀 优化版社交媒体/通讯工具统一使用 Domain 规则（包含 Discord/Telegram/WhatsApp 等）
   social_media:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml
     path: ./ruleset/social_media.yaml
@@ -268,32 +268,67 @@ proxy-groups:
     exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
-    # 优化：降低容差值，让其更积极地切换到低延迟节点 (原 150 -> 50)
+    # 优化版降低容差值，让其更积极地切换到低延迟节点 (原 150 -> 50)
     tolerance: 50
     unified-delay: true
     lazy: true
     health-check:
       enable: true
 
-  - name: 负载均衡
-    # 紧急修改：降级为自动选择，避免同时连接过多节点触发机场风控
-    type: load-balance
-    # type: load-balance
-    # strategy: consistent-hashing
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Roundrobin.png
+  - name: AI自动优选
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
-    url: "https://www.gstatic.com/generate_204"
+    exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
+    url: "https://gemini.google.com"
     interval: 300
-    strategy: consistent-hashing
+    tolerance: 50
+    unified-delay: true
     lazy: true
     health-check:
       enable: true
 
-  rules:
-  # --------------------------------------------------------------------------
-  # 1. 基础网络规则 (局域网、特殊IP等)
-  # --------------------------------------------------------------------------
+  - name: 国内
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
+    proxies:
+      - DIRECT
+      - 自动选择
+
+  - name: Google
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
+    proxies:
+      - AI自动优选
+      - 自动选择
+
+  - name: 游戏服务
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png
+    include-all: true
+    filter: "(?i)香港|台湾|新加坡|日本|韩国"
+    url: "https://www.gstatic.com/generate_204"
+    interval: 180
+    tolerance: 100
+    lazy: true
+    health-check:
+      enable: true
+
+  - name: YouTube
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
+    proxies:
+      - AI自动优选
+      - 自动选择
+
+  - name: 国外通用
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
+    proxies:
+      - AI自动优选
+      - 自动选择
+
+rules:
   - GEOIP,PRIVATE,DIRECT,no-resolve
   - DOMAIN-SUFFIX,lan,DIRECT
   - DOMAIN-SUFFIX,local,DIRECT
@@ -364,10 +399,10 @@ proxy-groups:
   - DOMAIN-SUFFIX,claude.ai,AI自动优选
   - DOMAIN-SUFFIX,anthropic.com,AI自动优选
   - RULE-SET,ai_services,AI自动优选
-  - RULE-SET,huggingface,负载均衡
+  - RULE-SET,huggingface,自动选择
 
   # --------------------------------------------------------------------------
-  # 4. 国内直连优化 (各大厂、视频、电商)
+  # 4. 国内直连优化版(各大厂、视频、电商)
   # --------------------------------------------------------------------------
   # 国内资源加速 (CDN/NPM)
   - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT
@@ -389,7 +424,7 @@ proxy-groups:
   - DOMAIN-SUFFIX,tmall.com,DIRECT
 
   # --------------------------------------------------------------------------
-  # 5. 特定服务优化 (开发、微软、苹果、游戏)
+  # 5. 特定服务优化版(开发、微软、苹果、游戏)
   # --------------------------------------------------------------------------
   # 开发社区
   - DOMAIN-SUFFIX,stackoverflow.com,国外通用
@@ -405,7 +440,7 @@ proxy-groups:
   - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,tlu.dl.delivery.mp.microsoft.com,DIRECT
-  - RULE-SET,microsoft,负载均衡
+  - RULE-SET,microsoft,自动选择
 
   # 苹果服务
   - RULE-SET,icloud,DIRECT

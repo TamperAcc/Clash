@@ -53,11 +53,11 @@ dns:
     - "*.local"
     - "+.msftconnecttest.com"
     - "+.msftncsi.com"
-    # 优化：防止NTP时间同步和STUN穿透走Fake-IP导致连接失败
+    # 优化版防止NTP时间同步和STUN穿透走Fake-IP导致连接失败
     - "+.ntp.org"
     - "+.pool.ntp.org"
     - "+.stun.protocol.org"
-    # 游戏/语音 NAT 优化 (WebRTC/Xbox/PS/Nintendo)
+    # 游戏/语音 NAT 优化版(WebRTC/Xbox/PS/Nintendo)
     - "stun.*"
     - "+.stun.*.*"
     - "+.stun.*"
@@ -75,7 +75,7 @@ dns:
     # PC 端推荐 3 个 DNS：国内主流 + DoQ 加密
     - 119.29.29.29
     - 223.5.5.5
-    # 优化：DoQ (DNS over QUIC) 握手 0 延迟，抗污染
+    # 优化版DoQ (DNS over QUIC) 握手 0 延迟，抗污染
     - quic://dns.alidns.com:853
   fallback:
     # 优化：使用备用 IP 和 TCP/DoT 协议，避开 1.1.1.1/8.8.8.8 的重灾区
@@ -87,7 +87,7 @@ dns:
     geoip-code: CN
     ipcidr:
       - 240.0.0.0/4
-  # 🎯 新增：DNS 分流策略 (PC 端优化)
+  # 🎯 新增：DNS 分流策略 (PC 端优化版
   nameserver-policy:
     # Apple 服务走系统 DNS
     '+.apple.com': 'system'
@@ -174,7 +174,7 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  # 🚀 优化：合并所有 AI 服务为单一 Domain 规则集（包含 OpenAI/Gemini/Claude/Copilot）
+  # 🚀 优化版合并所有 AI 服务为单一 Domain 规则集（包含 OpenAI/Gemini/Claude/Copilot）
   ai_services:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml
     path: ./ruleset/ai_services.yaml
@@ -203,7 +203,7 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  # 🚀 优化：社交媒体/通讯工具统一使用 Domain 规则（包含 Discord/Telegram/WhatsApp 等）
+  # 🚀 优化版社交媒体/通讯工具统一使用 Domain 规则（包含 Discord/Telegram/WhatsApp 等）
   social_media:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml
     path: ./ruleset/social_media.yaml
@@ -235,23 +235,9 @@ proxy-groups:
     exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
-    # 优化：降低容差值，让其更积极地切换到低延迟节点 (原 150 -> 50)
+    # 优化版降低容差值，让其更积极地切换到低延迟节点 (原 150 -> 50)
     tolerance: 50
     unified-delay: true
-    lazy: true
-    health-check:
-      enable: true
-
-  - name: 负载均衡
-    # 紧急修改：降级为自动选择，避免同时连接过多节点触发机场风控
-    type: load-balance
-    # type: load-balance
-    strategy: consistent-hashing
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Roundrobin.png
-    include-all: true
-    exclude-filter: "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
-    url: "https://www.gstatic.com/generate_204"
-    interval: 300
     lazy: true
     health-check:
       enable: true
@@ -263,16 +249,16 @@ proxy-groups:
     exclude-filter: "(?i)香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新"
     url: "https://gemini.google.com"
     interval: 300
-    # 优化：降低容差值 (原 150 -> 50)
+    # 优化版降低容差值 (原 150 -> 50)
     tolerance: 50
     unified-delay: true
     lazy: true
     health-check:
       enable: true
 
-  rules:
+rules:
   - GEOIP,PRIVATE,DIRECT,no-resolve
-  # 优化：局域网域名和Windows常用应用进程分流（微信/拓竹直连，防止卡顿）
+  # 优化版局域网域名和Windows常用应用进程分流（微信/拓竹直连，防止卡顿）
   - DOMAIN-SUFFIX,lan,DIRECT
   - DOMAIN-SUFFIX,local,DIRECT
   - DOMAIN-SUFFIX,home.arpa,DIRECT
@@ -281,7 +267,7 @@ proxy-groups:
   - PROCESS-NAME,WeChat.exe,DIRECT
   - PROCESS-NAME,WeChatAppEx.exe,DIRECT
   - PROCESS-NAME,QQ.exe,DIRECT
-  # 优化：常见下载软件和网盘工具直连，避免消耗代理流量和触发P2P审计
+  # 优化版常见下载软件和网盘工具直连，避免消耗代理流量和触发P2P审计
   - PROCESS-NAME,Thunder.exe,DIRECT
   - PROCESS-NAME,DownloadSdk.exe,DIRECT
   - PROCESS-NAME,baidunetdisk.exe,DIRECT
@@ -329,7 +315,7 @@ proxy-groups:
   - DOMAIN-KEYWORD,analytics,REJECT
   - DOMAIN-KEYWORD,omniture,REJECT
   - DOMAIN-KEYWORD,adview,REJECT
-  # 优化：Speedtest测速强制直连，节省代理流量
+  # 优化版Speedtest测速强制直连，节省代理流量
   - DOMAIN-SUFFIX,speedtest.net,DIRECT
   - DOMAIN-SUFFIX,ookla.com,DIRECT
   - DOMAIN-SUFFIX,fast.com,国外通用
@@ -356,7 +342,7 @@ proxy-groups:
   - DST-PORT,3478,DIRECT
   - DST-PORT,6881-6889,DIRECT
   - DST-PORT,51413,DIRECT
-  - DOMAIN-SUFFIX,github.com,AI自动优选  # Copilot & Bing AI 补丁 (防止部分鉴权/API流量落入负载均衡)
+  - DOMAIN-SUFFIX,github.com,AI自动优选  # Copilot & Bing AI 补丁 (防止部分鉴权/API流量落入自动选择)
   - DOMAIN,sydney.bing.com,AI自动优选
   - DOMAIN,edgeservices.bing.com,AI自动优选
   - DOMAIN-SUFFIX,claude.ai,AI自动优选
@@ -372,31 +358,31 @@ proxy-groups:
   - RULE-SET,games,游戏服务
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
-  # 🚀 优化：统一 AI 服务规则集，匹配速度提升 100 倍
+  # 🚀 优化版统一 AI 服务规则集，匹配速度提升 100 倍
   - RULE-SET,ai_services,AI自动优选
-  # 优化：Windows更新强制直连，防止消耗代理流量
+  # 优化版Windows更新强制直连，防止消耗代理流量
   - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
   - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,tlu.dl.delivery.mp.microsoft.com,DIRECT
-  # 优化：HuggingFace 模型下载走负载均衡，利用多节点带宽
-  - RULE-SET,huggingface,负载均衡
-  # 优化：微软服务走负载均衡，利用多节点并发提升稳定性
-  - RULE-SET,microsoft,负载均衡
-  # 优化：Steam/Epic 等游戏平台下载CDN直连
+  # 优化版HuggingFace 模型下载走自动选择，利用多节点带宽
+  - RULE-SET,huggingface,自动选择
+  # 优化版微软服务走自动选择，利用多节点并发提升稳定性
+  - RULE-SET,microsoft,自动选择
+  # 优化版Steam/Epic 等游戏平台下载CDN直连
   - DOMAIN-SUFFIX,steamserver.net,DIRECT
   - DOMAIN-SUFFIX,steamcontent.com,DIRECT
   - DOMAIN-SUFFIX,steamstatic.com,DIRECT
   - DOMAIN-SUFFIX,epicgames.com,DIRECT
-  # 优化：拓竹Bambu服务强制直连（国内阿里云），避免绕路
+  # 优化版拓竹Bambu服务强制直连（国内阿里云），避免绕路
   - DOMAIN-SUFFIX,bambulab.com,国内
   - DOMAIN-SUFFIX,bambulab.cn,国内
   - DOMAIN-SUFFIX,bambulab.co,国内
-  # 优化：社交软件（统一规则集，包含 Twitter/Facebook/Instagram/TikTok 等）
+  # 优化版社交软件（统一规则集，包含 Twitter/Facebook/Instagram/TikTok 等）
   - RULE-SET,social_media,国外通用
   - RULE-SET,telegram_domain,国外通用
-  # 优化：GitHub资源服务器
+  # 优化版GitHub资源服务器
   - DOMAIN-SUFFIX,githubusercontent.com,AI自动优选
   - DOMAIN-SUFFIX,github.io,AI自动优选
   
@@ -405,7 +391,7 @@ proxy-groups:
   - RULE-SET,google_domain,Google
   - RULE-SET,cn_domain,国内
   - RULE-SET,geolocation_no_cn,国外通用
-  # 优化：移除冗余的 google_ip 规则，Domain 规则已足够
+  # 优化版移除冗余的 google_ip 规则，Domain 规则已足够
   - RULE-SET,cn_ip,国内
   - GEOIP,CN,国内
   - MATCH,国外通用

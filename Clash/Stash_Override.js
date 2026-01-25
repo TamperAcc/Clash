@@ -168,16 +168,6 @@ function main(config) {
       "lazy": true
     },
     {
-      "name": "负载均衡", 
-      "type": "load-balance",
-      "strategy": "consistent-hashing",
-      "include-all": true,
-      "exclude-filter": "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
-      "lazy": true
-    },
-    {
       "name": "AI自动优选",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
@@ -193,13 +183,13 @@ function main(config) {
       "name": "国内",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png",
-      "proxies": ["DIRECT", "负载均衡", "自动选择"]
+      "proxies": ["DIRECT", "自动选择"]
     },
     {
       "name": "Google Search",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
-      "proxies": ["AI自动优选", "AI自动优选"] 
+      "proxies": ["AI自动优选", "自动选择"] 
     },
     {
       "name": "游戏服务",
@@ -215,13 +205,13 @@ function main(config) {
       "name": "YouTube",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png",
-      "proxies": ["负载均衡", "AI自动优选", "自动选择"]
+      "proxies": ["AI自动优选", "自动选择"]
     },
     {
       "name": "国外通用",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png",
-      "proxies": ["负载均衡", "AI自动优选", "自动选择"]
+      "proxies": ["AI自动优选", "自动选择"]
     }
   ];
 
@@ -265,10 +255,10 @@ function main(config) {
     "DOMAIN-SUFFIX,claude.ai,AI自动优选",
     "DOMAIN-SUFFIX,anthropic.com,AI自动优选",
     "RULE-SET,ai_services,AI自动优选",
-    "RULE-SET,huggingface,负载均衡",
+    "RULE-SET,huggingface,AI自动优选",
 
     // 微软/苹果
-    "RULE-SET,microsoft,负载均衡",
+    "RULE-SET,microsoft,自动选择",
     "RULE-SET,icloud,DIRECT",
     "RULE-SET,apple,DIRECT",
     

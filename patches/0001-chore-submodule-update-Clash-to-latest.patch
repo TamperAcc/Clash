@@ -1,0 +1,19 @@
+From 0fd4e44127f79dcf1a5b53f8be34d5a418dde879 Mon Sep 17 00:00:00 2001
+From: INT-boot <707088242@qq.com>
+Date: Sun, 25 Jan 2026 17:02:31 +0800
+Subject: [PATCH] chore(submodule): update Clash to latest
+
+---
+ Clash | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Clash b/Clash
+index 94a26a3..84aa52a 160000
+--- a/Clash
++++ b/Clash
+@@ -1 +1 @@
+-Subproject commit 94a26a38472da9c71e5e9ec2cd15df2d5557931a
++Subproject commit 84aa52a61a3713b500a22bf7e09f1a7c00171f3c
+-- 
+2.49.0.windows.1
+
