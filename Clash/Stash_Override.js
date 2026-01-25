@@ -1,6 +1,6 @@
 ﻿// Stash iOS 专用配置文件覆写脚本 (JS 版)
-// 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.js
-// 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.js
+// 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Clash/Stash_Override.js
+// 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Clash/Stash_Override.js
 // 版本: v1.15 (自动更新版) | 更新日期: 2026-01-25
 // 说明: 移植自 Mihomo_Override.js，针对 iOS/macOS 进行了 Stash 特性适配 (Tiles/无 Exe/Sniffer)
 

@@ -4,14 +4,14 @@
 
 本仓库提供两种针对不同平台深度优化的配置文件。请根据您的客户端选择合适的链接。
 
-### 1. [Clash.yaml](https://raw.githubusercontent.com/TamperAcc/Clash/main/Clash.yaml)
+### 1. [Clash.yaml](https://raw.githubusercontent.com/TamperAcc/Clash/main/Clash/Clash.yaml)
 > **适用平台**: Windows / Linux / macOS (Clash Verge, Mihomo, Clash for Windows)
 
 *   **平台适配**: 包含针对 Windows 进程名 (`.exe`) 的分流规则。
 *   **性能优化**: 默认关闭 QUIC Sniffer 以降低 CPU 占用；开启 DoQ (DNS over QUIC) 极速解析。
 *   **开发友好**: 修复 VS Code 本地回环 (`localhost`, `127.0.0.1`) 连接问题。
 
-### 2. [Stash.yaml](https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash.yaml)
+### 2. [Stash.yaml](https://raw.githubusercontent.com/TamperAcc/Clash/main/Clash/Stash.yaml)
 > **适用平台**: iOS / macOS (Stash)
 
 *   **省电特化**:
@@ -23,7 +23,7 @@
     *   **进程匹配**: 移除 `.exe` 后缀，适配 macOS 应用生态。
 *   **DNS 增强**: 采用 DoQ 协议 (`quic://dns.alidns.com`)，在 4G/5G 切换时连接更稳定。
 
-### 3. [Stash.stoverride](https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash.stoverride)
+### 3. [Stash.stoverride](https://raw.githubusercontent.com/TamperAcc/Clash/main/Clash/Stash.stoverride)
 > **适用平台**: iOS (Stash) - 终极覆写版 (Ultimate Override)
 
 *   **功能定位**: 基于标准版配置的增强型覆写文件，需在 Stash "配置列表 -> 覆写" 中加载。
@@ -40,12 +40,12 @@
 
 *   **桌面端 (Windows / Mac / Linux)**:
     ```url
-    https://raw.githubusercontent.com/TamperAcc/Clash/main/Clash.yaml
+    https://raw.githubusercontent.com/TamperAcc/Clash/main/Clash/Clash.yaml
     ```
 
 *   **移动端 (iOS Stash)**:
     ```url
-    https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash.yaml
+    https://raw.githubusercontent.com/TamperAcc/Clash/main/Clash/Stash.yaml
     ```
 
 ## 核心优化技术 (Key Technologies)
@@ -70,4 +70,4 @@
     *   **GitHub**: 网页走代理，Raw 资源自动加速。
 
 ---
-*Last Update: 2026-01-18*
+*Last Update: 2026-01-26*
