@@ -1,0 +1,413 @@
+﻿# Last Updated: 2026-01-27 [Stash Override v1.18]
+# 移植自 PC 端 Mihomo_Override.js v1.32
+# 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
+# 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
+# Stash 元数据
+name: "Stash Override v1.18"
+desc: "v1.18 | iOS/macOS 专用 | AI 死锁优先 | github.com/TamperAcc/Clash"
+icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
+# ==========================================
+# 核心网络设置 (TCP/DNS/MitM/HTTP)
+# ==========================================
+# 1. TCP 并发 & 基础优化
+tcp-concurrent: true
+keep-alive-interval: 30
+allow-lan: true
+bind-address: "*"
+# 2. GeoData 内存优化模式
+geodata-mode: true
+geodata-loader: memconservative
+geox-url:
+  geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb"
+  geosite: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
+  mmdb: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
+# 3. 模拟指纹
+global-client-fingerprint: chrome
+# 4. DNS 设置
+dns:
+  enable: true
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  respect-rules: true
+  fake-ip-filter:
+    - "*.lan"
+    - "*.local"
+    - "stun.*"
+    - "time.*.apple.com"
+    - "time1.cloud.tencent.com"
+    - "*.bambulab.com"
+    - "*.bambulab.cn"
+    - "+.stun.*.*"
+    - "+.stun.*"
+    - "+.nintendo.net"
+    - "+.playstation.net"
+    - "+.xboxlive.com"
+    - "+.msftconnecttest.com"
+    - "+.msftncsi.com"
+    # ⬇️ 同步 Mihomo: 补充 NTP 和 协议相关过滤
+    - "+.ntp.org"
+    - "+.pool.ntp.org"
+    - "+.stun.protocol.org"
+    - "time.*.com"
+    - "time.*.gov"
+    - "time.*.edu.cn"
+  
+  nameserver-policy:
+    '+.apple.com': 'system'
+    '+.icloud.com': 'system'
+    '+.mzstatic.com': 'system'
+    '+.id.apple.com': 'system'
+    '+.itunes.apple.com': 'system'
+    '+.apps.apple.com': 'system'
+    '+.crashlytics.com': 'system'
+    'geosite:cn': '119.29.29.29'
+    '+.bambulab.cn': '119.29.29.29'
+    # ⬇️ 同步 Mihomo: 补充 Bambu Global 域名
+    '+.bambulab.com': '119.29.29.29'
+  
+  nameserver: #!replace
+    - 119.29.29.29
+    - quic://dns.alidns.com:853
+    # 替换国内 HTTP 源为 Google DoH，提升国外服务解析准确性 (配合 Policies 不会影响国内速度)
+    - https://dns.google/dns-query
+  
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    ipcidr:
+      - 240.0.0.0/4
+
+# 4.1 Sniffer 嗅探 (精准识别流量)
+sniffer:
+  enable: true
+  parse-pure-ip: true
+  override-destination: true
+  sniff:
+    HTTP:
+      ports: [80, 8080, 8880]
+      override-destination: true
+    TLS:
+      ports: [443, 8443]
+# 5. MitM (HTTPS 解密)
+mitm:
+  enable: true
+  append-system-trust: true
+  hostname:
+    - "*.google.cn"
+    - "*.google.com.cn"
+    - "www.google.com"
+# 6. HTTP 引擎
+http:
+  force-http-engine-hosts:
+    - "*.google.cn"
+    - "*.google.com.cn"
+rewrite:
+  - match: ^https?://(www\.)?google\.cn
+    replace: https://www.google.com
+    type: 302
+  - match: ^https?://(www\.)?google\.com\.cn
+    replace: https://www.google.com
+    type: 302
+# ==========================================
+# 脚本 & 面板
+# ==========================================
+script:
+  shortcuts:
+    quic_block: network == 'udp' and dst_port == 443
+# ==========================================
+# 策略组 (Proxy Groups) - 核心逻辑移植
+# ==========================================
+proxy-groups: #!replace
+  - name: 自动选择
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
+    include-all: true
+    # 策略优化: 移除香港节点的排除 ("香港|hongkong|hk|HK|Hong|Kong|")，大幅降低通用浏览延迟
+    filter: "(?i)^(?!.*(流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
+    url: "https://www.gstatic.com/generate_204"
+    interval: 300
+    tolerance: 100
+    unified-delay: true
+    lazy: true
+
+  - name: 🔍 搜索与开发
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
+    include-all: true
+    # 逻辑: 只要不是流量/到期等关键词，全部保留 (含 HK/SG)
+    filter: "(?i)^(?!.*(流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
+    url: "https://www.google.com"
+    interval: 300
+    tolerance: 100
+    unified-delay: true
+    lazy: true
+
+  - name: 🤖 生成式 AI
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
+    include-all: true
+    # 逻辑: 剔除 HK/HongKong/香港/CN/China
+    filter: "(?i)^(?!.*(香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
+    url: "https://gemini.google.com"
+    interval: 300
+    tolerance: 100
+    unified-delay: true
+    lazy: true
+
+  - name: 国内
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
+    proxies:
+      - DIRECT
+      - 自动选择
+  
+  - name: Google Search
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
+    proxies:
+      - 🔍 搜索与开发
+      - 🤖 生成式 AI
+      - 自动选择
+      
+  - name: 游戏服务
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png
+    include-all: true
+    filter: "(?i)香港|台湾|新加坡|日本|韩国"
+    url: "https://www.gstatic.com/generate_204"
+    tolerance: 80
+    unified-delay: true
+    lazy: true
+
+  - name: YouTube 4K
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
+    proxies:
+      - 自动选择
+      - 🔍 搜索与开发
+      
+  - name: 国外通用
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
+    proxies:
+      - 自动选择
+      - 🔍 搜索与开发
+# ==========================================
+# 规则集合 (Rule Providers) 
+# ==========================================
+rule-providers:
+  reject:
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
+    path: ./ruleset/reject.yaml
+    behavior: domain
+    interval: 86400
+    format: text
+    type: http
+  icloud:
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt
+    path: ./ruleset/icloud.yaml
+    behavior: domain
+    interval: 86400
+    format: text
+    type: http
+  microsoft:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.yaml
+    path: ./ruleset/microsoft.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  apple:
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
+    path: ./ruleset/apple.yaml
+    behavior: domain
+    interval: 86400
+    format: text
+    type: http
+  telegram:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.yaml
+    path: ./ruleset/telegram.yaml
+    behavior: ipcidr
+    interval: 86400
+    format: yaml
+    type: http
+  cn_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.yaml
+    path: ./ruleset/cn_domain.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  cn_ip:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.yaml
+    path: ./ruleset/cn_ip.yaml
+    behavior: ipcidr
+    interval: 86400
+    format: yaml
+    type: http
+  google_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.yaml
+    path: ./ruleset/google_domain.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  ai_services:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml
+    path: ./ruleset/ai_services.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  huggingface:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/huggingface.yaml
+    path: ./ruleset/huggingface.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  youtube_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml
+    path: ./ruleset/youtube_domain.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  games:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-games.yaml
+    path: ./ruleset/games.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  social_media:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml
+    path: ./ruleset/social_media.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  telegram_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.yaml
+    path: ./ruleset/telegram_domain.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  geolocation_no_cn:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml
+    path: ./ruleset/geolocation-!cn_domain.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+# ==========================================
+# 规则 (Rules)
+# ==========================================
+rules: #!replace
+  - SCRIPT,quic_block,REJECT
+  
+  # === 1. 硬性直连与局域网 ===
+  - GEOIP,PRIVATE,DIRECT,no-resolve
+  - DOMAIN-SUFFIX,lan,DIRECT
+  - DOMAIN-SUFFIX,local,DIRECT
+  - DOMAIN-SUFFIX,home.arpa,DIRECT
+  
+  # === 2. 广告拦截与隐私保护 (前置以节省资源) ===
+  - RULE-SET,reject,REJECT
+  - DOMAIN-SUFFIX,tracking.miui.com,REJECT
+  - DOMAIN-SUFFIX,app-measurement.com,REJECT
+  - DOMAIN-SUFFIX,googleadservices.com,REJECT
+  - DOMAIN-SUFFIX,doubleclick.net,REJECT
+  - DOMAIN-SUFFIX,googlesyndication.com,REJECT
+  - DOMAIN-KEYWORD,adservice,REJECT
+  - DOMAIN-KEYWORD,analytics,REJECT
+  - DOMAIN-KEYWORD,omniture,REJECT
+  - DOMAIN-KEYWORD,adview,REJECT
+  - DOMAIN-SUFFIX,appsflyer.com,REJECT
+  - DOMAIN-SUFFIX,adjust.com,REJECT
+  
+  # === 3. 进程匹配 (iOS/macOS) ===
+  - PROCESS-NAME,BambuStudio,DIRECT
+  - PROCESS-NAME,bambu-studio,DIRECT
+  - DOMAIN-SUFFIX,bambulab.com,DIRECT
+  - DOMAIN-SUFFIX,bambulab.cn,DIRECT
+  - DOMAIN-SUFFIX,bambulab.co,DIRECT
+
+  # 基础连通性修正 (IPv6)
+  - DOMAIN,ipv6.msftconnecttest.com,REJECT
+  - DOMAIN,ipv6.msftncsi.com,REJECT
+  - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
+  - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
+  - DOMAIN-SUFFIX,msftncsi.com,DIRECT
+  - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
+  - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
+  
+  # 测速服务
+  - DOMAIN-SUFFIX,speedtest.net,DIRECT
+  - DOMAIN-SUFFIX,ookla.com,DIRECT
+  - DOMAIN-SUFFIX,fast.com,国外通用
+  
+  - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT
+  - DOMAIN-SUFFIX,unpkg.com,DIRECT
+  - DOMAIN-SUFFIX,staticfile.org,DIRECT
+  - DOMAIN-SUFFIX,bootcdn.cn,DIRECT
+  - DOMAIN-SUFFIX,bilibili.com,DIRECT
+  - DOMAIN-SUFFIX,hdslb.com,DIRECT
+  - DOMAIN-SUFFIX,acgvideo.com,DIRECT
+  - DOMAIN-SUFFIX,iqiyi.com,DIRECT
+  - DOMAIN-SUFFIX,youku.com,DIRECT
+  - DOMAIN-SUFFIX,163.com,DIRECT
+  - DOMAIN-SUFFIX,music.163.com,DIRECT
+  - DOMAIN-SUFFIX,qqmusic.qq.com,DIRECT
+  - DOMAIN-SUFFIX,jd.com,DIRECT
+  - DOMAIN-SUFFIX,taobao.com,DIRECT
+  - DOMAIN-SUFFIX,tmall.com,DIRECT
+  
+  - DOMAIN-SUFFIX,stackoverflow.com,自动选择
+  - DOMAIN-SUFFIX,stackexchange.com,自动选择
+  - DOMAIN-SUFFIX,npmjs.com,自动选择
+  - DOMAIN-SUFFIX,pypi.org,自动选择
+  - DOMAIN-SUFFIX,docker.com,自动选择
+  - DOMAIN-SUFFIX,docker.io,自动选择
+  
+  - DST-PORT,123,DIRECT
+  
+  # === AI & 搜索 精细化分流 ===
+  
+  # 1. Copilot VScode 插件 -> 🔍 搜索与开发 (求快，走 HK/SG)
+  - DOMAIN,copilot-proxy.githubusercontent.com,🔍 搜索与开发
+  - DOMAIN,api.github.com,🔍 搜索与开发
+  
+  # 2. 生成式 AI -> 🤖 生成式 AI (求稳，避 HK/CN)
+  - DOMAIN-SUFFIX,githubcopilot.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,claude.ai,🤖 生成式 AI
+  - DOMAIN-SUFFIX,anthropic.com,🤖 生成式 AI
+  - DOMAIN,sydney.bing.com,🤖 生成式 AI
+  - DOMAIN,edgeservices.bing.com,🤖 生成式 AI
+  - RULE-SET,ai_services,🤖 生成式 AI
+  - RULE-SET,huggingface,🤖 生成式 AI
+  
+  # 3. Google -> 手术刀式分离
+  # Gemini 走稳
+  - DOMAIN-SUFFIX,gemini.google.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,bard.google.com,🤖 生成式 AI
+  # 其他 Google (搜索/地图/YouTube) 走快
+  - RULE-SET,google_domain,🔍 搜索与开发
+  - RULE-SET,youtube_domain,YouTube 4K
+  
+  # 4. Microsoft/GitHub -> 🔍 搜索与开发 (求快)
+  - DOMAIN-SUFFIX,github.com,🔍 搜索与开发
+  - DOMAIN-SUFFIX,githubusercontent.com,🔍 搜索与开发
+  - DOMAIN-SUFFIX,github.io,🔍 搜索与开发
+  - RULE-SET,microsoft,🔍 搜索与开发
+  
+  - RULE-SET,games,游戏服务
+  - RULE-SET,cn_domain,国内
+  - RULE-SET,geolocation_no_cn,自动选择
+  - RULE-SET,cn_ip,国内
+  - GEOIP,CN,国内
+  
+  - MATCH,自动选择
