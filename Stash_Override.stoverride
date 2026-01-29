@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-01-29 [Stash Override v1.21]
+﻿# Last Updated: 2026-01-29 [Stash Override v1.22]
 # 移植自 PC 端 Mihomo_Override.js v1.42
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.21"
-desc: "v1.21 | 只有3万条规则 | 移除大量冗余 | 极速精简版"
+name: "Stash Override v1.22"
+desc: "v1.22 | 只有2万条规则 | 移除游戏/AI冗余 | 纯净精简版"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -173,16 +173,6 @@ proxy-groups: #!replace
       - 🔍 搜索与开发
       - 🤖 生成式 AI
       - 自动选择
-      
-  - name: 游戏服务
-    type: url-test
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png
-    include-all: true
-    filter: "(?i)香港|台湾|新加坡|日本|韩国"
-    url: "https://www.gstatic.com/generate_204"
-    tolerance: 80
-    unified-delay: true
-    lazy: true
 
   - name: YouTube 4K
     type: select
@@ -208,31 +198,10 @@ rule-providers:
     interval: 86400
     format: text
     type: http
-  icloud:
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt
-    path: ./ruleset/icloud.yaml
-    behavior: domain
-    interval: 86400
-    format: text
-    type: http
   microsoft:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.yaml
     path: ./ruleset/microsoft.yaml
     behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
-  apple:
-    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
-    path: ./ruleset/apple.yaml
-    behavior: domain
-    interval: 86400
-    format: text
-    type: http
-  telegram:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.yaml
-    path: ./ruleset/telegram.yaml
-    behavior: ipcidr
     interval: 86400
     format: yaml
     type: http
@@ -274,37 +243,9 @@ rule-providers:
   youtube_domain:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml
     path: ./ruleset/youtube_domain.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
-  games:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-games.yaml
-    path: ./ruleset/games.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
-  social_media:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml
-    path: ./ruleset/social_media.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
-  telegram_domain:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.yaml
-    path: ./ruleset/telegram_domain.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
-  geolocation_no_cn:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml
-    path: ./ruleset/geolocation-!cn_domain.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
+  youtube_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml
+    path: ./ruleset/youtube_domain
     type: http
 # ==========================================
 # 规则 (Rules)
