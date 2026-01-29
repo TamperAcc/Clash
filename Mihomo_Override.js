@@ -394,15 +394,19 @@ function main(config) {
   ];
 
   config["rules"] = [
-<<<<<<< Updated upstream
-    // 基础 - 局域网与直连 (显式申明 IP 段，防止 GeoIP 识别失败)
+    // 基础 - 局域网与直连 (Tun 模式路由已排除，但保留作为保险，或供非 Tun 模式使用)
     "IP-CIDR,192.168.0.0/16,DIRECT,no-resolve",
     "IP-CIDR,10.0.0.0/8,DIRECT,no-resolve",
     "IP-CIDR,172.16.0.0/12,DIRECT,no-resolve",
     "IP-CIDR,127.0.0.0/8,DIRECT,no-resolve",
-=======
-    // 基础 - 局域网与直连 (Tun 模式路由已排除，但保留作为保险，或供非 Tun 模式使用)
-    // 基础 - 局域网与直连 (Tun 模式路由已排除，但保留作为保险，或供非 Tun 模式使用)nnecttest.com,REJECT",
+    "GEOIP,PRIVATE,DIRECT,no-resolve",
+    "DOMAIN-SUFFIX,lan,DIRECT",
+    "DOMAIN-SUFFIX,local,DIRECT",
+    "DOMAIN-SUFFIX,home.arpa,DIRECT",
+    "DOMAIN-SUFFIX,yfjc.xyz,DIRECT",
+    
+    // 基础 - 微软连通性测试 (IPv6 需 Reject 以避免卡顿)
+    "DOMAIN,ipv6.msftconnecttest.com,REJECT",
     "DOMAIN,ipv6.msftncsi.com,REJECT",
     "DOMAIN-SUFFIX,msftconnecttest.com,DIRECT",
     "DOMAIN-SUFFIX,msftncsi.com,DIRECT",
