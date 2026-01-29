@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.37  | 更新日期: 2026-01-29
+// 版本: v1.38  | 更新日期: 2026-01-29
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.37 (Test TCP-Concurrent ON)...");
+  console.log("✅ 加载脚本 v1.38 (Cleanup - Revert Sniffer & Auth)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -25,8 +25,8 @@ function main(config) {
     "auto-update": true
   };
   
-  // 修复本地回环和 Google 连接问题 (追加局域网段)
-  config["skip-auth-prefixes"] = ["127.0.0.1/8", "::1/128", "192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12"];
+  // 修复本地回环和 Google 连接问题 (恢复精简列表，因 Tun 已排除内网，此处不再需要冗余配置)
+  config["skip-auth-prefixes"] = ["127.0.0.1/8", "::1/128"];
   
   // GeoData 优化
   config["geodata-loader"] = "memconservative";
@@ -99,7 +99,7 @@ function main(config) {
   // 4. Sniffer 设置
   config["sniffer"] = {
     "enable": true,
-    "parse-pure-ip": false, // ❌ 关闭纯 IP 嗅探，解决局域网直连 IP 被错误劫持或 reset 问题
+    "parse-pure-ip": true, // ✅ 恢复为 true。因内网流量已不经过内核，开启此项不再影响内网，且能增强外网分流
     "override-destination": true,
     "sniff": {
       "HTTP": { "ports": [80, 8080, 8880], "override-destination": true },
