@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-01-29 [Stash Override v1.19]
+﻿# Last Updated: 2026-01-29 [Stash Override v1.20]
 # 移植自 PC 端 Mihomo_Override.js v1.42
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.19"
-desc: "v1.19 | DNS防卡顿优化 & 极速切换 | iOS/macOS 专用"
+name: "Stash Override v1.20"
+desc: "v1.20 | 极致响应 | 移除Win冗余 | 优化Fallback | iOS/macOS 专用"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -67,9 +67,14 @@ dns:
     '+.bambulab.com': '119.29.29.29'
   
   nameserver: #!replace
+    - system # 🚀 优先使用系统 DNS (ISP)，速度最快
     - 119.29.29.29
     - quic://dns.alidns.com:853
-    # ❌ 移除 dns.google，防止国内直连超时导致网络卡顿 (Fake-IP 模式下无需本地解析国外域名)
+  
+  # ✅ 新增 Fallback: 采用 TCP 协议连接 OpenDNS，比 Google 直连更稳，解决 IP 归属误判
+  fallback:
+    - tcp://208.67.222.222:443
+    - tcp://8.8.4.4:53
   
   fallback-filter:
     geoip: true
@@ -136,11 +141,10 @@ proxy-groups: #!replace
     include-all: true
     # 逻辑: 只要不是流量/到期等关键词，全部保留 (含 HK/SG)
     filter: "(?i)^(?!.*(流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
-    url: "https://www.google.com"
-    interval: ://www.gstatic.com/generate_204"
+    url: "http://www.gstatic.com/generate_204"
     interval: 300
-    tolerance: 100
-    unified-delay: true
+    tolerance: 50
+    unified-delay: false # ⚡ 极速模式
     lazy: true
 
   - name: 🤖 生成式 AI
@@ -149,9 +153,10 @@ proxy-groups: #!replace
     include-all: true
     # 逻辑: 剔除 HK/HongKong/香港/CN/China
     filter: "(?i)^(?!.*(香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
-    url: "http://www.gstatic.com/generate_204
-    tolerance: 100
-    unified-delay: true
+    url: "http://www.gstatic.com/generate_204"
+    interval: 300
+    tolerance: 50
+    unified-delay: false # ⚡ 极速模式
     lazy: true
 
   - name: 国内
@@ -328,6 +333,7 @@ rules: #!replace
   - DOMAIN-SUFFIX,adjust.com,REJECT
   
   # === 3. 进程匹配 (iOS/macOS) ===
+  # 🧹 清理：移除了大量 Windows .exe 规则，减少 iOS 匹配开销
   - PROCESS-NAME,BambuStudio,DIRECT
   - PROCESS-NAME,bambu-studio,DIRECT
   - DOMAIN-SUFFIX,bambulab.com,DIRECT
@@ -407,4 +413,6 @@ rules: #!replace
   - RULE-SET,cn_domain,国内
   - RULE-SET,geolocation_no_cn,自动选择
   - RULE-SET,cn_ip,国内
-  - GEOIP,C
+  - GEOIP,CN,国内
+  
+  - MATCH,自动选择
