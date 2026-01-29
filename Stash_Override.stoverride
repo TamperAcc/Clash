@@ -334,7 +334,6 @@ rules: #!replace
   - DOMAIN,sydney.bing.com,🤖 生成式 AI
   - DOMAIN,edgeservices.bing.com,🤖 生成式 AI
   - RULE-SET,ai_services,🤖 生成式 AI
-  - RULE-SET,huggingface,🤖 生成式 AI
   
   # 3. Google -> 手术刀式分离
   # Gemini 走稳
