@@ -233,19 +233,19 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  huggingface:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/huggingface.yaml
-    path: ./ruleset/huggingface.yaml
+  youtube_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml
+    path: ./ruleset/youtube_domain.yaml
     behavior: domain
     interval: 86400
     format: yaml
     type: http
-  youtube_domain:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml
-    path: ./ruleset/youtube_domain.yaml
-  youtube_domain:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml
-    path: ./ruleset/youtube_domain
+  geolocation_no_cn:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml
+    path: ./ruleset/geolocation-!cn_domain.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
     type: http
 # ==========================================
 # 规则 (Rules)
