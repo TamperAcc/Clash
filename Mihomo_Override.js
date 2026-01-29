@@ -6,7 +6,11 @@
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
+<<<<<<< Updated upstream
   console.log("✅ 加载脚本 v1.40 (Enable GPT-5.2-Codex for all clients)...");
+=======
+  console.log("✅ 加载脚本 v1.40 (Gvisor Stack & LAN Bypass)...");
+>>>>>>> Stashed changes
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -27,6 +31,7 @@ function main(config) {
   
   // 修复本地回环和 Google 连接问题 (恢复精简列表，因 Tun 已排除内网，此处不再需要冗余配置)
   config["skip-auth-prefixes"] = ["127.0.0.1/8", "::1/128"];
+  // Tun 模式下已排除内网流量，此项理论不需要，但保留以防 Local 软件验证问题
   
   // GeoData 优化
   config["geodata-loader"] = "memconservative";
@@ -52,7 +57,8 @@ function main(config) {
       "119.29.29.29"
     ],
     "fake-ip-filter": [
-      "*.lan", "*.local", "+.msftconnecttest.com", "+.msftncsi.com",
+      // "*.lan", "*.local",  <-- 已通过 inet4-route-exclude-address 在路由层排除，此处不再需要
+      "+.msftconnecttest.com", "+.msftncsi.com",
       "+.ntp.org", "+.pool.ntp.org", "+.stun.protocol.org",
       "stun.*", "+.stun.*.*", "+.stun.*",
       "+.nintendo.net", "+.playstation.net", "+.xboxlive.com",
@@ -87,11 +93,18 @@ function main(config) {
   // 3. Tun 模式
   config["tun"] = {
     "enable": true,
+<<<<<<< Updated upstream
     "stack": "gvisor", // 🔥 兼容性修复：使用 gvisor 栈代替 mixed，防止 Windows 下产生流量回环导致所有节点超时
     "auto-route": true,
     "auto-detect-interface": true,
     "strict-route": false, // 🔥 核心修复：关闭严格路由，防止覆盖系统原有路由表导致的回环
     "mtu": 9000,
+=======
+    "stack": "gvisor", // 🔥 兼容性修复：使用 gvisor 栈代替 mixed，提高复杂网络下稳定性
+    "auto-route": true,
+    "auto-detect-interface": true,
+    "strict-route": true, // ✅ 调整：保持开启严格路由，防止复杂网络环境下流量泄露
+>>>>>>> Stashed changes
     "dns-hijack": ["any:53"],
     // 🔥 核心修复：直接从 Tun 路由中排除局域网流量，让 OS 自动处理，彻底解决 ERR_EMPTY_RESPONSE
     "inet4-route-exclude-address": ["192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12"]
@@ -393,11 +406,15 @@ function main(config) {
   ];
 
   config["rules"] = [
+<<<<<<< Updated upstream
     // 基础 - 局域网与直连 (显式申明 IP 段，防止 GeoIP 识别失败)
     "IP-CIDR,192.168.0.0/16,DIRECT,no-resolve",
     "IP-CIDR,10.0.0.0/8,DIRECT,no-resolve",
     "IP-CIDR,172.16.0.0/12,DIRECT,no-resolve",
     "IP-CIDR,127.0.0.0/8,DIRECT,no-resolve",
+=======
+    // 基础 - 局域网与直连 (Tun 模式路由已排除，但保留作为保险，或供非 Tun 模式使用)
+>>>>>>> Stashed changes
     "GEOIP,PRIVATE,DIRECT,no-resolve",
     "DOMAIN-SUFFIX,lan,DIRECT",
     "DOMAIN-SUFFIX,local,DIRECT",

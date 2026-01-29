@@ -1,57 +1,69 @@
-# GitHub Copilot Instructions (Clash Profile)
+﻿# GitHub Copilot Instructions (Clash Profile)
 
 ## 1. Project Context
-Network proxy configurations for **Mihomo (PC)** and **Stash (iOS)**.
-- **Repository**: This folder (`Clash/`) maps to the root of the remote `TamperAcc/Clash` repository via subtree.
+Network proxy configurations for **Mihomo (PC)**, **FlClash (PC)**, and **Stash (iOS/macOS)**.
+- **Repository**: `Clash/` folder in workspace maps to `TamperAcc/Clash` remote root.
 - **Core Mission**: Optimize connectivity for Developer Tools (GitHub, AI Models) and domestic Hardware Ecosystem (Bambu Lab).
+- **Files**:
+  - `Mihomo_Override.js`: Primary PC config (Mihomo Party).
+  - `FlClash_Override.js`: Alternative PC config (FlClash).
+  - `ClashVerge.yaml`: Reference YAML config (Basis for JS ports).
+  - `Stash_Override.stoverride` & `Stash_Override.js`: iOS/macOS configs (Stash).
 
 ## 2. Maintenance (Critical)
-- **Repo Structure**: Local files are in `Git/Clash/`. Remote raw links (`raw.githubusercontent.com/...`) MUST reference the repo root.
-- **Pushing Updates**: **DO NOT** use `git push` inside this folder directly.
-  - **Standard Workflow**: Execute from the workspace root (`g:\Git\`):
+- **Pushing Updates**: 
+  - **NEVER** use `git push` inside `Clash/` folder.
+  - **ALWAYS** execute from workspace root (`g:\Git\`):
     ```powershell
     git subtree push --prefix Clash origin main
     ```
+- **Sync Requirement**: Logic changes (e.g., new `proxy-groups`, routing rules) MUST be manually mirrored across:
+  1. `Mihomo_Override.js` (Source of Truth)
+  2. `FlClash_Override.js`
+  3. `Stash_Override.stoverride` (YAML) AND `Stash_Override.js` (JS)
 
 ## 3. Platform Patterns
 
-### PC/Mihomo (`Mihomo_Override.js`)
-- **Format**: JavaScript dynamic config generation.
-- **Entry Point**: `function main(config) { if (!config) return {}; ... }`
-- **Method**: Direct object manipulation (e.g., `config["dns"]["enable"] = true`).
-- **Safety**: Robustly check for existing keys before assignment.
+### PC (Mihomo/FlClash)
+- **Format**: JavaScript dynamic config generation (ES6).
+- **Generator Pattern**: Use `createRegionSets(suffix, url, ...)` (found in Mihomo) to generate region groups.
+  - **Time Staggering**: `interval: base + offset + (index * step)` to prevent concurrent speed-test congestion.
+- **Process Rules**:
+  - Strict matching for Windows `.exe` (e.g., `BambuStudio.exe`).
+  - `find-process-mode: "strict"`.
+- **Safety**: Robustly check input config: `if (!config) return {};`.
 
-### iOS/Stash (`Stash_Override.stoverride`)
-- **Format**: Declarative YAML with Stash-specific override directives.
-- **Directives**: Use `#!replace` to overwrite lists/dictionaries (e.g., `proxy-groups: #!replace`).
+### iOS/macOS (Stash)
+- **Formats**: Supports both YAML (`.stoverride`) and JavaScript (`.js`).
 - **Optimization**:
-  - `lazy: true`: Enable for ALL policy groups to reduce resource usage.
-  - `keep-alive-interval: 600`: Critical for iOS battery life.
-  - **Start Strategy**: Use `on-demand` or `background` fetch carefully.
+  - `lazy: true`: **MANDATORY** for ALL groups to save battery/reduce resource usage.
+  - `keep-alive-interval`: 30s.
+  - **Process**: Remove `.exe` suffixes for cross-platform compatibility.
+- **Directives (YAML)**: Use `#!replace` to overwrite lists (e.g., `proxy-groups: #!replace`).
 
-## 4. Key Technologies & Conventions
+## 4. Key Technologies
 
 ### DNS & Connectivity
-- **DoQ Strategy**: User `quic://dns.alidns.com:853` for low latency and anti-blocking.
-- **Fallback Mechanism**:
-  - Avoid `1.1.1.1` UDP.
-  - Use `https://1.0.0.1` (CF) + `tcp://208.67.222.222` (OpenDNS) + `tls://8.8.4.4`.
-- **Anti-Pollution**: Ensure domestic domains resolve to domestic IPs to bypass proxy overhead.
+- **DoQ Strategy**: `quic://dns.alidns.com:853` (Alibaba) for low latency/anti-blocking.
+- **Fake-IP**: Range `198.18.0.1/16`.
+- **Exclusions (`fake-ip-filter`)**:
+  - `*.bambulab.cn`, `*.bambulab.com` (Vital for LAN discovery).
+  - `+.msftconnecttest.com` (Windows connectivity).
 
 ### AI & Developer Routing
-- **AI Services**: Dedicated groups for `OpenAI`, `Claude`, `Gemini`.
-  - **Routing**: Prioritize `SG` (Singapore) or `US` (United States) nodes.
-  - **Block**: Avoid `HK` or generic nodes for generative AI to prevent bans.
-- **GitHub**: Accelerate specifically via proxy; ensure `raw.githubusercontent.com` is optimized.
+- **Groups**: `Gemini`, `Copilot`, `GitHub`, `ChatGPT`.
+- **Routing**:
+  - AI Services -> `SG` (Singapore) or `US` (USA).
+  - **Block**: Avoid `HK` for Generative AI.
+- **GitHub**: Accelerate via proxy (including `raw.githubusercontent.com`).
 
-### Hardware Ecosystem
-- **Bambu Lab (拓竹)**: 
-  - **Rule**: MUST exclude `*.bambulab.cn` and `*.bambulab.com` from Fake-IP.
-  - **Action**: Add to `fake-ip-filter` and force `DIRECT`.
-  - **Reason**: Ensures local LAN discovery (SSDP/mDNS) and cloud slice transmission stability.
+### Hardware Ecosystem (Bambu Lab)
+- **Rule**: Force `DIRECT` for `BambuStudio.exe` and `bambulab` domains.
+- **Reason**: Ensures local LAN discovery (SSDP/mDNS) and cloud slice transmission stability.
+- **Implementation**: Listed in both `fake-ip-filter` and `rules`.
 
-## 5. Work Rules
+## 5. Coding Standards
+- **Versioning**: Increment version (e.g., `v1.32`) and Update Date (YYYY-MM-DD) in file headers on every change.
 - **Validation**:
-  - **JS**: Check syntax for ES6 compliance.
-  - **YAML**: Strict indentation checks; ensure no tab characters.
-- **Dates**: Use ISO 8601 `YYYY-MM-DD` for all changelogs.
+  - **JS**: Check ES6 compliance and null safety.
+  - **YAML**: Strict indentation, no tabs.
