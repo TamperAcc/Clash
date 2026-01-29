@@ -222,6 +222,14 @@ function main(config) {
       "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml",
       "path": "./ruleset/geolocation-!cn_domain.yaml",
       "interval": 86400
+    },
+    // 社交
+    "social_media": {
+      "type": "http",
+      "behavior": "domain",
+      "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml",
+      "path": "./ruleset/social_media.yaml",
+      "interval": 86400
     }
   };
 
