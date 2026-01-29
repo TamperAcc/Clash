@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.33  | 更新日期: 2026-01-29
+// 版本: v1.34  | 更新日期: 2026-01-29
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.33 (LAN Fix & Perf Opt)...");
+  console.log("✅ 加载脚本 v1.34 (Disable Sniff-IP & Concurrent)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -14,7 +14,7 @@ function main(config) {
   }
 
   // 1. 基础设置优化
-  config["tcp-concurrent"] = true;
+  config["tcp-concurrent"] = false; // ❌ 禁用并发以提高内网稳定性
   config["global-client-fingerprint"] = "edge";
   config["keep-alive-interval"] = 30;
   config["allow-lan"] = true;
@@ -25,8 +25,8 @@ function main(config) {
     "auto-update": true
   };
   
-  // 修复本地回环和 Google 连接问题
-  config["skip-auth-prefixes"] = ["127.0.0.1/8", "::1/128"];
+  // 修复本地回环和 Google 连接问题 (追加局域网段)
+  config["skip-auth-prefixes"] = ["127.0.0.1/8", "::1/128", "192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12"];
   
   // GeoData 优化
   config["geodata-loader"] = "memconservative";
@@ -97,7 +97,7 @@ function main(config) {
   // 4. Sniffer 设置
   config["sniffer"] = {
     "enable": true,
-    "parse-pure-ip": true,
+    "parse-pure-ip": false, // ❌ 关闭纯 IP 嗅探，解决局域网直连 IP 被错误劫持或 reset 问题
     "override-destination": true,
     "sniff": {
       "HTTP": { "ports": [80, 8080, 8880], "override-destination": true },
