@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.42  | 更新日期: 2026-01-29
+// 版本: v1.43  | 更新日期: 2026-01-29
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.42 (Remove IEPL Filter)...");
+  console.log("✅ 加载脚本 v1.43 (Optimization: Disable Unified-Delay for AI)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -272,8 +272,8 @@ function main(config) {
 
   // 辅助函数：生成一套包含所有地区的策略组 (Level 1: Region Groups)
   // suffix: 组名后缀 (如 " Gemini"), url: 测速地址, hidden: 是否隐藏
-  // baseInterval: 基础间隔(秒), offset: 组间偏移(秒)
-  function createRegionSets(suffix, url, hidden = true, baseInterval = 100, offset = 0) {
+  // baseInterval: 基础间隔(秒), offset: 组间偏移(秒), unifiedDelay: 是否开启统一延迟计算
+  function createRegionSets(suffix, url, hidden = true, baseInterval = 100, offset = 0, unifiedDelay = true) {
      return regions.map((r, index) => ({
       "name": r.name + suffix,
       "type": "url-test",
@@ -286,18 +286,18 @@ function main(config) {
       // 使用 index * 13 确保地区间充分错开，offset 确保服务间错开
       "interval": baseInterval + offset + (index * 13),
       "tolerance": 50,
-      "unified-delay": true,
+      "unified-delay": unifiedDelay,
       "lazy": true
     }));
   }
 
   // 生成 5 套底层地区组 - 引入时间错开机制 (防止并发测速拥堵)
   // 改为 100s 以获得更快的节点故障响应速度 (配合 lazy: true 使用性能可控)
-  const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  100, 0); 
-  const groupsGemini  = createRegionSets(" Gemini",   "https://gemini.google.com",           true,  100, 6);
-  const groupsCopilot = createRegionSets(" Copilot",  "https://www.bing.com",                true,  100, 12);
-  const groupsGithub  = createRegionSets(" GitHub",   "https://api.github.com",              true,  100, 18);
-  const groupsGPT     = createRegionSets(" GPT",      "https://chatgpt.com",                 true,  100, 24);
+  const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  100, 0, true); 
+  const groupsGemini  = createRegionSets(" Gemini",   "https://gemini.google.com",           true,  100, 6, false);
+  const groupsCopilot = createRegionSets(" Copilot",  "https://www.bing.com",                true,  100, 12, false);
+  const groupsGithub  = createRegionSets(" GitHub",   "https://api.github.com",              true,  100, 18, false);
+  const groupsGPT     = createRegionSets(" GPT",      "https://chatgpt.com",                 true,  100, 24, false);
 
   // 将所有底层组展平，准备加入 config["proxy-groups"]
   const allRegionGroups = [
@@ -327,6 +327,7 @@ function main(config) {
       "url": "https://gemini.google.com",
       "interval": 100,
       "tolerance": 100,
+      "unified-delay": false,
       "lazy": true
     },
     {
@@ -337,6 +338,7 @@ function main(config) {
       "url": "https://www.bing.com",
       "interval": 100,
       "tolerance": 100,
+      "unified-delay": false,
       "lazy": true
     },
     {
@@ -347,6 +349,7 @@ function main(config) {
       "url": "https://api.github.com",
       "interval": 100,
       "tolerance": 100,
+      "unified-delay": false,
       "lazy": true
     },
     {
@@ -357,6 +360,7 @@ function main(config) {
       "url": "https://chatgpt.com",
       "interval": 100,
       "tolerance": 100,
+      "unified-delay": false,
       "lazy": true
     },
 
