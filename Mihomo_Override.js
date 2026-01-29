@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.34  | 更新日期: 2026-01-29
+// 版本: v1.35  | 更新日期: 2026-01-29
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.34 (Disable Sniff-IP & Concurrent)...");
+  console.log("✅ 加载脚本 v1.35 (Revert TCP-Concurrent)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -14,7 +14,7 @@ function main(config) {
   }
 
   // 1. 基础设置优化
-  config["tcp-concurrent"] = false; // ❌ 禁用并发以提高内网稳定性
+  config["tcp-concurrent"] = true;
   config["global-client-fingerprint"] = "edge";
   config["keep-alive-interval"] = 30;
   config["allow-lan"] = true;
