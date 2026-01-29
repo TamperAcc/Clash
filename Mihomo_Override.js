@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.44  | 更新日期: 2026-01-29
+// 版本: v1.45  | 更新日期: 2026-01-29
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.44 (Sync Stash: Remove Huggingface & Games)...");
+  console.log("✅ 加载脚本 v1.45 (Optimize: Exclude RU/HK from AI Groups)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -252,8 +252,14 @@ function main(config) {
   // 辅助函数：生成一套包含所有地区的策略组 (Level 1: Region Groups)
   // suffix: 组名后缀 (如 " Gemini"), url: 测速地址, hidden: 是否隐藏
   // baseInterval: 基础间隔(秒), offset: 组间偏移(秒), unifiedDelay: 是否开启统一延迟计算
-  function createRegionSets(suffix, url, hidden = true, baseInterval = 100, offset = 0, unifiedDelay = true) {
-     return regions.map((r, index) => ({
+  // excludeRegex: 需要排除的地区名称正则 (如 "俄罗斯|香港")
+  function createRegionSets(suffix, url, hidden = true, baseInterval = 100, offset = 0, unifiedDelay = true, excludeRegex = null) {
+     // 预先过滤地区
+     const targetRegions = excludeRegex 
+        ? regions.filter(r => !new RegExp(excludeRegex).test(r.name)) 
+        : regions;
+
+     return targetRegions.map((r, index) => ({
       "name": r.name + suffix,
       "type": "url-test",
       "hidden": hidden,
@@ -273,10 +279,11 @@ function main(config) {
   // 生成 5 套底层地区组 - 引入时间错开机制 (防止并发测速拥堵)
   // 改为 100s 以获得更快的节点故障响应速度 (配合 lazy: true 使用性能可控)
   const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  100, 0, true); 
-  const groupsGemini  = createRegionSets(" Gemini",   "https://gemini.google.com",           true,  100, 6, false);
-  const groupsCopilot = createRegionSets(" Copilot",  "https://www.bing.com",                true,  100, 12, false);
-  const groupsGithub  = createRegionSets(" GitHub",   "https://api.github.com",              true,  100, 18, false);
-  const groupsGPT     = createRegionSets(" GPT",      "https://chatgpt.com",                 true,  100, 24, false);
+  // AI 分组特别优化：排除不支持的地区 (俄罗斯 RU) 及部分 (香港 HK)
+  const groupsGemini  = createRegionSets(" Gemini",   "https://gemini.google.com",           true,  100, 6, false, "俄罗斯|香港");
+  const groupsCopilot = createRegionSets(" Copilot",  "https://www.bing.com",                true,  100, 12, false, "俄罗斯");
+  const groupsGithub  = createRegionSets(" GitHub",   "https://api.github.com",              true,  100, 18, false, "俄罗斯");
+  const groupsGPT     = createRegionSets(" GPT",      "https://chatgpt.com",                 true,  100, 24, false, "俄罗斯|香港");
 
   // 将所有底层组展平，准备加入 config["proxy-groups"]
   const allRegionGroups = [
