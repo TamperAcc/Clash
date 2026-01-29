@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-01-29 [Stash Override v1.24]
+﻿# Last Updated: 2026-01-30 [Stash Override v1.25]
 # 移植自 PC 端 Mihomo_Override.js v1.45
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.24"
-desc: "v1.24 | 屏蔽AI俄罗斯节点 | 修复YAML格式错误 | 已移除huggingface | 纯净版"
+name: "Stash Override v1.25"
+desc: "v1.25 | 屏蔽AI俄罗斯节点 | 修复YAML格式错误 | 已移除huggingface | 修复规则引用并更新"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -349,7 +349,6 @@ rules: #!replace
   - DOMAIN-SUFFIX,github.io,🔍 搜索与开发
   - RULE-SET,microsoft,🔍 搜索与开发
   
-  - RULE-SET,games,游戏服务
   - RULE-SET,cn_domain,国内
   - RULE-SET,geolocation_no_cn,自动选择
   - RULE-SET,cn_ip,国内
