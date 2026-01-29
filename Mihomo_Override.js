@@ -251,7 +251,7 @@ function main(config) {
   const regions = [
     { name: "🇭🇰 香港", filter: "(?i)香港|HK|HongKong" },
     { name: "🇹🇼 台湾", filter: "(?i)台湾|TW|Taiwan" },
-    { name: "🇯🇵 日本", filter: "(?i)日本|JP|Japan" },
+    { name: "🇯🇵 日本", filter: "(?i)日本|JP|Japan|JR" },
     { name: "🇰🇷 韩国", filter: "(?i)韩国|KR|Korea" },
     { name: "🇸🇬 新加坡", filter: "(?i)新加坡|SG|Singapore" },
     { name: "🇺🇸 美国", filter: "(?i)美国|US|United States" },
