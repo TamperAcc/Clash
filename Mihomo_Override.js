@@ -222,15 +222,8 @@ function main(config) {
       "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml",
       "path": "./ruleset/geolocation-!cn_domain.yaml",
       "interval": 86400
-    },
-    "games": {
-      "type": "http",
-      "behavior": "domain",
-      "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-games.yaml",
-      "path": "./ruleset/games.yaml",
-      "interval": 86400
-    },
-    "
+    }
+  };
 
   // Proxy Groups 定义
   // 基础地区正则定义
@@ -367,12 +360,6 @@ function main(config) {
       "proxies": ["Gemini", "自动选择"] 
     },
     {
-      "name": "游戏服务",
-      "type": "select",
-      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png",
-      "proxies": ["自动选择", "Gemini"]
-    },
-    {
       "name": "YouTube",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png",
@@ -436,27 +423,17 @@ function main(config) {
     "PROCESS-NAME,cursor.exe,自动选择",
     "PROCESS-NAME,idea64.exe,自动选择",
     "PROCESS-NAME,pycharm64.exe,自动选择",
-    "PROCESS-NAME,Steam.exe,游戏服务",
-    "PROCESS-NAME,steamwebhelper.exe,游戏服务",
-    "PROCESS-NAME,EpicGamesLauncher.exe,游戏服务",
-    "PROCESS-NAME,Origin.exe,游戏服务",
-    "PROCESS-NAME,Uplay.exe,游戏服务",
+    "PROCESS-NAME,Steam.exe,自动选择",
+    "PROCESS-NAME,steamwebhelper.exe,自动选择",
+    "PROCESS-NAME,EpicGamesLauncher.exe,自动选择",
+    "PROCESS-NAME,Origin.exe,自动选择",
+    "PROCESS-NAME,Uplay.exe,自动选择",
     "PROCESS-NAME,cloudmusic.exe,DIRECT",
-    "PROCESS-NAME,steamwebhelper.exe,自动选择lot",
     "RULE-SET,openai,ChatGPT",
     "RULE-SET,copilot,Copilot",
     "RULE-SET,gemini,Gemini",
     
     // AI 服务 - 兜底
-    "DOMAIN,copilot-proxy.githubusercontent.com,GitHub Copilot",
-    "DOMAIN,api.github.com,GitHub Copilot",
-    "DOMAIN-SUFFIX,githubcopilot.com,GitHub Copilot",
-    "DOMAIN-SUFFIX,claude.ai,ChatGPT",
-    "DOMAIN-SUFFIX,anthropic.com,ChatGPT",
-    "RULE-SET,ai_services,ChatGPT",
-    "RULE-SET,huggingface,ChatGPT",
-
-    // Google 服务 (独立)
     "RULE-SET,google,Google",
 
     // 开发者/微软
@@ -479,13 +456,11 @@ function main(config) {
     "DOMAIN-SUFFIX,steamcontent.com,DIRECT",
     "DOMAIN-SUFFIX,steamstatic.com,DIRECT",
     "DOMAIN-SUFFIX,epicgames.com,DIRECT",
-    "RULE-SET,games,游戏服务",
     // Bambu 云服务 & 打印机通信
     "DOMAIN-SUFFIX,bambulab.com,DIRECT",
     "DOMAIN-SUFFIX,bambulab.cn,DIRECT",
     "DOMAIN-SUFFIX,bambulab.co,DIRECT",
-
-    // 社交
+// 社交
     "RULE-SET,social_media,自动选择",
     "RULE-SET,telegram_domain,自动选择",
     "RULE-SET,telegram,自动选择",
