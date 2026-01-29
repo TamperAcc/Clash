@@ -390,7 +390,11 @@ function main(config) {
   ];
 
   config["rules"] = [
-    // 基础 - 局域网与直连
+    // 基础 - 局域网与直连 (显式申明 IP 段，防止 GeoIP 识别失败)
+    "IP-CIDR,192.168.0.0/16,DIRECT,no-resolve",
+    "IP-CIDR,10.0.0.0/8,DIRECT,no-resolve",
+    "IP-CIDR,172.16.0.0/12,DIRECT,no-resolve",
+    "IP-CIDR,127.0.0.0/8,DIRECT,no-resolve",
     "GEOIP,PRIVATE,DIRECT,no-resolve",
     "DOMAIN-SUFFIX,lan,DIRECT",
     "DOMAIN-SUFFIX,local,DIRECT",
