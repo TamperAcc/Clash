@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.39  | 更新日期: 2026-01-29
+// 版本: v1.40  | 更新日期: 2026-01-29
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.39 (Fix - TUN Timeout)...");
+  console.log("✅ 加载脚本 v1.40 (Revert MTU & TCP Concurrent)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -14,9 +14,9 @@ function main(config) {
   }
 
   // 1. 基础设置优化
-  config["tcp-concurrent"] = true; // ✅ 恢复并发 (已有 Tun 排除保护，重新测试开启)
-  config["global-client-fingerprint"] = "edge";
-  config["keep-alive-interval"] = 30;
+  config["tcp-concurrent"] = false; // 🚨 紧急关闭：并发可能导致部分机场节点断流或被反作弊机制阻断
+  config["global-client-fingerprint"] = "chrome"; // 改为 chrome 模拟
+  config["keep-alive-interval"] = 15; // 缩短心跳
   config["allow-lan"] = true;
   config["bind-address"] = "*";
   config["find-process-mode"] = "strict";
@@ -87,13 +87,13 @@ function main(config) {
   // 3. Tun 模式
   config["tun"] = {
     "enable": true,
-    "stack": "gvisor", // 🔥 兼容性修复：使用 gvisor 栈代替 mixed，防止 Windows 下产生流量回环导致所有节点超时
+    "stack": "system", // 🔥 尝试 System 栈：System 模式使用 Windows 原生 TCP/IP 栈，性能最好且兼容性通常高于 gvisor
     "auto-route": true,
     "auto-detect-interface": true,
-    "strict-route": false, // 🔥 核心修复：关闭严格路由，防止覆盖系统原有路由表导致的回环
-    "mtu": 9000,
+    "strict-route": false, // 保持关闭
+    "mtu": 1500, // 🚨 恢复标准 MTU：9000 巨型帧在 WiFi 环境下极易导致丢包超时
+    "endpoint-independent-nat": true, // 改善 P2P 连接
     "dns-hijack": ["any:53"],
-    // 🔥 核心修复：直接从 Tun 路由中排除局域网流量，让 OS 自动处理，彻底解决 ERR_EMPTY_RESPONSE
     "inet4-route-exclude-address": ["192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12"]
   };
 
