@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.43  | 更新日期: 2026-01-29
+// 版本: v1.44  | 更新日期: 2026-01-29
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.43 (Optimization: Disable Unified-Delay for AI)...");
+  console.log("✅ 加载脚本 v1.44 (Sync Stash: Remove Huggingface & Games)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -174,13 +174,6 @@ function main(config) {
       "path": "./ruleset/microsoft.yaml",
       "interval": 86400
     },
-    "huggingface": {
-      "type": "http",
-      "behavior": "domain",
-      "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/huggingface.yaml",
-      "path": "./ruleset/huggingface.yaml",
-      "interval": 86400
-    },
     "ai_services": {
       "type": "http",
       "behavior": "domain",
@@ -237,14 +230,7 @@ function main(config) {
       "path": "./ruleset/games.yaml",
       "interval": 86400
     },
-    "social_media": {
-      "type": "http",
-      "behavior": "domain",
-      "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml",
-      "path": "./ruleset/social_media.yaml",
-      "interval": 86400
-    }
-  };
+    "
 
   // Proxy Groups 定义
   // 基础地区正则定义
@@ -389,12 +375,6 @@ function main(config) {
     {
       "name": "YouTube",
       "type": "select",
-      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png",
-      "proxies": ["自动选择", "Gemini"]
-    },
-    {
-      "name": "国外通用",
-      "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png",
       "proxies": ["自动选择", "Gemini"]
     }
@@ -462,11 +442,7 @@ function main(config) {
     "PROCESS-NAME,Origin.exe,游戏服务",
     "PROCESS-NAME,Uplay.exe,游戏服务",
     "PROCESS-NAME,cloudmusic.exe,DIRECT",
-    "PROCESS-NAME,QQMusic.exe,DIRECT",
-    "PROCESS-NAME,DouYinLive.exe,DIRECT",
-
-    // AI 服务 - 独立分流
-    "RULE-SET,github,GitHub Copilot",
+    "PROCESS-NAME,steamwebhelper.exe,自动选择lot",
     "RULE-SET,openai,ChatGPT",
     "RULE-SET,copilot,Copilot",
     "RULE-SET,gemini,Gemini",
@@ -488,7 +464,6 @@ function main(config) {
     "DOMAIN-SUFFIX,stackexchange.com,自动选择",
     "DOMAIN-SUFFIX,npmjs.com,自动选择",
     "DOMAIN-SUFFIX,pypi.org,自动选择",
-    "DOMAIN-SUFFIX,docker.com,自动选择",
     "DOMAIN-SUFFIX,docker.io,自动选择",
     "DOMAIN-SUFFIX,windowsupdate.com,DIRECT",
     "DOMAIN-SUFFIX,update.microsoft.com,DIRECT",

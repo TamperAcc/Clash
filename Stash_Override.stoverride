@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-01-29 [Stash Override v1.22]
-# 移植自 PC 端 Mihomo_Override.js v1.42
+﻿# Last Updated: 2026-01-29 [Stash Override v1.23]
+# 移植自 PC 端 Mihomo_Override.js v1.43
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.22"
-desc: "v1.22 | 只有2万条规则 | 移除游戏/AI冗余 | 纯净精简版"
+name: "Stash Override v1.23"
+desc: "v1.23 | 修复YAML格式错误 | 已移除huggingface | 纯净版"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
