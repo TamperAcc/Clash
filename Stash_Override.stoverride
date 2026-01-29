@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-01-29 [Stash Override v1.23]
-# 移植自 PC 端 Mihomo_Override.js v1.43
+﻿# Last Updated: 2026-01-29 [Stash Override v1.24]
+# 移植自 PC 端 Mihomo_Override.js v1.45
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.23"
-desc: "v1.23 | 修复YAML格式错误 | 已移除huggingface | 纯净版"
+name: "Stash Override v1.24"
+desc: "v1.24 | 屏蔽AI俄罗斯节点 | 修复YAML格式错误 | 已移除huggingface | 纯净版"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -151,8 +151,8 @@ proxy-groups: #!replace
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
-    # 逻辑: 剔除 HK/HongKong/香港/CN/China
-    filter: "(?i)^(?!.*(香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
+    # 逻辑: 剔除 HK/HongKong/香港/CN/China 以及 俄罗斯/Russia/RU
+    filter: "(?i)^(?!.*(俄罗斯|俄国|Russia|RU|Russia|香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "http://www.gstatic.com/generate_204"
     interval: 300
     tolerance: 50
