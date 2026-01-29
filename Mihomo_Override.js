@@ -87,10 +87,11 @@ function main(config) {
   // 3. Tun 模式
   config["tun"] = {
     "enable": true,
-    "stack": "mixed",
+    "stack": "gvisor", // 🔥 兼容性修复：使用 gvisor 栈代替 mixed，防止 Windows 下产生流量回环导致所有节点超时
     "auto-route": true,
     "auto-detect-interface": true,
-    "strict-route": true,
+    "strict-route": false, // 🔥 核心修复：关闭严格路由，防止覆盖系统原有路由表导致的回环
+    "mtu": 9000,
     "dns-hijack": ["any:53"],
     // 🔥 核心修复：直接从 Tun 路由中排除局域网流量，让 OS 自动处理，彻底解决 ERR_EMPTY_RESPONSE
     "inet4-route-exclude-address": ["192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12"]
