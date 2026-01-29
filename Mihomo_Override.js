@@ -267,8 +267,7 @@ function main(config) {
     // 补齐用户提到的新地区
     { name: "🇫🇷 法国", filter: "(?i)法国|FR|France" },
     { name: "🇳🇱 荷兰", filter: "(?i)荷兰|NL|Netherlands" },
-    { name: "🇱🇹 立陶宛", filter: "(?i)立陶宛|LT|Lithuania" },
-    { name: "💎 IEPL", filter: "(?i)IEPL" }
+    { name: "🇱🇹 立陶宛", filter: "(?i)立陶宛|LT|Lithuania" }
   ];
 
   // 辅助函数：生成一套包含所有地区的策略组 (Level 1: Region Groups)
