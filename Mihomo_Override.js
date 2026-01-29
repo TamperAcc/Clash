@@ -264,6 +264,10 @@ function main(config) {
     { name: "🇻🇳 越南", filter: "(?i)越南|VN|Vietnam" },
     { name: "🇲🇾 马来西亚", filter: "(?i)马来西亚|MY|Malaysia" },
     { name: "🇮🇳 印度", filter: "(?i)印度|IN|India" },
+    // 补齐用户提到的新地区
+    { name: "🇫🇷 法国", filter: "(?i)法国|FR|France" },
+    { name: "🇳🇱 荷兰", filter: "(?i)荷兰|NL|Netherlands" },
+    { name: "🇱🇹 立陶宛", filter: "(?i)立陶宛|LT|Lithuania" },
     { name: "💎 IEPL", filter: "(?i)IEPL" }
   ];
 
