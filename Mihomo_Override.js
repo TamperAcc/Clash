@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.47  | 更新日期: 2026-01-30
+// 版本: v1.48  | 更新日期: 2026-02-01
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.47 (Fix: Restore Missing RuleProvider 'social_media')...");
+  console.log("✅ 加载脚本 v1.48 (Fix: Restore Missing RuleProvider 'social_media')...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -254,7 +254,38 @@ function main(config) {
     // 补齐用户提到的新地区
     { name: "🇫🇷 法国", filter: "(?i)法国|FR|France" },
     { name: "🇳🇱 荷兰", filter: "(?i)荷兰|NL|Netherlands" },
-    { name: "🇱🇹 立陶宛", filter: "(?i)立陶宛|LT|Lithuania" }
+    { name: "🇱🇹 立陶宛", filter: "(?i)立陶宛|LT|Lithuania" },
+    { name: "🇵🇭 菲律宾", filter: "(?i)菲律宾|PH|Philippines" },
+    { name: "AF 阿富汗", filter: "(?i)阿富汗|AF|Afghanistan" },
+    { name: "AR 阿根廷", filter: "(?i)阿根廷|AR|Argentina" },
+    { name: "🇧🇷 巴西", filter: "(?i)巴西|BR|Brazil" },
+    { name: "🇦🇪 阿联酋", filter: "(?i)阿联酋|AE|UAE|Emirates" },
+    { name: "BM 百慕大", filter: "(?i)百慕大|BM|Bermuda" },
+    { name: "🇨🇺 古巴", filter: "(?i)古巴|CU|Cuba" },
+    { name: "EG 埃及 ", filter: "(?i)埃及|EG|Egypt" },
+    { name: "ES 西班牙", filter: "(?i)西班牙|ES|Spain" },
+    { name: "FJ 斐济", filter: "(?i)斐济|FJ|Fiji" },
+    { name: "GL 格陵兰", filter: "(?i)格陵兰|GL|Greenland" },
+    { name: "GU 关岛", filter: "(?i)关岛|GU|Guam" },
+    { name: "KH 柬埔寨", filter: "(?i)柬埔寨|KH|Cambodia" },
+    { name: "LA 老挝", filter: "(?i)老挝|LA|Laos" },
+    { name: "MM 缅甸", filter: "(?i)缅甸|MM|Myanmar" },
+    { name: "MN 蒙古", filter: "(?i)蒙古|MN|Mongolia" },
+    { name: "MO 澳门", filter: "(?i)澳门|MO|Macau" },
+    { name: "MX 墨西哥", filter: "(?i)墨西哥|MX|Mexico" },
+    { name: "NG 尼日利亚", filter: "(?i)尼日利亚|NG|Nigeria" },
+    { name: "NZ 新西兰", filter: "(?i)新西兰|NZ|New Zealand" },
+    { name: "PK 巴基斯坦", filter: "(?i)巴基斯坦|PK|Pakistan" },
+    { name: "PH 菲律宾", filter: "(?i)菲律宾|PH|Philippines" },
+    { name: "QA 卡塔尔", filter: "(?i)卡塔尔|QA|Qatar" },
+    { name: "SB 所罗门群岛", filter: "(?i)所罗门群岛|SB|Solomon Islands" },
+    { name: "SE 瑞典", filter: "(?i)瑞典|SE|Sweden" },
+    { name: "SO 索马里", filter: "(?i)索马里|SO|Somalia" },
+    { name: "TL 东帝汶", filter: "(?i)东帝汶|TL|Timor-Leste" },
+    { name: "TR 土耳其", filter: "(?i)土耳其|TR|Turkey" },
+    { name: "UA 乌克兰", filter: "(?i)乌克兰|UA|Ukraine" },
+    { name: "VA 梵蒂冈", filter: "(?i)梵蒂冈|VA|Vatican" }
+
   ];
 
   // 辅助函数：生成一套包含所有地区的策略组 (Level 1: Region Groups)
