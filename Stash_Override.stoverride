@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-01 [Stash Override v1.27]
+﻿# Last Updated: 2026-02-01 [Stash Override v1.28]
 # 移植自 PC 端 Mihomo_Override.js v1.52
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.27"
-desc: "v1.27 | 优化策略组间隔 & 排除异常节点(LT/RU) | iOS AppStore 优化"
+name: "Stash Override v1.28"
+desc: "v1.28 | 修复策略组语法错误 | 优化 Telegram 分流逻辑 | 排除异常节点"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
