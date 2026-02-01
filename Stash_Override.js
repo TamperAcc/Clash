@@ -1,7 +1,7 @@
 ﻿// Stash iOS 专用配置文件覆写脚本 (JS 版)
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.js
-// 版本: v1.17 (自动更新版) | 更新日期: 2026-01-26
+// 版本: v1.27 (自动更新版) | 更新日期: 2026-02-01
 // 说明: 移植自 Mihomo_Override.js，针对 iOS/macOS 进行了 Stash 特性适配 (Tiles/无 Exe/Sniffer)
 
 function main(config) {
@@ -246,12 +246,12 @@ function main(config) {
     "RULE-SET,icloud,DIRECT",
     "RULE-SET,apple,DIRECT",
     
-    // 游戏与 Bambu
-    "DOBambu
-    "DOMAIN-SUFFIX,steamserver.net,DIRECT",
-    "DOMAIN-SUFFIX,steamcontent.com,DIRECT",
-    "DOMAIN-SUFFIX,epicgames.com,DIRECTlab.com,国内",
-    "DOMAIN-SUFFIX,bambulab.cn,国内",
+    // Bambu Lab
+    "PROCESS-NAME,BambuStudio,DIRECT",
+    "PROCESS-NAME,bambu-studio,DIRECT",
+    "DOMAIN-SUFFIX,bambulab.com,DIRECT",
+    "DOMAIN-SUFFIX,bambulab.cn,DIRECT",
+    "DOMAIN-SUFFIX,bambulab.co,DIRECT",
 
     // 社交
     "RULE-SET,social_media,国外通用",
