@@ -254,7 +254,7 @@ function main(config) {
     // 补齐用户提到的新地区
     { name: "🇫🇷 法国", filter: "(?i)法国|FR|France" },
     { name: "🇳🇱 荷兰", filter: "(?i)荷兰|NL|Netherlands" },
-    { name: "��🇭 菲律宾", filter: "(?i)菲律宾|PH|Philippines" },
+    { name: "����🇭 菲律宾", filter: "(?i)菲律宾|PH|Philippines" },
     { name: "AF 阿富汗", filter: "(?i)阿富汗|AF|Afghanistan" },
     { name: "AR 阿根廷", filter: "(?i)阿根廷|AR|Argentina" },
     { name: "🇧🇷 巴西", filter: "(?i)巴西|BR|Brazil" },
@@ -275,7 +275,6 @@ function main(config) {
     { name: "NG 尼日利亚", filter: "(?i)尼日利亚|NG|Nigeria" },
     { name: "NZ 新西兰", filter: "(?i)新西兰|NZ|New Zealand" },
     { name: "PK 巴基斯坦", filter: "(?i)巴基斯坦|PK|Pakistan" },
-    { name: "PH 菲律宾", filter: "(?i)菲律宾|PH|Philippines" },
     { name: "QA 卡塔尔", filter: "(?i)卡塔尔|QA|Qatar" },
     { name: "SB 所罗门群岛", filter: "(?i)所罗门群岛|SB|Solomon Islands" },
     { name: "SE 瑞典", filter: "(?i)瑞典|SE|Sweden" },
