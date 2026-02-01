@@ -218,13 +218,13 @@ function main(config) {
       "name": "YouTube",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png",
-      "proxies": ["AI自动优选", "自动选择"]
+      "proxies": ["自动选择", "AI自动优选"]
     },
     {
       "name": "国外通用",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png",
-      "proxies": ["AI自动优选", "自动选择"]
+      "proxies": ["自动选择", "AI自动优选"]
     }
   ];
 
