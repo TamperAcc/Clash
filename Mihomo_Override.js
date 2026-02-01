@@ -1,7 +1,7 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.55  | 更新日期: 2026-02-01
+// 版本: v1.56  | 更新日期: 2026-02-01
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
@@ -249,7 +249,6 @@ function main(config) {
     { name: "🇷🇺 俄罗斯", filter: "(?i)俄罗斯|RU|Russia" },
     { name: "🇹🇭 泰国", filter: "(?i)泰国|TH|Thailand" },
     { name: "🇻🇳 越南", filter: "(?i)越南|VN|Vietnam" },
-    { name: "🇲🇾 马来西亚", filter: "(?i)马来西亚|MY|Malaysia" },
     { name: "🇮🇳 印度", filter: "(?i)印度|IN|India" },
     // 补齐用户提到的新地区
     { name: "🇫🇷 法国", filter: "(?i)法国|FR|France" },
