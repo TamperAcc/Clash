@@ -180,14 +180,6 @@ proxy-groups: #!replace
   - name: Google Search
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
-  
-  - name: Telegram
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png
-    proxies:
-      - Telegram
-      - 自动选择
-      - 🔍 搜索与开发
     proxies:
       - 🔍 搜索与开发
       - 🤖 生成式 AI
@@ -353,7 +345,7 @@ rules: #!replace
   - DOMAIN-SUFFIX,tmall.com,DIRECT
   
   - DOMAIN-SUFFIX,stackoverflow.com,自动选择
-  - 社交
+  # 社交
   - RULE-SET,telegram_domain,Telegram
   - DOMAIN-SUFFIX,tx.me,Telegram
   - DOMAIN-SUFFIX,t.me,Telegram
