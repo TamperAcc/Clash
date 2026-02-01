@@ -217,6 +217,20 @@ rule-providers:
     interval: 86400
     format: text
     type: http
+  icloud:
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt
+    path: ./ruleset/icloud.list
+    behavior: domain
+    interval: 86400
+    format: text
+    type: http
+  apple:
+    url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt
+    path: ./ruleset/apple.list
+    behavior: domain
+    interval: 86400
+    format: text
+    type: http
   microsoft:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.yaml
     path: ./ruleset/microsoft.yaml
@@ -383,6 +397,8 @@ rules: #!replace
   - DOMAIN-SUFFIX,githubusercontent.com,🔍 搜索与开发
   - DOMAIN-SUFFIX,github.io,🔍 搜索与开发
   - RULE-SET,microsoft,🔍 搜索与开发
+  - RULE-SET,icloud,DIRECT
+  - RULE-SET,apple,DIRECT
   
   - RULE-SET,cn_domain,国内
   - RULE-SET,geolocation_no_cn,自动选择
