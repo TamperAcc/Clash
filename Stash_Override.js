@@ -160,7 +160,8 @@ function main(config) {
       "name": "自动选择",
       "type": "url-test",
       "include-all": true,
-      "filter": "(?i)^(?!.*(香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|联系|网站|入群|专线)).*",
+      // Stash 使用 regex negative lookahead
+      "filter": "(?i)^(?!.*(IEPL|香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|联系|网站|入群|专线)).*",
       "url": "https://www.gstatic.com/generate_204",
       "interval": 300,
       "tolerance": 100,
@@ -176,6 +177,18 @@ function main(config) {
       "url": "https://gemini.google.com",
       "interval": 300,
       "tolerance": 50,
+      "unified-delay": true
+    },
+    {
+      "name": "Telegram",
+      "type": "url-test",
+      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png",
+      "include-all": true,
+      // 排除立陶宛和俄罗斯
+      "filter": "(?i)^(?!.*(俄罗斯|Russia|RU|立陶宛|Lithuania|LT|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|联系|网站|入群|专线)).*",
+      "url": "https://api.telegram.org",
+      "interval": 300,
+      "tolerance": 100,
       "unified-delay": true
     },
     
@@ -227,7 +240,7 @@ function main(config) {
     // 进程 (iOS/Mac 去除 .exe)
     "PROCESS-NAME,WeChat,DIRECT",
     "PROCESS-NAME,QQ,DIRECT",
-    "PROCESS-NAME,Telegram,国外通用",
+    "PROCESS-NAME,Telegram,Telegram",
     "PROCESS-NAME,Discord,国外通用",
     "PROCESS-NAME,Slack,国外通用",
     "PROCESS-NAME,Zoom,国外通用",
@@ -272,8 +285,8 @@ function main(config) {
 
     // 社交
     "RULE-SET,social_media,国外通用",
-    "RULE-SET,telegram_domain,国外通用",
-    "RULE-SET,telegram,国外通用",
+    "RULE-SET,telegram_domain,Telegram",
+    "RULE-SET,telegram,Telegram",
     "RULE-SET,youtube_domain,YouTube",
 
     // 兜底优化

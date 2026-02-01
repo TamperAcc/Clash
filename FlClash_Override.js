@@ -150,7 +150,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png",
       "include-all": true,
-      "exclude-filter": "(?i)香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
+      "exclude-filter": "(?i)IEPL|香港|hongkong|hk|HK|Hong|Kong|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
       "url": "https://www.gstatic.com/generate_204",
       "interval": 300,
       "tolerance": 100,
@@ -166,6 +166,17 @@ function main(config) {
       "url": "https://gemini.google.com",
       "interval": 300,
       "tolerance": 50,
+      "unified-delay": true
+    },
+    {
+      "name": "Telegram",
+      "type": "url-test",
+      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png",
+      "include-all": true,
+      "exclude-filter": "(?i)俄罗斯|Russia|RU|立陶宛|Lithuania|LT|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
+      "url": "https://api.telegram.org",
+      "interval": 300,
+      "tolerance": 100,
       "unified-delay": true
     },
     
@@ -223,7 +234,7 @@ function main(config) {
     "PROCESS-NAME,WeChat.exe,DIRECT",
     "PROCESS-NAME,WeChatAppEx.exe,DIRECT",
     "PROCESS-NAME,QQ.exe,DIRECT",
-    "PROCESS-NAME,Telegram.exe,国外通用",
+    "PROCESS-NAME,Telegram.exe,Telegram",
     "PROCESS-NAME,Discord.exe,国外通用",
     "PROCESS-NAME,Slack.exe,国外通用",
     "PROCESS-NAME,Zoom.exe,国外通用",
@@ -309,8 +320,8 @@ function main(config) {
 
     // 社交
     "RULE-SET,social_media,国外通用",
-    "RULE-SET,telegram_domain,国外通用",
-    "RULE-SET,telegram,国外通用",
+    "RULE-SET,telegram_domain,Telegram",
+    "RULE-SET,telegram,Telegram",
     "RULE-SET,youtube_domain,YouTube",
 
     // 隐私与兜底
