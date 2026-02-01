@@ -254,7 +254,7 @@ function main(config) {
     // 补齐用户提到的新地区
     { name: "🇫🇷 法国", filter: "(?i)法国|FR|France" },
     { name: "🇳🇱 荷兰", filter: "(?i)荷兰|NL|Netherlands" },
-    { name: "🇭 菲律宾", filter: "(?i)菲律宾|PH|Philippines" },
+    { name: "��🇭 菲律宾", filter: "(?i)菲律宾|PH|Philippines" },
     { name: "AF 阿富汗", filter: "(?i)阿富汗|AF|Afghanistan" },
     { name: "AR 阿根廷", filter: "(?i)阿根廷|AR|Argentina" },
     { name: "🇧🇷 巴西", filter: "(?i)巴西|BR|Brazil" },
