@@ -128,7 +128,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
     # 策略优化: 移除香港节点的排除 ("香港|hongkong|hk|HK|Hong|Kong|")，大幅降低通用浏览延迟
-    filter: "(?i)^(?!.*(流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
+    filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
     tolerance: 50
@@ -140,7 +140,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     include-all: true
     # 逻辑: 只要不是流量/到期等关键词，全部保留 (含 HK/SG)
-    filter: "(?i)^(?!.*(流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
+    filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "http://www.gstatic.com/generate_204"
     interval: 350
     tolerance: 50
