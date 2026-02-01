@@ -485,6 +485,15 @@ function main(config) {
     "DOMAIN-KEYWORD,omniture,REJECT",
     "DOMAIN-KEYWORD,adview,REJECT",
 
+    // AI 服务 (前置于进程规则，确保 Copilot/OpenAI 等插件流量不被 Code.exe 截获)
+    "RULE-SET,openai,ChatGPT",
+    // 修复 Bing 重定向循环：国内版 Bing 强制直连，国际版 Copilot 走代理
+    "DOMAIN,cn.bing.com,DIRECT",
+    "RULE-SET,copilot,Copilot",
+    "RULE-SET,gemini,Gemini",
+    // AI 服务 - 兜底
+    "RULE-SET,google,Google",
+
     // 进程 (Windows)
     "PROCESS-NAME,WeChat.exe,DIRECT",
     "PROCESS-NAME,WeChatAppEx.exe,DIRECT",
@@ -513,14 +522,6 @@ function main(config) {
     "PROCESS-NAME,Origin.exe,自动选择",
     "PROCESS-NAME,Uplay.exe,自动选择",
     "PROCESS-NAME,cloudmusic.exe,DIRECT",
-    "RULE-SET,openai,ChatGPT",
-    // 修复 Bing 重定向循环：国内版 Bing 强制直连，国际版 Copilot 走代理
-    "DOMAIN,cn.bing.com,DIRECT",
-    "RULE-SET,copilot,Copilot",
-    "RULE-SET,gemini,Gemini",
-    
-    // AI 服务 - 兜底
-    "RULE-SET,google,Google",
 
     // 开发者/微软
     "DOMAIN-SUFFIX,stackoverflow.com,自动选择",
