@@ -230,6 +230,21 @@ function main(config) {
     "DOMAIN-SUFFIX,msftncsi.com,DIRECT",
     "RULE-SET,reject,REJECT",
     
+    // AI 服务
+    "DOMAIN,copilot-proxy.githubusercontent.com,AI自动优选",
+    "DOMAIN,api.github.com,AI自动优选",
+    "DOMAIN-SUFFIX,githubcopilot.com,AI自动优选",
+    "DOMAIN-SUFFIX,github.com,AI自动优选",
+    "DOMAIN-SUFFIX,githubusercontent.com,AI自动优选",
+    "DOMAIN-SUFFIX,github.io,AI自动优选",
+    "DOMAIN-SUFFIX,visualstudio.com,AI自动优选",
+    "DOMAIN,sydney.bing.com,AI自动优选",
+    "DOMAIN,edgeservices.bing.com,AI自动优选",
+    "DOMAIN-SUFFIX,claude.ai,AI自动优选",
+    "DOMAIN-SUFFIX,anthropic.com,AI自动优选",
+    "RULE-SET,ai_services,AI自动优选",
+    "RULE-SET,huggingface,AI自动优选",
+
     // 进程 (Windows)
     "PROCESS-NAME,WeChat.exe,DIRECT",
     "PROCESS-NAME,WeChatAppEx.exe,DIRECT",
@@ -259,21 +274,6 @@ function main(config) {
     "PROCESS-NAME,cloudmusic.exe,DIRECT",
     "PROCESS-NAME,QQMusic.exe,DIRECT",
     "PROCESS-NAME,DouYinLive.exe,DIRECT",
-
-    // AI 服务
-    "DOMAIN,copilot-proxy.githubusercontent.com,AI自动优选",
-    "DOMAIN,api.github.com,AI自动优选",
-    "DOMAIN-SUFFIX,githubcopilot.com,AI自动优选",
-    "DOMAIN-SUFFIX,github.com,AI自动优选",
-    "DOMAIN-SUFFIX,githubusercontent.com,AI自动优选",
-    "DOMAIN-SUFFIX,github.io,AI自动优选",
-    "DOMAIN-SUFFIX,visualstudio.com,AI自动优选",
-    "DOMAIN,sydney.bing.com,AI自动优选",
-    "DOMAIN,edgeservices.bing.com,AI自动优选",
-    "DOMAIN-SUFFIX,claude.ai,AI自动优选",
-    "DOMAIN-SUFFIX,anthropic.com,AI自动优选",
-    "RULE-SET,ai_services,AI自动优选",
-    "RULE-SET,huggingface,AI自动优选",
 
     // 国内直连优化
     "DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT",
