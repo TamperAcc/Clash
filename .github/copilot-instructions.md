@@ -12,10 +12,13 @@ Network proxy configurations for **Mihomo (PC)**, **FlClash (PC)**, and **Stash 
 
 ## 2. Maintenance (Critical)
 - **Pushing Updates**: 
-  - **NEVER** use `git push` inside `Clash/` folder.
-  - **ALWAYS** execute from workspace root (`g:\Git\`):
+  - **Context**: `Clash/` is a nested Git repository within the workspace.
+  - **Action**: Execute Git commands directly inside the `Clash/` folder:
     ```powershell
-    git subtree push --prefix Clash origin main
+    # Run from g:\Git\Clash\
+    git add .
+    git commit -m "update message"
+    git push origin main
     ```
 - **Sync Requirement**: Logic changes must be manually mirrored across `Mihomo`, `FlClash`, and `Stash` files.
   - **Rule Providers**: Ensure new providers (e.g., `social_media`) are added to all files.
