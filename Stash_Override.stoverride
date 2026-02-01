@@ -151,8 +151,8 @@ proxy-groups: #!replace
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
-    # 逻辑: 剔除 HK/HongKong/香港/CN/China 以及 俄罗斯/Russia/RU
-    filter: "(?i)^(?!.*(俄罗斯|俄国|Russia|RU|Russia|香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
+    # 逻辑: 剔除 HK/HongKong/香港/CN/China 以及 俄罗斯/Russia/RU/立陶宛/Lithuania
+    filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|Russia|香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "http://www.gstatic.com/generate_204"
     interval: 400
     tolerance: 100
