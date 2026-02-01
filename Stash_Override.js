@@ -247,11 +247,10 @@ function main(config) {
     "RULE-SET,apple,DIRECT",
     
     // 游戏与 Bambu
+    "DOBambu
     "DOMAIN-SUFFIX,steamserver.net,DIRECT",
     "DOMAIN-SUFFIX,steamcontent.com,DIRECT",
-    "DOMAIN-SUFFIX,epicgames.com,DIRECT",
-    "RULE-SET,games,游戏服务",
-    "DOMAIN-SUFFIX,bambulab.com,国内",
+    "DOMAIN-SUFFIX,epicgames.com,DIRECTlab.com,国内",
     "DOMAIN-SUFFIX,bambulab.cn,国内",
 
     // 社交

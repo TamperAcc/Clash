@@ -159,6 +159,17 @@ proxy-groups: #!replace
     unified-delay: false # ⚡ 极速模式
     lazy: true
 
+  - name: Telegram
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png
+    include-all: true
+    # 排除立陶宛和俄罗斯
+    filter: "(?i)^(?!.*(俄罗斯|Russia|RU|立陶宛|Lithuania|LT|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|联系|网站|入群|专线)).*"
+    url: "https://api.telegram.org"
+    interval: 300
+    tolerance: 100
+    unified-delay: true
+
   - name: 国内
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
@@ -169,6 +180,14 @@ proxy-groups: #!replace
   - name: Google Search
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
+  
+  - name: Telegram
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png
+    proxies:
+      - Telegram
+      - 自动选择
+      - 🔍 搜索与开发
     proxies:
       - 🔍 搜索与开发
       - 🤖 生成式 AI
@@ -236,6 +255,13 @@ rule-providers:
   youtube_domain:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml
     path: ./ruleset/youtube_domain.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  telegram_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.yaml
+    path: ./ruleset/telegram_domain.yaml
     behavior: domain
     interval: 86400
     format: yaml
@@ -313,7 +339,14 @@ rules: #!replace
   - DOMAIN-SUFFIX,tmall.com,DIRECT
   
   - DOMAIN-SUFFIX,stackoverflow.com,自动选择
-  - DOMAIN-SUFFIX,stackexchange.com,自动选择
+  - 社交
+  - RULE-SET,telegram_domain,Telegram
+  - DOMAIN-SUFFIX,tx.me,Telegram
+  - DOMAIN-SUFFIX,t.me,Telegram
+  - DOMAIN-SUFFIX,telegram.org,Telegram
+  - DOMAIN-SUFFIX,telegram-cdn.org,Telegram
+  
+  # DOMAIN-SUFFIX,stackexchange.com,自动选择
   - DOMAIN-SUFFIX,npmjs.com,自动选择
   - DOMAIN-SUFFIX,pypi.org,自动选择
   - DOMAIN-SUFFIX,docker.com,自动选择
