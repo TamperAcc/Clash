@@ -138,7 +138,6 @@ function main(config) {
     "ai_services": { "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml", "format": "yaml", "behavior": "domain" },
     "huggingface": { "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/huggingface.yaml", "format": "yaml", "behavior": "domain" },
     "youtube_domain": { "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml", "format": "yaml", "behavior": "domain" },
-    "games": { "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-games.yaml", "format": "yaml", "behavior": "domain" },
     "social_media": { "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml", "format": "yaml", "behavior": "domain" },
     "telegram_domain": { "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.yaml", "format": "yaml", "behavior": "domain" },
     "geolocation_no_cn": { "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml", "format": "yaml", "behavior": "domain" }
@@ -203,16 +202,6 @@ function main(config) {
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
       "proxies": ["AI自动优选", "自动选择"] 
-    },
-    {
-      "name": "游戏服务",
-      "type": "url-test",
-      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png",
-      "include-all": true,
-      "filter": "(?i)香港|台湾|新加坡|日本|韩国",
-      "url": "https://www.gstatic.com/generate_204",
-      "interval": 180,
-      "tolerance": 100
     },
     {
       "name": "YouTube",
