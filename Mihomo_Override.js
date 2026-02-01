@@ -299,7 +299,8 @@ function main(config) {
   // suffix: 组名后缀 (如 " Gemini"), url: 测速地址, hidden: 是否隐藏
   // baseInterval: 基础间隔(秒), offset: 组间偏移(秒), unifiedDelay: 是否开启统一延迟计算
   // excludeRegex: 需要排除的地区名称正则 (如 "俄罗斯|香港")
-  function createRegionSets(suffix, url, hidden = true, baseInterval = 100, offset = 0, unifiedDelay = true, excludeRegex = null) {
+  // tolerance: 容差(ms)，默认 50。AI 类服务建议设高以防跳变。
+  function createRegionSets(suffix, url, hidden = true, baseInterval = 100, offset = 0, unifiedDelay = true, excludeRegex = null, tolerance = 50) {
      // 预先过滤地区
      const targetRegions = excludeRegex 
         ? regions.filter(r => !new RegExp(excludeRegex).test(r.name)) 
@@ -316,20 +317,24 @@ function main(config) {
       // 错开时间核心逻辑: 基础间隔 + 服务偏移 + (地区索引 * 步长)
       // 使用 index * 13 确保地区间充分错开，offset 确保服务间错开
       "interval": baseInterval + offset + (index * 13),
-      "tolerance": 50,
+      "tolerance": tolerance,
       "unified-delay": unifiedDelay,
       "lazy": true
     }));
   }
 
-  // 生成 5 套底层地区组 - 引入时间错开机制 (防止并发测速拥堵)
-  // 改为 100s 以获得更快的节点故障响应速度 (配合 lazy: true 使用性能可控)
-  const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  100, 0, true); 
-  // AI 分组特别优化：排除不支持的地区 (俄罗斯 RU) 及部分 (香港 HK)
-  const groupsGemini  = createRegionSets(" Gemini",   "https://gemini.google.com",           true,  100, 6, false, "俄罗斯|香港");
-  const groupsCopilot = createRegionSets(" Copilot",  "https://www.bing.com",                true,  100, 12, false, "俄罗斯");
-  const groupsGithub  = createRegionSets(" GitHub",   "https://api.github.com",              true,  100, 18, false, "俄罗斯");
-  const groupsGPT     = createRegionSets(" GPT",      "https://chatgpt.com",                 true,  100, 24, false, "俄罗斯|香港");
+  // === Level 1: [底层] 地区自动测速组 (Region Groups) ===
+  // 这些变量生成了具体到国家的测速组列表 (例如 "🇺🇸 美国 Gemini", "🇯🇵 日本 Gemini")
+  // 核心逻辑：创建大量细分地区组，供下方的 Level 2 服务组进行二次优选
+  // 引入时间错开机制 (防止并发测速拥堵): 改为 100s 以获得更快的节点故障响应速度
+  const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  100, 0, true, null, 50); 
+  // AI 分组特别优化：
+  // 1. 排除不支持的地区 (俄罗斯 RU) 及部分 (香港 HK)
+  // 2. Tolerance 设为 150ms，防止对话过程中因轻微延迟抖动切换节点导致断连
+  const groupsGemini  = createRegionSets(" Gemini",   "https://gemini.google.com",           true,  100, 6, false, "俄罗斯|香港", 150);
+  const groupsCopilot = createRegionSets(" Copilot",  "https://www.bing.com",                true,  100, 12, false, "俄罗斯", 150);
+  const groupsGithub  = createRegionSets(" GitHub",   "https://api.github.com",              true,  100, 18, false, "俄罗斯", 50);
+  const groupsGPT     = createRegionSets(" GPT",      "https://chatgpt.com",                 true,  100, 24, false, "俄罗斯|香港", 150);
 
   // 将所有底层组展平，准备加入 config["proxy-groups"]
   const allRegionGroups = [
@@ -340,7 +345,9 @@ function main(config) {
     ...groupsGPT
   ];
   config["proxy-groups"] = [
-    // === Level 2: 核心组中组 (包含各自的地区组) ===
+    // === Level 2: [顶层] 核心服务组 (Service Groups) ===
+    // 用户在面板中直接看到的策略组 (如 "Gemini", "自动选择")
+    // 逻辑：从 Level 1 的地区组中自动选择延迟最低的节点
     {
       "name": "自动选择",
       "type": "url-test",
