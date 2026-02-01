@@ -524,6 +524,7 @@ function main(config) {
     "PROCESS-NAME,cloudmusic.exe,DIRECT",
 
     // 开发者/微软
+    "RULE-SET,github,GitHub Copilot",
     "DOMAIN-SUFFIX,stackoverflow.com,自动选择",
     "DOMAIN-SUFFIX,stackexchange.com,自动选择",
     "DOMAIN-SUFFIX,npmjs.com,自动选择",
