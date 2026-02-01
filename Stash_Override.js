@@ -237,24 +237,6 @@ function main(config) {
     "DOMAIN-SUFFIX,home.arpa,DIRECT",
     "RULE-SET,reject,REJECT",
     
-    // 进程 (iOS/Mac 去除 .exe)
-    "PROCESS-NAME,WeChat,DIRECT",
-    "PROCESS-NAME,QQ,DIRECT",
-    "PROCESS-NAME,Telegram,Telegram",
-    "PROCESS-NAME,Discord,国外通用",
-    "PROCESS-NAME,Slack,国外通用",
-    "PROCESS-NAME,Zoom,国外通用",
-    "PROCESS-NAME,BambuStudio,国内",
-    "PROCESS-NAME,bambu-studio,国内",
-    "PROCESS-NAME,Thunder,DIRECT",
-    "PROCESS-NAME,git,国外通用",
-    "PROCESS-NAME,Code,自动选择",
-    "PROCESS-NAME,Cursor,自动选择",
-    "PROCESS-NAME,Steam,游戏服务",
-    "PROCESS-NAME,steam_osx,游戏服务",
-    "PROCESS-NAME,NeteaseMusic,DIRECT",
-    "PROCESS-NAME,QQMusic,DIRECT",
-
     // AI 服务 (全面)
     "DOMAIN,copilot-proxy.githubusercontent.com,AI自动优选",
     "DOMAIN,api.github.com,AI自动优选",
