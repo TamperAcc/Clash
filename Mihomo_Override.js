@@ -285,13 +285,7 @@ function main(config) {
     { name: "TR 土耳其", filter: "(?i)土耳其|TR|Turkey" },
     { name: "UA 乌克兰", filter: "(?i)乌克兰|UA|Ukraine" },
     { name: "VA 梵蒂冈", filter: "(?i)梵蒂冈|VA|Vatican" },
-    { name: "AQ 南极洲", filter: "(?i)南极洲|AQ|Antarctica" },
-    { name: " Gemini", filter: "(?i)Gemini" },
-    { name: " Copilot", filter: "(?i)Copilot" },
-    { name: " GitHub Copilot", filter: "(?i)GitHub Copilot" },
-    { name: " ChatGPT", filter: "(?i)ChatGPT" },
-    { name: " Google", filter: "(?i)Google" },
-    { name: " YouTube", filter: "(?i)YouTube" }
+    { name: "AQ 南极洲", filter: "(?i)南极洲|AQ|Antarctica" }
 
   ];
 
