@@ -328,14 +328,15 @@ function main(config) {
   // 它们只是"候选列表" (如: [🇺🇸 美国 Gemini, 🇯🇵 日本 Gemini...])，并非用户面板直接点击的策略组
   // 真正的 [顶层] 服务组 (Level 2) 是在下方的 config["proxy-groups"] 中引用这些变量创建的
   // 核心逻辑：创建大量细分地区组，供 Level 2 进行二次优选
-  const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  100, 0, true, null, 50); 
-  // AI 分组特别优化：
+  // 策略调整：Level 1 (80s) 比 Level 2 (150s) 更快，确保 Level 2 测速时能命中已优选的底层节点
+  const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  80, 0, true, null, 50); 
+  // AI 分组特别优化：Level 1 设为 60s 极速自愈
   // 1. 排除不支持的地区 (俄罗斯 RU) 及部分 (香港 HK)
   // 2. Tolerance 设为 150ms，防止对话过程中因轻微延迟抖动切换节点导致断连
-  const groupsGemini  = createRegionSets(" Gemini",   "https://gemini.google.com",           true,  100, 6, false, "俄罗斯|香港", 150);
-  const groupsCopilot = createRegionSets(" Copilot",  "https://www.bing.com",                true,  100, 12, false, "俄罗斯", 150);
-  const groupsGithub  = createRegionSets(" GitHub",   "https://api.github.com",              true,  100, 18, false, "俄罗斯", 50);
-  const groupsGPT     = createRegionSets(" GPT",      "https://chatgpt.com",                 true,  100, 24, false, "俄罗斯|香港", 150);
+  const groupsGemini  = createRegionSets(" Gemini",   "https://gemini.google.com",           true,  60, 6, false, "俄罗斯|香港", 150);
+  const groupsCopilot = createRegionSets(" Copilot",  "https://www.bing.com",                true,  60, 12, false, "俄罗斯", 150);
+  const groupsGithub  = createRegionSets(" GitHub",   "https://api.github.com",              true,  60, 18, false, "俄罗斯", 50);
+  const groupsGPT     = createRegionSets(" GPT",      "https://chatgpt.com",                 true,  60, 24, false, "俄罗斯|香港", 150);
 
   // 将所有底层组展平，准备加入 config["proxy-groups"]
   const allRegionGroups = [
@@ -355,7 +356,7 @@ function main(config) {
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png",
       "proxies": groupsAuto.map(g => g.name),
       "url": "http://www.gstatic.com/generate_204",
-      "interval": 100,
+      "interval": 150,
       "tolerance": 100,
       "lazy": true
     },
@@ -365,7 +366,7 @@ function main(config) {
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
       "proxies": groupsGemini.map(g => g.name),
       "url": "https://gemini.google.com",
-      "interval": 100,
+      "interval": 150,
       "tolerance": 100,
       "unified-delay": false,
       "lazy": true
@@ -376,7 +377,7 @@ function main(config) {
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png",
       "proxies": groupsCopilot.map(g => g.name),
       "url": "https://www.bing.com",
-      "interval": 100,
+      "interval": 150,
       "tolerance": 100,
       "unified-delay": false,
       "lazy": true
@@ -387,7 +388,7 @@ function main(config) {
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/github.png",
       "proxies": groupsGithub.map(g => g.name),
       "url": "https://api.github.com",
-      "interval": 100,
+      "interval": 150,
       "tolerance": 100,
       "unified-delay": false,
       "lazy": true
@@ -398,7 +399,7 @@ function main(config) {
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
       "proxies": groupsGPT.map(g => g.name),
       "url": "https://chatgpt.com",
-      "interval": 100,
+      "interval": 150,
       "tolerance": 100,
       "unified-delay": false,
       "lazy": true
