@@ -323,7 +323,7 @@ function main(config) {
   // 真正的 [顶层] 服务组 (Level 2) 是在下方的 config["proxy-groups"] 中引用这些变量创建的
   // 核心逻辑：创建大量细分地区组，供 Level 2 进行二次优选
   // 策略调整：Level 1 (全部 60s) 比 Level 2 (100s) 更快，确保 Level 2 测速时能命中已优选的底层节点
-  const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  60, 0, true, null, 50); 
+  const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  60, 0, true,  "IEPL", 50); 
   // AI 分组特别优化：Level 1 设为 60s 极速自愈
   // 1. 排除不支持的地区 (俄罗斯 RU) 及部分 (香港 HK)
   // 2. Tolerance 统一设为 100ms (自动组保留 50ms)
