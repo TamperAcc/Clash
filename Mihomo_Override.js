@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.49  | 更新日期: 2026-02-01
+// 版本: v1.50  | 更新日期: 2026-02-01
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.49 (Fix: Restore Missing RuleProvider 'social_media')...");
+  console.log("✅ 加载脚本 v1.50 (Fix: Bing Redirect Loop)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -489,6 +489,8 @@ function main(config) {
     "PROCESS-NAME,Uplay.exe,自动选择",
     "PROCESS-NAME,cloudmusic.exe,DIRECT",
     "RULE-SET,openai,ChatGPT",
+    // 修复 Bing 重定向循环：国内版 Bing 强制直连，国际版 Copilot 走代理
+    "DOMAIN,cn.bing.com,DIRECT",
     "RULE-SET,copilot,Copilot",
     "RULE-SET,gemini,Gemini",
     
