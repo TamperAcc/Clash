@@ -490,7 +490,7 @@ function main(config) {
     "PROCESS-NAME,WeChat.exe,DIRECT",
     "PROCESS-NAME,WeChatAppEx.exe,DIRECT",
     "PROCESS-NAME,QQ.exe,DIRECT",
-    "PROCESS-NAME,Telegram.exe,自动选择",
+    "PROCESS-NAME,Telegram.exe,Telegram",
     "PROCESS-NAME,Discord.exe,自动选择",
     "PROCESS-NAME,Slack.exe,自动选择",
     "PROCESS-NAME,Zoom.exe,自动选择",
@@ -549,8 +549,8 @@ function main(config) {
     "DOMAIN-SUFFIX,bambulab.co,DIRECT",
 // 社交
     "RULE-SET,social_media,自动选择",
-    "RULE-SET,telegram_domain,自动选择",
-    "RULE-SET,telegram,自动选择",
+    "RULE-SET,telegram_domain,Telegram",
+    "RULE-SET,telegram,Telegram",
     "RULE-SET,youtube_domain,YouTube",
 
     // 测速与其他兜底
