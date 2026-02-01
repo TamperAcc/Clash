@@ -254,8 +254,7 @@ function main(config) {
     // 补齐用户提到的新地区
     { name: "🇫🇷 法国", filter: "(?i)法国|FR|France" },
     { name: "🇳🇱 荷兰", filter: "(?i)荷兰|NL|Netherlands" },
-    { name: "🇱🇹 立陶宛", filter: "(?i)立陶宛|LT|Lithuania" },
-    { name: "🇵🇭 菲律宾", filter: "(?i)菲律宾|PH|Philippines" },
+    { name: "🇭 菲律宾", filter: "(?i)菲律宾|PH|Philippines" },
     { name: "AF 阿富汗", filter: "(?i)阿富汗|AF|Afghanistan" },
     { name: "AR 阿根廷", filter: "(?i)阿根廷|AR|Argentina" },
     { name: "🇧🇷 巴西", filter: "(?i)巴西|BR|Brazil" },
@@ -331,6 +330,7 @@ function main(config) {
   // 策略调整：Level 1 (全部 60s) 比 Level 2 (100s) 更快，确保 Level 2 测速时能命中已优选的底层节点
   
   // ✅ 修正：将 "IEPL" 移至第 9 个参数 (nodeExclude)，第 7 个参数 (地区排除) 设为 null
+  // 变更：源头已删除立陶宛，此处不再需要 excludeRegex
   const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  60, 0, true,  null, 50, "IEPL"); 
   
   // AI 分组特别优化：Level 1 设为 60s 极速自愈
@@ -341,7 +341,7 @@ function main(config) {
   const groupsGithub  = createRegionSets(" GitHub",   "https://api.github.com",              true,  60, 18, false, "俄罗斯", 100);
   const groupsGPT     = createRegionSets(" GPT",      "https://chatgpt.com",                 true,  60, 24, false, "俄罗斯|香港", 100);
   // 新增: Telegram 专用组 (排除立陶宛以免假低延迟干扰，使用 TG 官方 API 测速)
-  const groupsTelegram= createRegionSets(" Telegram", "https://api.telegram.org",            true,  60, 30, false, "俄罗斯|立陶宛", 100);
+  const groupsTelegram= createRegionSets(" Telegram", "https://api.telegram.org",            true,  60, 30, false, "俄罗斯", 100);
 
   // 将所有底层组展平，准备加入 config["proxy-groups"]
   const allRegionGroups = [
