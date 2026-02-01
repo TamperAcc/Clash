@@ -340,6 +340,8 @@ function main(config) {
   const groupsCopilot = createRegionSets(" Copilot",  "https://www.bing.com",                true,  60, 12, false, "俄罗斯", 100);
   const groupsGithub  = createRegionSets(" GitHub",   "https://api.github.com",              true,  60, 18, false, "俄罗斯", 100);
   const groupsGPT     = createRegionSets(" GPT",      "https://chatgpt.com",                 true,  60, 24, false, "俄罗斯|香港", 100);
+  // 新增: Telegram 专用组 (排除立陶宛以免假低延迟干扰，使用 TG 官方 API 测速)
+  const groupsTelegram= createRegionSets(" Telegram", "https://api.telegram.org",            true,  60, 30, false, "俄罗斯|立陶宛", 100);
 
   // 将所有底层组展平，准备加入 config["proxy-groups"]
   const allRegionGroups = [
@@ -347,7 +349,8 @@ function main(config) {
     ...groupsGemini,
     ...groupsCopilot,
     ...groupsGithub,
-    ...groupsGPT
+    ...groupsGPT,
+    ...groupsTelegram
   ];
   config["proxy-groups"] = [
     // === Level 2: [顶层] 核心服务组 (Service Groups) ===
@@ -402,6 +405,17 @@ function main(config) {
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
       "proxies": groupsGPT.map(g => g.name),
       "url": "https://chatgpt.com",
+      "interval": 100,
+      "tolerance": 100,
+      "unified-delay": false,
+      "lazy": true
+    },
+    {
+      "name": "Telegram",
+      "type": "url-test",
+      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png",
+      "proxies": groupsTelegram.map(g => g.name),
+      "url": "https://api.telegram.org",
       "interval": 100,
       "tolerance": 100,
       "unified-delay": false,
