@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-01 [Stash Override v1.28]
+﻿# Last Updated: 2026-02-01 [Stash Override v1.29]
 # 移植自 PC 端 Mihomo_Override.js v1.52
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.28"
-desc: "v1.28 | 修复策略组语法错误 | 优化 Telegram 分流逻辑 | 排除异常节点"
+name: "Stash Override v1.29"
+desc: "v1.29 | 修复 Telegram 图标显示问题"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -161,7 +161,7 @@ proxy-groups: #!replace
 
   - name: Telegram
     type: url-test
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png
+    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Telegram.png
     include-all: true
     # 排除立陶宛和俄罗斯
     filter: "(?i)^(?!.*(俄罗斯|Russia|RU|立陶宛|Lithuania|LT|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|联系|网站|入群|专线)).*"
