@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.52  | 更新日期: 2026-02-01
+// 版本: v1.53  | 更新日期: 2026-02-01
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.52 (Tolerance: Auto=50ms, Others=100ms)...");
+  console.log("✅ 加载脚本 v1.53 (Tolerance: Auto=50ms, Others=100ms)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -294,11 +294,17 @@ function main(config) {
   // baseInterval: 基础间隔(秒), offset: 组间偏移(秒), unifiedDelay: 是否开启统一延迟计算
   // excludeRegex: 需要排除的地区名称正则 (如 "俄罗斯|香港")
   // tolerance: 容差(ms)，默认 50。AI 类服务建议设高以防跳变。
-  function createRegionSets(suffix, url, hidden = true, baseInterval = 100, offset = 0, unifiedDelay = true, excludeRegex = null, tolerance = 50) {
+  // nodeExclude: [新增] 需要额外排除的节点关键字 (如 "IEPL")
+  function createRegionSets(suffix, url, hidden = true, baseInterval = 100, offset = 0, unifiedDelay = true, excludeRegex = null, tolerance = 50, nodeExclude = null) {
      // 预先过滤地区
      const targetRegions = excludeRegex 
         ? regions.filter(r => !new RegExp(excludeRegex).test(r.name)) 
         : regions;
+
+     // 基础排除规则
+     const baseExclude = "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新";
+     // 如果有额外的节点排除关键词，拼接到规则中
+     const finalExclude = nodeExclude ? `${baseExclude}|${nodeExclude}` : baseExclude;
 
      return targetRegions.map((r, index) => ({
       "name": r.name + suffix,
@@ -306,7 +312,7 @@ function main(config) {
       "hidden": hidden,
       "include-all": true,
       "filter": r.filter,
-      "exclude-filter": "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
+      "exclude-filter": finalExclude,
       "url": url,
       // 错开时间核心逻辑: 基础间隔 + 服务偏移 + (地区索引 * 步长)
       // 使用 index * 13 确保地区间充分错开，offset 确保服务间错开
@@ -323,7 +329,10 @@ function main(config) {
   // 真正的 [顶层] 服务组 (Level 2) 是在下方的 config["proxy-groups"] 中引用这些变量创建的
   // 核心逻辑：创建大量细分地区组，供 Level 2 进行二次优选
   // 策略调整：Level 1 (全部 60s) 比 Level 2 (100s) 更快，确保 Level 2 测速时能命中已优选的底层节点
-  const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  60, 0, true,  "IEPL", 50); 
+  
+  // ✅ 修正：将 "IEPL" 移至第 9 个参数 (nodeExclude)，第 7 个参数 (地区排除) 设为 null
+  const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  60, 0, true,  null, 50, "IEPL"); 
+  
   // AI 分组特别优化：Level 1 设为 60s 极速自愈
   // 1. 排除不支持的地区 (俄罗斯 RU) 及部分 (香港 HK)
   // 2. Tolerance 统一设为 100ms (自动组保留 50ms)
