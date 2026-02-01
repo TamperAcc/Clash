@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.48  | 更新日期: 2026-02-01
+// 版本: v1.49  | 更新日期: 2026-02-01
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.48 (Fix: Restore Missing RuleProvider 'social_media')...");
+  console.log("✅ 加载脚本 v1.49 (Fix: Restore Missing RuleProvider 'social_media')...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -284,7 +284,14 @@ function main(config) {
     { name: "TL 东帝汶", filter: "(?i)东帝汶|TL|Timor-Leste" },
     { name: "TR 土耳其", filter: "(?i)土耳其|TR|Turkey" },
     { name: "UA 乌克兰", filter: "(?i)乌克兰|UA|Ukraine" },
-    { name: "VA 梵蒂冈", filter: "(?i)梵蒂冈|VA|Vatican" }
+    { name: "VA 梵蒂冈", filter: "(?i)梵蒂冈|VA|Vatican" },
+    { name: "AQ 南极洲", filter: "(?i)南极洲|AQ|Antarctica" },
+    { name: " Gemini", filter: "(?i)Gemini" },
+    { name: " Copilot", filter: "(?i)Copilot" },
+    { name: " GitHub Copilot", filter: "(?i)GitHub Copilot" },
+    { name: " ChatGPT", filter: "(?i)ChatGPT" },
+    { name: " Google", filter: "(?i)Google" },
+    { name: " YouTube", filter: "(?i)YouTube" }
 
   ];
 
