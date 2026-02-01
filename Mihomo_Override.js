@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.51  | 更新日期: 2026-02-01
+// 版本: v1.52  | 更新日期: 2026-02-01
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.51 (Optimized Intervals: L1=60s, L2=100s)...");
+  console.log("✅ 加载脚本 v1.52 (Tolerance: Auto=50ms, Others=100ms)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -332,11 +332,11 @@ function main(config) {
   const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  60, 0, true, null, 50); 
   // AI 分组特别优化：Level 1 设为 60s 极速自愈
   // 1. 排除不支持的地区 (俄罗斯 RU) 及部分 (香港 HK)
-  // 2. Tolerance 设为 150ms，防止对话过程中因轻微延迟抖动切换节点导致断连
-  const groupsGemini  = createRegionSets(" Gemini",   "https://gemini.google.com",           true,  60, 6, false, "俄罗斯|香港", 150);
-  const groupsCopilot = createRegionSets(" Copilot",  "https://www.bing.com",                true,  60, 12, false, "俄罗斯", 150);
-  const groupsGithub  = createRegionSets(" GitHub",   "https://api.github.com",              true,  60, 18, false, "俄罗斯", 50);
-  const groupsGPT     = createRegionSets(" GPT",      "https://chatgpt.com",                 true,  60, 24, false, "俄罗斯|香港", 150);
+  // 2. Tolerance 统一设为 100ms (自动组保留 50ms)
+  const groupsGemini  = createRegionSets(" Gemini",   "https://gemini.google.com",           true,  60, 6, false, "俄罗斯|香港", 100);
+  const groupsCopilot = createRegionSets(" Copilot",  "https://www.bing.com",                true,  60, 12, false, "俄罗斯", 100);
+  const groupsGithub  = createRegionSets(" GitHub",   "https://api.github.com",              true,  60, 18, false, "俄罗斯", 100);
+  const groupsGPT     = createRegionSets(" GPT",      "https://chatgpt.com",                 true,  60, 24, false, "俄罗斯|香港", 100);
 
   // 将所有底层组展平，准备加入 config["proxy-groups"]
   const allRegionGroups = [
@@ -357,7 +357,7 @@ function main(config) {
       "proxies": groupsAuto.map(g => g.name),
       "url": "http://www.gstatic.com/generate_204",
       "interval": 100,
-      "tolerance": 100,
+      "tolerance": 50,
       "lazy": true
     },
     {
