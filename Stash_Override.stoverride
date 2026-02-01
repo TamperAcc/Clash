@@ -3,8 +3,8 @@
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.25"
-desc: "v1.25 | 屏蔽AI俄罗斯节点 | 修复YAML格式错误 | 已移除huggingface | 修复规则引用并更新"
+name: "Stash Override v1.26"
+desc: "v1.26 | 同步 PC 端优化 (Tolerance: Auto=50ms, AI=100ms) | Fix Bing Redirect"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -131,7 +131,7 @@ proxy-groups: #!replace
     filter: "(?i)^(?!.*(流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "https://www.gstatic.com/generate_204"
     interval: 300
-    tolerance: 100
+    tolerance: 50
     unified-delay: true
     lazy: true
 
@@ -155,7 +155,7 @@ proxy-groups: #!replace
     filter: "(?i)^(?!.*(俄罗斯|俄国|Russia|RU|Russia|香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "http://www.gstatic.com/generate_204"
     interval: 300
-    tolerance: 50
+    tolerance: 100
     unified-delay: false # ⚡ 极速模式
     lazy: true
 
@@ -324,6 +324,8 @@ rules: #!replace
   # === AI & 搜索 精细化分流 ===
   
   # 1. Copilot VScode 插件 -> 🔍 搜索与开发 (求快，走 HK/SG)
+  # 修复 Bing 重定向循环：国内版 Bing 强制直连
+  - DOMAIN,cn.bing.com,DIRECT
   - DOMAIN,copilot-proxy.githubusercontent.com,🔍 搜索与开发
   - DOMAIN,api.github.com,🔍 搜索与开发
   
