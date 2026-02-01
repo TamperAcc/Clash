@@ -323,10 +323,11 @@ function main(config) {
     }));
   }
 
-  // === Level 1: [底层] 地区自动测速组 (Region Groups) ===
-  // 这些变量生成了具体到国家的测速组列表 (例如 "🇺🇸 美国 Gemini", "🇯🇵 日本 Gemini")
-  // 核心逻辑：创建大量细分地区组，供下方的 Level 2 服务组进行二次优选
-  // 引入时间错开机制 (防止并发测速拥堵): 改为 100s 以获得更快的节点故障响应速度
+  // === Level 1: [底层] 地区自动测速组 (Region Groups) 生成区 ===
+  // ⚠️ [说明]：此处定义的变量 (groupsAuto, groupsGemini...) 属于底层数据源
+  // 它们只是"候选列表" (如: [🇺🇸 美国 Gemini, 🇯🇵 日本 Gemini...])，并非用户面板直接点击的策略组
+  // 真正的 [顶层] 服务组 (Level 2) 是在下方的 config["proxy-groups"] 中引用这些变量创建的
+  // 核心逻辑：创建大量细分地区组，供 Level 2 进行二次优选
   const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  100, 0, true, null, 50); 
   // AI 分组特别优化：
   // 1. 排除不支持的地区 (俄罗斯 RU) 及部分 (香港 HK)
