@@ -491,6 +491,7 @@ function main(config) {
     "DOMAIN,cn.bing.com,DIRECT",
     "RULE-SET,copilot,Copilot",
     "RULE-SET,gemini,Gemini",
+    "RULE-SET,github,GitHub Copilot",
     // AI 服务 - 兜底
     "RULE-SET,google,Google",
 
@@ -524,7 +525,6 @@ function main(config) {
     "PROCESS-NAME,cloudmusic.exe,DIRECT",
 
     // 开发者/微软
-    "RULE-SET,github,GitHub Copilot",
     "DOMAIN-SUFFIX,stackoverflow.com,自动选择",
     "DOMAIN-SUFFIX,stackexchange.com,自动选择",
     "DOMAIN-SUFFIX,npmjs.com,自动选择",
