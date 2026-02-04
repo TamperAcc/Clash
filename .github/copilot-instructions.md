@@ -40,12 +40,14 @@ The configuration logic flows from Reference YAMLs to Implementation Scripts.
 
 ### Mihomo Party (PC)
 - **Engine**: `Mihomo_Override.js`
+- **Safeguard**: MUST check `if (!config) return {};` at start to prevent crash on null config.
 - **Tun Stack**: `mixed` (Auto).
 - **DNS**: Fake-IP mode (Range `198.18.0.1/16`).
 - **Optimization**: `tcp-concurrent: true`, `find-process-mode: strict`.
 
 ### FlClash (PC)
 - **Engine**: `FlClash_Override.js`
+- **Safeguard**: MUST check `if (!config) return {};`.
 - **Features**: 
   - `tun`: `stack: mixed`, `auto-route: true`.
   - `dns`: Split DNS for domestic domains (AliDNS/Tencent) vs Foreign (Fake-IP).
@@ -65,7 +67,7 @@ The configuration logic flows from Reference YAMLs to Implementation Scripts.
   - **Fake-IP**: Exclude from Fake-IP to allow mDNS/local discovery.
 
 ## 5. Coding Standards
-- **Versioning**: Increment version (e.g., `v1.55`) and Date (YYYY-MM-DD) in file header.
+- **Versioning**: Increment version (e.g., `v1.56`) and Date (YYYY-MM-DD) in file header.
 - **Safety**: 
   - JS: Guard `if (!config) return {};`.
   - Stoverride: Ensure correct YAML indentation for injected script sections.
