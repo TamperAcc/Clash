@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.60  | 更新日期: 2026-02-04
+// 版本: v1.61  | 更新日期: 2026-02-04
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.60 (Tolerance: Auto=50ms, Others=100ms)...");
+  console.log("✅ 加载脚本 v1.61 (Tolerance: Auto=50ms, Others=100ms)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -256,35 +256,35 @@ function main(config) {
     { name: "🇫🇷 法国", filter: "(?i)法国|FR|France", icon: "France.png" },
     { name: "🇳🇱 荷兰", filter: "(?i)荷兰|NL|Netherlands", icon: "Netherlands.png" },
     { name: "🇵🇭 菲律宾", filter: "(?i)菲律宾|PH|Philippines", icon: "Philippines.png" },
-    { name: "AF 阿富汗", filter: "(?i)阿富汗|AF|Afghanistan", icon: "Afghanistan.png" },
-    { name: "AR 阿根廷", filter: "(?i)阿根廷|AR|Argentina", icon: "Argentina.png" },
+    { name: "🇦🇫 阿富汗", filter: "(?i)阿富汗|AF|Afghanistan", icon: "Afghanistan.png" },
+    { name: "🇦🇷 阿根廷", filter: "(?i)阿根廷|AR|Argentina", icon: "Argentina.png" },
     { name: "🇧🇷 巴西", filter: "(?i)巴西|BR|Brazil", icon: "Brazil.png" },
     { name: "🇦🇪 阿联酋", filter: "(?i)阿联酋|AE|UAE|Emirates", icon: "United_Arab_Emirates.png" },
-    { name: "BM 百慕大", filter: "(?i)百慕大|BM|Bermuda", icon: "Bermuda.png" },
+    { name: "🇧🇲 百慕大", filter: "(?i)百慕大|BM|Bermuda", icon: "Bermuda.png" },
     { name: "🇨🇺 古巴", filter: "(?i)古巴|CU|Cuba", icon: "Cuba.png" },
-    { name: "EG 埃及 ", filter: "(?i)埃及|EG|Egypt", icon: "Egypt.png" },
-    { name: "ES 西班牙", filter: "(?i)西班牙|ES|Spain", icon: "Spain.png" },
-    { name: "FJ 斐济", filter: "(?i)斐济|FJ|Fiji", icon: "Fiji.png" },
-    { name: "GL 格陵兰", filter: "(?i)格陵兰|GL|Greenland", icon: "Greenland.png" },
-    { name: "GU 关岛", filter: "(?i)关岛|GU|Guam", icon: "Guam.png" },
-    { name: "KH 柬埔寨", filter: "(?i)柬埔寨|KH|Cambodia", icon: "Cambodia.png" },
-    { name: "LA 老挝", filter: "(?i)老挝|LA|Laos", icon: "Laos.png" },
-    { name: "MM 缅甸", filter: "(?i)缅甸|MM|Myanmar", icon: "Myanmar.png" },
-    { name: "MN 蒙古", filter: "(?i)蒙古|MN|Mongolia", icon: "Mongolia.png" },
-    { name: "MO 澳门", filter: "(?i)澳门|MO|Macau", icon: "Macao.png" },
-    { name: "MX 墨西哥", filter: "(?i)墨西哥|MX|Mexico", icon: "Mexico.png" },
-    { name: "NG 尼日利亚", filter: "(?i)尼日利亚|NG|Nigeria", icon: "Nigeria.png" },
-    { name: "NZ 新西兰", filter: "(?i)新西兰|NZ|New Zealand", icon: "New_Zealand.png" },
-    { name: "PK 巴基斯坦", filter: "(?i)巴基斯坦|PK|Pakistan", icon: "Pakistan.png" },
-    { name: "QA 卡塔尔", filter: "(?i)卡塔尔|QA|Qatar", icon: "Qatar.png" },
-    { name: "SB 所罗门群岛", filter: "(?i)所罗门群岛|SB|Solomon Islands", icon: "Solomon_Islands.png" },
-    { name: "SE 瑞典", filter: "(?i)瑞典|SE|Sweden", icon: "Sweden.png" },
-    { name: "SO 索马里", filter: "(?i)索马里|SO|Somalia", icon: "Somalia.png" },
-    { name: "TL 东帝汶", filter: "(?i)东帝汶|TL|Timor-Leste", icon: "East_Timor.png" },
-    { name: "TR 土耳其", filter: "(?i)土耳其|TR|Turkey", icon: "Turkey.png" },
-    { name: "UA 乌克兰", filter: "(?i)乌克兰|UA|Ukraine", icon: "Ukraine.png" },
-    { name: "VA 梵蒂冈", filter: "(?i)梵蒂冈|VA|Vatican", icon: "Vatican_City.png" },
-    { name: "AQ 南极洲", filter: "(?i)南极洲|AQ|Antarctica", icon: "Antarctica.png" }
+    { name: "🇪🇬 埃及", filter: "(?i)埃及|EG|Egypt", icon: "Egypt.png" },
+    { name: "🇪🇸 西班牙", filter: "(?i)西班牙|ES|Spain", icon: "Spain.png" },
+    { name: "🇫🇯 斐济", filter: "(?i)斐济|FJ|Fiji", icon: "Fiji.png" },
+    { name: "🇬🇱 格陵兰", filter: "(?i)格陵兰|GL|Greenland", icon: "Greenland.png" },
+    { name: "🇬🇺 关岛", filter: "(?i)关岛|GU|Guam", icon: "Guam.png" },
+    { name: "🇰🇭 柬埔寨", filter: "(?i)柬埔寨|KH|Cambodia", icon: "Cambodia.png" },
+    { name: "🇱🇦 老挝", filter: "(?i)老挝|LA|Laos", icon: "Laos.png" },
+    { name: "🇲🇲 缅甸", filter: "(?i)缅甸|MM|Myanmar", icon: "Myanmar.png" },
+    { name: "🇲🇳 蒙古", filter: "(?i)蒙古|MN|Mongolia", icon: "Mongolia.png" },
+    { name: "🇲🇴 澳门", filter: "(?i)澳门|MO|Macau", icon: "Macao.png" },
+    { name: "🇲🇽 墨西哥", filter: "(?i)墨西哥|MX|Mexico", icon: "Mexico.png" },
+    { name: "🇳🇬 尼日利亚", filter: "(?i)尼日利亚|NG|Nigeria", icon: "Nigeria.png" },
+    { name: "🇳🇿 新西兰", filter: "(?i)新西兰|NZ|New Zealand", icon: "New_Zealand.png" },
+    { name: "🇵🇰 巴基斯坦", filter: "(?i)巴基斯坦|PK|Pakistan", icon: "Pakistan.png" },
+    { name: "🇶🇦 卡塔尔", filter: "(?i)卡塔尔|QA|Qatar", icon: "Qatar.png" },
+    { name: "🇸🇧 所罗门群岛", filter: "(?i)所罗门群岛|SB|Solomon Islands", icon: "Solomon_Islands.png" },
+    { name: "🇸🇪 瑞典", filter: "(?i)瑞典|SE|Sweden", icon: "Sweden.png" },
+    { name: "🇸🇴 索马里", filter: "(?i)索马里|SO|Somalia", icon: "Somalia.png" },
+    { name: "🇹🇱 东帝汶", filter: "(?i)东帝汶|TL|Timor-Leste", icon: "East_Timor.png" },
+    { name: "🇹🇷 土耳其", filter: "(?i)土耳其|TR|Turkey", icon: "Turkey.png" },
+    { name: "🇺🇦 乌克兰", filter: "(?i)乌克兰|UA|Ukraine", icon: "Ukraine.png" },
+    { name: "🇻🇦 梵蒂冈", filter: "(?i)梵蒂冈|VA|Vatican", icon: "Vatican_City.png" },
+    { name: "🇦🇶 南极洲", filter: "(?i)南极洲|AQ|Antarctica", icon: "Antarctica.png" }
   ];
 
   // 辅助函数：生成一套包含所有地区的策略组 (Level 1: Region Groups)
