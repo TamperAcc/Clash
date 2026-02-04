@@ -1,17 +1,45 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.57  | 更新日期: 2026-02-04
+// 版本: v1.58  | 更新日期: 2026-02-04
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.57 (Tolerance: Auto=50ms, Others=100ms)...");
+  console.log("✅ 加载脚本 v1.58 (Tolerance: Auto=50ms, Others=100ms)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
     return {}; 
   }
+
+  // 辅助函数：根据地区名称获取图标链接 (兼容写法)
+  const getRegionIcon = function(name) {
+    var baseUrl = "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/";
+    var iconMap = {
+        "香港": "Hong_Kong.png", "台湾": "Taiwan.png", "日本": "Japan.png", 
+        "韩国": "Korea.png", "新加坡": "Singapore.png", "美国": "United_States.png", 
+        "英国": "United_Kingdom.png", "德国": "Germany.png", "加拿大": "Canada.png", 
+        "澳大利亚": "Australia.png", "俄罗斯": "Russia.png", "泰国": "Thailand.png", 
+        "越南": "Vietnam.png", "印度": "India.png", "法国": "France.png", 
+        "荷兰": "Netherlands.png", "菲律宾": "Philippines.png", "阿富汗": "Afghanistan.png", 
+        "阿根廷": "Argentina.png", "巴西": "Brazil.png", "阿联酋": "United_Arab_Emirates.png", 
+        "百慕大": "Bermuda.png", "古巴": "Cuba.png", "埃及": "Egypt.png", 
+        "西班牙": "Spain.png", "斐济": "Fiji.png", "格陵兰": "Greenland.png", 
+        "关岛": "Guam.png", "柬埔寨": "Cambodia.png", "老挝": "Laos.png", 
+        "缅甸": "Myanmar.png", "蒙古": "Mongolia.png", "澳门": "Macao.png", 
+        "墨西哥": "Mexico.png", "尼日利亚": "Nigeria.png", "新西兰": "New_Zealand.png", 
+        "巴基斯坦": "Pakistan.png", "卡塔尔": "Qatar.png", "所罗门群岛": "Solomon_Islands.png", 
+        "瑞典": "Sweden.png", "索马里": "Somalia.png", "东帝汶": "East_Timor.png", 
+        "土耳其": "Turkey.png", "乌克兰": "Ukraine.png", "梵蒂冈": "Vatican_City.png", 
+        "南极洲": "Antarctica.png"
+    };
+    
+    for (var key in iconMap) {
+        if (name.indexOf(key) !== -1) return baseUrl + iconMap[key];
+    }
+    return baseUrl + "Global.png";
+  };
 
   // 1. 基础设置优化
   config["tcp-concurrent"] = true; // ✅ 恢复并发 (已有 Tun 排除保护，重新测试开启)
@@ -232,34 +260,6 @@ function main(config) {
       "interval": 86400
     }
   };
-
-  // 辅助函数：根据地区名称获取图标链接
-  function getRegionIcon(name) {
-    const baseUrl = "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/";
-    const iconMap = {
-        "香港": "Hong_Kong.png", "台湾": "Taiwan.png", "日本": "Japan.png", 
-        "韩国": "Korea.png", "新加坡": "Singapore.png", "美国": "United_States.png", 
-        "英国": "United_Kingdom.png", "德国": "Germany.png", "加拿大": "Canada.png", 
-        "澳大利亚": "Australia.png", "俄罗斯": "Russia.png", "泰国": "Thailand.png", 
-        "越南": "Vietnam.png", "印度": "India.png", "法国": "France.png", 
-        "荷兰": "Netherlands.png", "菲律宾": "Philippines.png", "阿富汗": "Afghanistan.png", 
-        "阿根廷": "Argentina.png", "巴西": "Brazil.png", "阿联酋": "United_Arab_Emirates.png", 
-        "百慕大": "Bermuda.png", "古巴": "Cuba.png", "埃及": "Egypt.png", 
-        "西班牙": "Spain.png", "斐济": "Fiji.png", "格陵兰": "Greenland.png", 
-        "关岛": "Guam.png", "柬埔寨": "Cambodia.png", "老挝": "Laos.png", 
-        "缅甸": "Myanmar.png", "蒙古": "Mongolia.png", "澳门": "Macao.png", 
-        "墨西哥": "Mexico.png", "尼日利亚": "Nigeria.png", "新西兰": "New_Zealand.png", 
-        "巴基斯坦": "Pakistan.png", "卡塔尔": "Qatar.png", "所罗门群岛": "Solomon_Islands.png", 
-        "瑞典": "Sweden.png", "索马里": "Somalia.png", "东帝汶": "East_Timor.png", 
-        "土耳其": "Turkey.png", "乌克兰": "Ukraine.png", "梵蒂冈": "Vatican_City.png", 
-        "南极洲": "Antarctica.png"
-    };
-    
-    for (const [key, val] of Object.entries(iconMap)) {
-        if (name.includes(key)) return baseUrl + val;
-    }
-    return baseUrl + "Global.png";
-  }
 
   // Proxy Groups 定义
   // 基础地区正则定义
