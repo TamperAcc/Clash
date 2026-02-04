@@ -1,20 +1,20 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.58  | 更新日期: 2026-02-04
+// 版本: v1.59  | 更新日期: 2026-02-04
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.58 (Tolerance: Auto=50ms, Others=100ms)...");
+  console.log("✅ 加载脚本 v1.59 (Tolerance: Auto=50ms, Others=100ms)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
     return {}; 
   }
 
-  // 辅助函数：根据地区名称获取图标链接 (兼容写法)
-  const getRegionIcon = function(name) {
+  // 辅助函数：根据地区名称获取图标链接
+  function getRegionIcon(name) {
     var baseUrl = "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/";
     var iconMap = {
         "香港": "Hong_Kong.png", "台湾": "Taiwan.png", "日本": "Japan.png", 
@@ -39,7 +39,7 @@ function main(config) {
         if (name.indexOf(key) !== -1) return baseUrl + iconMap[key];
     }
     return baseUrl + "Global.png";
-  };
+  }
 
   // 1. 基础设置优化
   config["tcp-concurrent"] = true; // ✅ 恢复并发 (已有 Tun 排除保护，重新测试开启)
