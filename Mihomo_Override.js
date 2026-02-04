@@ -13,6 +13,33 @@ function main(config) {
     return {}; 
   }
 
+  // 1. 基础设置优化
+  config["tcp-concurrent"] = true; // ✅ 恢复并发 (已有 Tun 排除保护，重新测试开启)
+  config["global-client-fingerprint"] = "edge";
+  config["keep-alive-interval"] = 30;
+  config["allow-lan"] = true;
+  config["bind-address"] = "*";
+  config["find-process-mode"] = "strict";
+  config["profile"] = {
+    "store-selected": true,
+    "auto-update": true
+  };
+  
+  // 修复本地回环和 Google 连接问题 (恢复精简列表，因 Tun 已排除内网，此处不再需要冗余配置)
+  config["skip-auth-prefixes"] = ["127.0.0.1/8", "::1/128"];
+  // Tun 模式下已排除内网流量，此项理论不需要，但保留以防 Local 软件验证问题
+  
+  // GeoData 优化
+  config["geodata-loader"] = "memconservative";
+  config["geo-auto-update"] = true;
+  config["geo-update-interval"] = 24;
+  config["geodata-mode"] = true;
+  config["geox-url"] = {
+    "geoip": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb",
+    "geosite": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat",
+    "mmdb": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
+  };
+
   // 辅助函数：根据地区名称获取图标链接
   function getRegionIcon(name) {
     var baseUrl = "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/";
@@ -40,33 +67,6 @@ function main(config) {
     }
     return baseUrl + "Global.png";
   }
-
-  // 1. 基础设置优化
-  config["tcp-concurrent"] = true; // ✅ 恢复并发 (已有 Tun 排除保护，重新测试开启)
-  config["global-client-fingerprint"] = "edge";
-  config["keep-alive-interval"] = 30;
-  config["allow-lan"] = true;
-  config["bind-address"] = "*";
-  config["find-process-mode"] = "strict";
-  config["profile"] = {
-    "store-selected": true,
-    "auto-update": true
-  };
-  
-  // 修复本地回环和 Google 连接问题 (恢复精简列表，因 Tun 已排除内网，此处不再需要冗余配置)
-  config["skip-auth-prefixes"] = ["127.0.0.1/8", "::1/128"];
-  // Tun 模式下已排除内网流量，此项理论不需要，但保留以防 Local 软件验证问题
-  
-  // GeoData 优化
-  config["geodata-loader"] = "memconservative";
-  config["geo-auto-update"] = true;
-  config["geo-update-interval"] = 24;
-  config["geodata-mode"] = true;
-  config["geox-url"] = {
-    "geoip": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb",
-    "geosite": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat",
-    "mmdb": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
-  };
 
   // 2. DNS 设置
   config["dns"] = {
