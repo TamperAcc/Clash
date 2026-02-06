@@ -7,6 +7,9 @@ Network proxy configurations for **Mihomo Party**, **FlClash**, and **Stash (iOS
   - Source: `aw.githubusercontent.com/TamperAcc/Clash/main/...`
   - CDN (Live): `cdn.jsdelivr.net/gh/TamperAcc/Clash@main/...`
 - **Core Mission**: Optimize connectivity for Developer Tools (GitHub, AI Models) and domestic Hardware Ecosystem (Bambu Lab).
+- **Active Development**:
+  - `Mihomo_Override.js`: v1.65+
+  - `Stash_Override.stoverride`: v1.30+
 
 ## 2. File Architecture & Logic Flow
 The configuration logic flows from Reference YAMLs to Implementation Scripts.
@@ -30,20 +33,23 @@ The configuration logic flows from Reference YAMLs to Implementation Scripts.
     git push origin main
     ```
 - **Consistency Checks**:
-  - **Rule Providers**: Ensure new providers (e.g., `ai_services`) in YAML are injected in JS/Stoverride.
+  - **Rule Providers**: Ensure new providers (e.g., `telegram_domain`, `ai_services`) are injected in JS/Stoverride.
   - **Proxy Groups**: Maintain consistent naming (e.g., "🇭🇰 香港 Gemini") and ordering.
+  - **Region Logic**: `Mihomo` uses a Level 1 (Regions) -> Level 2 (Services) tiered Group structure.
   - **Testing Logs**:
-    - Mihomo: `✅ 加载脚本 v1.xx...`
+    - Mihomo: `✅ 加载脚本 v1.xx (Tolerance: 100ms)...`
     - FlClash: `🔵 [Script] 正在应用 FlClash 覆写脚本 v1.xx...`
 
 ## 4. Platform Specifics
 
 ### Mihomo Party (PC)
 - **Engine**: `Mihomo_Override.js`
-- **Safeguard**: MUST check `if (!config) return {};` at start to prevent crash on null config.
-- **Tun Stack**: `mixed` (Auto).
-- **DNS**: Fake-IP mode (Range `198.18.0.1/16`).
-- **Optimization**: `tcp-concurrent: true`, `find-process-mode: strict`.
+- **Safeguard**: MUST check `if (!config) return {};` at start.
+- **Tun Stack**: `gvisor` (Changed from mixed in v1.65 for stability).
+- **Routing**: `strict-route: true`.
+- **Optimization**: 
+  - `inet4-route-exclude-address`: Exclude LAN (`192.168.0.0/16` etc) to solve `ERR_EMPTY_RESPONSE`.
+  - `tcp-concurrent: true`.
 
 ### FlClash (PC)
 - **Engine**: `FlClash_Override.js`
@@ -51,13 +57,14 @@ The configuration logic flows from Reference YAMLs to Implementation Scripts.
 - **Features**: 
   - `tun`: `stack: mixed`, `auto-route: true`.
   - `dns`: Split DNS for domestic domains (AliDNS/Tencent) vs Foreign (Fake-IP).
-- **Differences**: Explicitly handles `127.0.0.1/8` skip-auth.
+  - Explicitly handles `127.0.0.1/8` skip-auth.
 
 ### Stash (iOS/macOS)
 - **Engine**: `Stash_Override.stoverride` (YAML-based override).
 - **Battery**: `lazy: true` MANDATORY for all rule groups using `url-test`.
 - **Visuals**: Use `config.script.tiles` for widgets.
 - **Helpers**: Exclude `quic` sniffer to save battery.
+- **Sync**: Ensure `fake-ip-filter` includes new entries from Mihomo (e.g., `+.ntp.org`).
 
 ### Hardware Ecosystem (Bambu Lab)
 - **Domains**: `*.bambulab.cn`, `*.bambulab.com`
@@ -65,10 +72,13 @@ The configuration logic flows from Reference YAMLs to Implementation Scripts.
   - **DNS**: Force use of Tencent (`119.29.29.29`) or AliDNS for these domains.
   - **Routing**: Force `DIRECT`.
   - **Fake-IP**: Exclude from Fake-IP to allow mDNS/local discovery.
+  - **Process**: `BambuStudio.exe`, `bambu-studio.exe` -> `DIRECT`.
 
 ## 5. Coding Standards
-- **Versioning**: Increment version (e.g., `v1.56`) and Date (YYYY-MM-DD) in file header.
+- **Versioning**: Increment version (e.g., `v1.65`) and Date (YYYY-MM-DD) in file header.
 - **Safety**: 
   - JS: Guard `if (!config) return {};`.
   - Stoverride: Ensure correct YAML indentation for injected script sections.
 - **Variables**: `const` for static lists (proxies, rules), avoid global scope pollution.
+- **Patterns**: Use `createRegionSets` helper in JS for creating auto-test groups.
+
