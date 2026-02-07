@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.65  | 更新日期: 2026-02-04
+// 版本: v1.66  | 更新日期: 2026-02-07
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.65 (Tolerance: Auto=50ms, Others=100ms)...");
+  console.log("✅ 加载脚本 v1.66 (Tolerance: Auto=50ms, Others=100ms)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -330,7 +330,7 @@ function main(config) {
   
   // ✅ 修正：将 "IEPL" 移至第 9 个参数 (nodeExclude)，第 7 个参数 (地区排除) 设为 null
   // 变更：源头已删除立陶宛，此处不再需要 excludeRegex
-  const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  60, 0, true,  null, 50, "IEPL"); 
+  const groupsAuto    = createRegionSets("",          "https://www.gstatic.com/generate_204", true,  60, 0, false,  null, 50, "IEPL"); 
   
   // AI 分组特别优化：Level 1 设为 60s 极速自愈
   // 1. 排除不支持的地区 (俄罗斯 RU) 及部分 (香港 HK)
@@ -360,9 +360,10 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png",
       "proxies": groupsAuto.map(g => g.name),
-      "url": "http://www.gstatic.com/generate_204",
+      "url": "https://www.gstatic.com/generate_204",
       "interval": 100,
       "tolerance": 50,
+      "unified-delay": false,
       "lazy": true
     },
     {
