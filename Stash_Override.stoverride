@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-06 [Stash Override v1.31]
+﻿# Last Updated: 2026-02-08 [Stash Override v1.32]
 # 移植自 PC 端 Mihomo_Override.js v1.65
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.31"
-desc: "v1.31 | 新增 GLOBAL 手动策略组"
+name: "Stash Override v1.32"
+desc: "v1.32 | 优化 iOS DNS (DoH) 解决节点超时"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -67,9 +67,10 @@ dns:
     '+.bambulab.com': '119.29.29.29'
   
   nameserver: #!replace
-    - system # 🚀 优先使用系统 DNS (ISP)，速度最快
-    - 119.29.29.29
-    - quic://dns.alidns.com:853
+    - https://doh.pub/dns-query # 腾讯 DoH (iOS 推荐: 抗劫持能力最强，解决节点超时)
+    - https://dns.alidns.com/dns-query # 阿里 DoH
+    - 119.29.29.29 # 腾讯 UDP (兜底备用)
+    # - system # ❌ 移除系统 DNS: iOS 上运营商DNS经常污染节点域名导致连不上
   
   # ✅ 新增 Fallback: 采用 TCP 协议连接 OpenDNS，比 Google 直连更稳，解决 IP 归属误判
   fallback:
