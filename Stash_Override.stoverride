@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-08 [Stash Override v1.32]
+﻿# Last Updated: 2026-02-08 [Stash Override v1.33]
 # 移植自 PC 端 Mihomo_Override.js v1.65
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.32"
-desc: "v1.32 | 优化 iOS DNS (DoH) 解决节点超时"
+name: "Stash Override v1.33"
+desc: "v1.33 | 移除 GLOBAL 策略组，由“国外通用”接管兜底"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -124,16 +124,6 @@ script:
 # 策略组 (Proxy Groups) - 核心逻辑移植
 # ==========================================
 proxy-groups: #!replace
-  - name: 👉 GLOBAL
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
-    include-all: true
-    filter: "(?i)^(?!.*(法国|France|FR|立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
-    proxies:
-      - 自动选择
-      - 🔍 搜索与开发
-      - DIRECT
-
   - name: 自动选择
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
@@ -408,4 +398,4 @@ rules: #!replace
   - RULE-SET,cn_ip,国内
   - GEOIP,CN,国内
   
-  - MATCH,👉 GLOBAL
+  - MATCH,国外通用
