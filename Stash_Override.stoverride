@@ -122,44 +122,6 @@ rewrite:
 script:
   shortcuts:
     quic_block: network == 'udp' and dst_port == 443
-  
-  # 📊 首页可视化监控面板 (Tiles)
-  tiles:
-    - name: "Network Info"
-      interval: 600
-      title: "🌍 网络信息"
-      content: "刷新中..."
-      icon: "network"
-      backgroundColor: "#222222"
-      script: |
-        function getFlagEmoji(countryCode) {
-            const codePoints = countryCode.toUpperCase().split('').map(char => 127397 + char.charCodeAt());
-            return String.fromCodePoint(...codePoints);
-        }
-        $httpClient.get('http://ip-api.com/json/?lang=zh-CN', function(error, response, data){
-            var res = JSON.parse(data);
-            $done({
-                title: getFlagEmoji(res.countryCode) + " " + res.country,
-                content: "IP: " + res.query + "\nISP: " + res.isp,
-                icon: "network"
-            });
-        });
-
-    - name: "Traffic Stats"
-      interval: 300
-      title: "📈 流量统计"
-      content: "加载中..."
-      icon: "arrow.up.arrow.down"
-      backgroundColor: "#1a472a"
-      script: |
-        let traffic = $surge.traffic();
-        let up = (traffic.up / 1024 / 1024).toFixed(2);
-        let down = (traffic.down / 1024 / 1024).toFixed(2);
-        $done({
-            title: "📈 流量统计",
-            content: "⬆️ 上行: " + up + " MB\n⬇️ 下行: " + down + " MB",
-            icon: "arrow.up.arrow.down"
-        });
 
 # ==========================================
 # 策略组 (Proxy Groups) - 核心逻辑移植
