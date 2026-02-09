@@ -117,13 +117,6 @@ rewrite:
     replace: https://www.google.com
     type: 302
 # ==========================================
-# 脚本 & 面板
-# ==========================================
-script:
-  shortcuts:
-    quic_block: network == 'udp' and dst_port == 443
-
-# ==========================================
 # 策略组 (Proxy Groups) - 核心逻辑移植
 # ==========================================
 proxy-groups: #!replace
