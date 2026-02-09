@@ -114,7 +114,7 @@ function main(config) {
   // ============================================================
   
   // 0. 基础排除正则 (排除流量/过期/官网等非节点项目)
-  const baseExclude = "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新";
+  var baseExclude = "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新";
 
   // 1. 定义扁平化的 Proxy Groups
   config["proxy-groups"] = [
@@ -123,7 +123,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png",
       "include-all": true,
-      "filter": `^(?!.*(${baseExclude})).*`, // 包含所有有效节点
+      "filter": "^(?!.*(" + baseExclude + ")).*", // 包含所有有效节点
       "url": "http://www.gstatic.com/generate_204",
       "interval": 300,
       "tolerance": 50,
@@ -135,7 +135,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
       "include-all": true,
-      "filter": `^(?!.*(${baseExclude}|俄罗斯|香港|HongKong|HK|Russia|RU)).*`, // 排除 HK/RU
+      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|香港|HongKong|HK|Russia|RU)).*", // 排除 HK/RU
       "url": "https://gemini.google.com",
       "interval": 310, // 错开 10s
       "tolerance": 50,
@@ -147,7 +147,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png",
       "include-all": true,
-      "filter": `^(?!.*(${baseExclude}|俄罗斯|Russia|RU)).*`, // 排除 RU
+      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU)).*", // 排除 RU
       "url": "https://www.bing.com",
       "interval": 320, // 错开 20s
       "tolerance": 50,
@@ -159,7 +159,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/github.png",
       "include-all": true,
-      "filter": `^(?!.*(${baseExclude}|俄罗斯|Russia|RU)).*`,
+      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU)).*",
       "url": "https://api.github.com",
       "interval": 330, // 错开 30s
       "tolerance": 50,
@@ -171,7 +171,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
       "include-all": true,
-      "filter": `^(?!.*(${baseExclude}|香港|HongKong|HK|俄罗斯|Russia|RU)).*`,
+      "filter": "^(?!.*(" + baseExclude + "|香港|HongKong|HK|俄罗斯|Russia|RU)).*",
       "url": "https://chatgpt.com",
       "interval": 340, // 错开 40s
       "tolerance": 50,
@@ -183,7 +183,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png",
       "include-all": true,
-      "filter": `^(?!.*(${baseExclude}|俄罗斯|Russia|RU)).*`,
+      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU)).*",
       // 排除立陶宛防止假延迟？扁平化测速会自动剔除假延迟节点，故不再强制正则排除，靠测速说话
       "url": "https://api.telegram.org",
       "interval": 350, // 错开 50s
