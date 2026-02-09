@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.67  | 更新日期: 2026-02-07
+// 版本: v1.68  | 更新日期: 2026-02-09
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.67 (Tolerance: Auto=50ms, Others=100ms)...");
+  console.log("✅ 加载脚本 v1.68 (Tolerance: Auto=50ms, Others=100ms)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -95,6 +95,7 @@ function main(config) {
     "auto-route": true,
     "auto-detect-interface": true,
     "strict-route": true, // ✅ 调整：保持开启严格路由，防止复杂网络环境下流量泄露
+    "endpoint-independent-nat": true, // 🚀 性能优化：开启独立 NAT，改善 P2P/游戏/语音连接质量
     "dns-hijack": ["any:53"],
     // 🔥 核心修复：直接从 Tun 路由中排除局域网流量，让 OS 自动处理，彻底解决 ERR_EMPTY_RESPONSE
     "inet4-route-exclude-address": ["192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12"]
@@ -167,70 +168,6 @@ function main(config) {
       "behavior": "classical",
       "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml",
       "path": "./ruleset/Gemini.yaml",
-      "interval": 86400
-    },
-    "microsoft": {
-      "type": "http",
-      "behavior": "domain",
-      "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.yaml",
-      "path": "./ruleset/microsoft.yaml",
-      "interval": 86400
-    },
-    "ai_services": {
-      "type": "http",
-      "behavior": "domain",
-      "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml",
-      "path": "./ruleset/ai_services.yaml",
-      "interval": 86400
-    },
-    "telegram": {
-      "type": "http",
-      "behavior": "ipcidr",
-      "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.yaml",
-      "path": "./ruleset/telegram.yaml",
-      "interval": 86400
-    },
-    "telegram_domain": {
-      "type": "http",
-      "behavior": "domain",
-      "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.yaml",
-      "path": "./ruleset/telegram_domain.yaml",
-      "interval": 86400
-    },
-    "youtube_domain": {
-      "type": "http",
-      "behavior": "domain",
-      "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml",
-      "path": "./ruleset/youtube_domain.yaml",
-      "interval": 86400
-    },
-    "cn_domain": {
-      "type": "http",
-      "behavior": "domain",
-      "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.yaml",
-      "path": "./ruleset/cn_domain.yaml",
-      "interval": 86400
-    },
-    "cn_ip": {
-      "type": "http",
-      "behavior": "ipcidr",
-      "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.yaml",
-      "path": "./ruleset/cn_ip.yaml",
-      "interval": 86400
-    },
-    "geolocation_no_cn": {
-      "type": "http",
-      "behavior": "domain",
-      "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml",
-      "path": "./ruleset/geolocation-!cn_domain.yaml",
-      "interval": 86400
-    },
-    // 社交
-    "social_media": {
-      "type": "http",
-      "behavior": "domain",
-      "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-communication.yaml",
-      "path": "./ruleset/social_media.yaml",
       "interval": 86400
     }
   };
@@ -536,7 +473,7 @@ function main(config) {
     "DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT",
     "DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT",
     "DOMAIN-SUFFIX,tlu.dl.delivery.mp.microsoft.com,DIRECT",
-    "RULE-SET,microsoft,自动选择",
+    "GEOSITE,microsoft,自动选择",
     "RULE-SET,icloud,DIRECT",
     "RULE-SET,apple,DIRECT",
 
@@ -549,11 +486,11 @@ function main(config) {
     "DOMAIN-SUFFIX,bambulab.com,DIRECT",
     "DOMAIN-SUFFIX,bambulab.cn,DIRECT",
     "DOMAIN-SUFFIX,bambulab.co,DIRECT",
-// 社交
-    "RULE-SET,social_media,自动选择",
-    "RULE-SET,telegram_domain,Telegram",
-    "RULE-SET,telegram,Telegram",
-    "RULE-SET,youtube_domain,YouTube",
+    // 社交
+    "GEOSITE,category-communication,自动选择",
+    "GEOSITE,telegram,Telegram",
+    "GEOIP,telegram,Telegram",
+    "GEOSITE,youtube,YouTube",
 
     // 测速与其他兜底
     "DOMAIN-SUFFIX,speedtest.net,DIRECT",
@@ -563,9 +500,9 @@ function main(config) {
     
     // 最终匹配
     // Google Rule (blackmatrix7) 优先于 google_domain
-    "RULE-SET,cn_domain,国内",
-    "RULE-SET,cn_ip,国内",
-    "RULE-SET,geolocation_no_cn,自动选择",
+    "GEOSITE,cn,国内",
+    "GEOIP,cn,国内",
+    "GEOSITE,geolocation-!cn,自动选择",
     "GEOIP,CN,国内",
     "MATCH,自动选择"
   ];
