@@ -201,9 +201,9 @@ proxy-groups: #!replace
       - 自动选择
       - 🔍 搜索与开发
 # ==========================================
-# 规则集合 (Rule Providers) - 简化: Geosite 原生替代
+# 规则集合 (Rule Providers) 
 # ==========================================
-rule-providers:
+rule-providers: #!replace
   reject:
     url: https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt
     path: ./ruleset/reject.yaml
