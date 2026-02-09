@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-10 [Stash Override v1.36]
+﻿# Last Updated: 2026-02-10 [Stash Override v1.37]
 # 移植自 PC 端 Mihomo_Override.js v1.68
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.36"
-desc: "v1.36 | 终极版: Tile面板 + 极致省电配置 + DoQ"
+name: "Stash Override v1.37"
+desc: "v1.37 | 纯净版: 极致省电配置 + DoQ + 隐私防护"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
