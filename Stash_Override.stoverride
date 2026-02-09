@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-08 [Stash Override v1.33]
-# 移植自 PC 端 Mihomo_Override.js v1.65
+﻿# Last Updated: 2026-02-09 [Stash Override v1.34]
+# 移植自 PC 端 Mihomo_Override.js v1.68
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.33"
-desc: "v1.33 | 移除 GLOBAL 策略组，由“国外通用”接管兜底"
+name: "Stash Override v1.34"
+desc: "v1.34 | iOS 深度优化: 启用原生 Geosite, DoQ DNS, 以及省电策略"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -67,8 +67,8 @@ dns:
     '+.bambulab.com': '119.29.29.29'
   
   nameserver: #!replace
+    - quic://dns.alidns.com:853 # 🚀 阿里 DoQ: 0-RTT 连接，5G/WiFi 切换不断流
     - https://doh.pub/dns-query # 腾讯 DoH (iOS 推荐: 抗劫持能力最强，解决节点超时)
-    - https://dns.alidns.com/dns-query # 阿里 DoH
     - 119.29.29.29 # 腾讯 UDP (兜底备用)
     # - system # ❌ 移除系统 DNS: iOS 上运营商DNS经常污染节点域名导致连不上
   
@@ -83,9 +83,10 @@ dns:
     ipcidr:
       - 240.0.0.0/4
 
-# 4.1 Sniffer 嗅探 (精准识别流量)
+# 4.1 Sniffer 嗅探 (iOS 省电优化)
+# ⚠️ 注意: 除非必须，否则建议关闭或仅特定协议开启，以降低 CPU 唤醒
 sniffer:
-  enable: true
+  enable: false  # 🔋 省电优先：默认关闭嗅探，减少发热。仅当需要根据 SNI 分流纯 IP 请求时才开启。
   parse-pure-ip: true
   override-destination: true
   sniff:
@@ -200,7 +201,7 @@ proxy-groups: #!replace
       - 自动选择
       - 🔍 搜索与开发
 # ==========================================
-# 规则集合 (Rule Providers) 
+# 规则集合 (Rule Providers) - 简化: Geosite 原生替代
 # ==========================================
 rule-providers:
   reject:
@@ -224,62 +225,7 @@ rule-providers:
     interval: 86400
     format: text
     type: http
-  microsoft:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/microsoft.yaml
-    path: ./ruleset/microsoft.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
-  cn_domain:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.yaml
-    path: ./ruleset/cn_domain.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
-  cn_ip:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.yaml
-    path: ./ruleset/cn_ip.yaml
-    behavior: ipcidr
-    interval: 86400
-    format: yaml
-    type: http
-  google_domain:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.yaml
-    path: ./ruleset/google_domain.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
-  ai_services:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml
-    path: ./ruleset/ai_services.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
-  youtube_domain:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/youtube.yaml
-    path: ./ruleset/youtube_domain.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
-  telegram_domain:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.yaml
-    path: ./ruleset/telegram_domain.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
-  geolocation_no_cn:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml
-    path: ./ruleset/geolocation-!cn_domain.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
+
 # ==========================================
 # 规则 (Rules)
 # ==========================================
@@ -347,7 +293,8 @@ rules: #!replace
   
   - DOMAIN-SUFFIX,stackoverflow.com,自动选择
   # 社交
-  - RULE-SET,telegram_domain,Telegram
+  - GEOSITE,telegram,Telegram
+  - GEOIP,telegram,Telegram
   - DOMAIN-SUFFIX,tx.me,Telegram
   - DOMAIN-SUFFIX,t.me,Telegram
   - DOMAIN-SUFFIX,telegram.org,Telegram
@@ -375,27 +322,27 @@ rules: #!replace
   - DOMAIN-SUFFIX,anthropic.com,🤖 生成式 AI
   - DOMAIN,sydney.bing.com,🤖 生成式 AI
   - DOMAIN,edgeservices.bing.com,🤖 生成式 AI
-  - RULE-SET,ai_services,🤖 生成式 AI
+  - GEOSITE,category-ai-chat-!cn,🤖 生成式 AI
   
   # 3. Google -> 手术刀式分离
   # Gemini 走稳
   - DOMAIN-SUFFIX,gemini.google.com,🤖 生成式 AI
   - DOMAIN-SUFFIX,bard.google.com,🤖 生成式 AI
   # 其他 Google (搜索/地图/YouTube) 走快
-  - RULE-SET,google_domain,🔍 搜索与开发
-  - RULE-SET,youtube_domain,YouTube 4K
+  - GEOSITE,google,🔍 搜索与开发
+  - GEOSITE,youtube,YouTube 4K
   
   # 4. Microsoft/GitHub -> 🔍 搜索与开发 (求快)
   - DOMAIN-SUFFIX,github.com,🔍 搜索与开发
   - DOMAIN-SUFFIX,githubusercontent.com,🔍 搜索与开发
   - DOMAIN-SUFFIX,github.io,🔍 搜索与开发
-  - RULE-SET,microsoft,🔍 搜索与开发
+  - GEOSITE,microsoft,🔍 搜索与开发
   - RULE-SET,icloud,DIRECT
   - RULE-SET,apple,DIRECT
   
-  - RULE-SET,cn_domain,国内
-  - RULE-SET,geolocation_no_cn,自动选择
-  - RULE-SET,cn_ip,国内
+  - GEOSITE,cn,国内
+  - GEOSITE,geolocation-!cn,自动选择
+  - GEOIP,cn,国内
   - GEOIP,CN,国内
   
   - MATCH,国外通用
