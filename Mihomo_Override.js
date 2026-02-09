@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.68  | 更新日期: 2026-02-09
-// 移植自 ClashVerge.yaml "PC 端终极优化版"
+// 版本: v1.69  | 更新日期: 2026-02-10
+// 移植自 ClashVerge.yaml "PC 端终极优化版" (全扁平化架构)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.68 (Tolerance: Auto=50ms, Others=100ms)...");
+  console.log("✅ 加载脚本 v1.69 (全扁平化 + 独立测速)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -14,8 +14,8 @@ function main(config) {
   }
 
   // 1. 基础设置优化
-  config["tcp-concurrent"] = true; // ✅ 恢复并发 (已有 Tun 排除保护，重新测试开启)
-  config["global-client-fingerprint"] = "edge";
+  config["tcp-concurrent"] = true;
+  config["global-client-fingerprint"] = "chrome"; // 升级指纹以更好地支持 HTTP/3
   config["keep-alive-interval"] = 30;
   config["allow-lan"] = true;
   config["bind-address"] = "*";
@@ -25,9 +25,8 @@ function main(config) {
     "auto-update": true
   };
   
-  // 修复本地回环和 Google 连接问题 (恢复精简列表，因 Tun 已排除内网，此处不再需要冗余配置)
+  // 修复本地回环和 Google 连接问题
   config["skip-auth-prefixes"] = ["127.0.0.1/8", "::1/128"];
-  // Tun 模式下已排除内网流量，此项理论不需要，但保留以防 Local 软件验证问题
   
   // GeoData 优化
   config["geodata-loader"] = "memconservative";
@@ -40,9 +39,7 @@ function main(config) {
     "mmdb": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
   };
 
-
-
-  // 2. DNS 设置
+  // 2. DNS 设置 (保持不变_optimized)
   config["dns"] = {
     "enable": true,
     "ipv6": false,
@@ -50,12 +47,8 @@ function main(config) {
     "enhanced-mode": "fake-ip",
     "fake-ip-range": "198.18.0.1/16",
     "respect-rules": true,
-    "proxy-server-nameserver": [
-      "223.5.5.5",
-      "119.29.29.29"
-    ],
+    "proxy-server-nameserver": ["223.5.5.5", "119.29.29.29"],
     "fake-ip-filter": [
-      // "*.lan", "*.local",  <-- 已通过 inet4-route-exclude-address 在路由层排除，此处不再需要
       "+.msftconnecttest.com", "+.msftncsi.com",
       "+.ntp.org", "+.pool.ntp.org", "+.stun.protocol.org",
       "stun.*", "+.stun.*.*", "+.stun.*",
@@ -64,22 +57,15 @@ function main(config) {
       "*.bambulab.com", "*.bambulab.cn"
     ],
     "nameserver": [
-      "223.5.5.5",
-      "119.29.29.29",
-      "quic://dns.alidns.com:853"
+      "223.5.5.5", "119.29.29.29",
+      "quic://dns.alidns.com:853" // 尝试使用 QUIC DNS
     ],
     "fallback": [
       "https://doh.pub/dns-query",
-      "https://1.0.0.1/dns-query",
       "tcp://208.67.222.222:443",
       "tls://8.8.4.4:853"
     ],
-    "fallback-filter": {
-      "geoip": true,
-      "geoip-code": "CN",
-      "ipcidr": ["240.0.0.0/4"]
-    },
-    // DNS 分流策略
+    "fallback-filter": { "geoip": true, "geoip-code": "CN", "ipcidr": ["240.0.0.0/4"] },
     "nameserver-policy": {
       "geosite:cn": "223.5.5.5",
       "geosite:apple": "system",
@@ -91,20 +77,19 @@ function main(config) {
   // 3. Tun 模式
   config["tun"] = {
     "enable": true,
-    "stack": "gvisor", // 🔥 兼容性修复：使用 gvisor 栈代替 mixed，提高复杂网络下稳定性
+    "stack": "gvisor",
     "auto-route": true,
     "auto-detect-interface": true,
-    "strict-route": true, // ✅ 调整：保持开启严格路由，防止复杂网络环境下流量泄露
-    "endpoint-independent-nat": true, // 🚀 性能优化：开启独立 NAT，改善 P2P/游戏/语音连接质量
+    "strict-route": true,
+    "endpoint-independent-nat": true,
     "dns-hijack": ["any:53"],
-    // 🔥 核心修复：直接从 Tun 路由中排除局域网流量，让 OS 自动处理，彻底解决 ERR_EMPTY_RESPONSE
     "inet4-route-exclude-address": ["192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12"]
   };
 
   // 4. Sniffer 设置
   config["sniffer"] = {
     "enable": true,
-    "parse-pure-ip": true, // ✅ 恢复为 true。因内网流量已不经过内核，开启此项不再影响内网，且能增强外网分流
+    "parse-pure-ip": true,
     "override-destination": true,
     "sniff": {
       "HTTP": { "ports": [80, 8080, 8880], "override-destination": true },
@@ -112,257 +97,102 @@ function main(config) {
     }
   };
 
-  // 5. Rule Providers 定义
+  // 5. Rule Providers (保持不变)
   config["rule-providers"] = {
-    "reject": {
-      "type": "http",
-      "behavior": "domain",
-      "url": "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt",
-      "path": "./ruleset/reject.yaml",
-      "interval": 86400
-    },
-    "icloud": {
-      "type": "http",
-      "behavior": "domain",
-      "url": "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt",
-      "path": "./ruleset/icloud.yaml",
-      "interval": 86400
-    },
-    "apple": {
-      "type": "http",
-      "behavior": "domain",
-      "url": "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt",
-      "path": "./ruleset/apple.yaml",
-      "interval": 86400
-    },
-    "google": {
-      "type": "http",
-      "behavior": "classical",
-      "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml",
-      "path": "./ruleset/Google.yaml",
-      "interval": 86400
-    },
-    "github": {
-      "type": "http",
-      "behavior": "classical",
-      "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml",
-      "path": "./ruleset/GitHub.yaml",
-      "interval": 86400
-    },
-    "openai": {
-      "type": "http",
-      "behavior": "classical",
-      "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml",
-      "path": "./ruleset/OpenAI.yaml",
-      "interval": 86400
-    },
-    "copilot": {
-      "type": "http",
-      "behavior": "classical",
-      "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.yaml",
-      "path": "./ruleset/Copilot.yaml",
-      "interval": 86400
-    },
-    "gemini": {
-      "type": "http",
-      "behavior": "classical",
-      "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml",
-      "path": "./ruleset/Gemini.yaml",
-      "interval": 86400
-    }
+    "reject": { "type": "http", "behavior": "domain", "url": "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt", "path": "./ruleset/reject.yaml", "interval": 86400 },
+    "icloud": { "type": "http", "behavior": "domain", "url": "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt", "path": "./ruleset/icloud.yaml", "interval": 86400 },
+    "apple":  { "type": "http", "behavior": "domain", "url": "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt", "path": "./ruleset/apple.yaml", "interval": 86400 },
+    "google": { "type": "http", "behavior": "classical", "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml", "path": "./ruleset/Google.yaml", "interval": 86400 },
+    "github": { "type": "http", "behavior": "classical", "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml", "path": "./ruleset/GitHub.yaml", "interval": 86400 },
+    "openai": { "type": "http", "behavior": "classical", "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml", "path": "./ruleset/OpenAI.yaml", "interval": 86400 },
+    "copilot":{ "type": "http", "behavior": "classical", "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.yaml", "path": "./ruleset/Copilot.yaml", "interval": 86400 },
+    "gemini": { "type": "http", "behavior": "classical", "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml", "path": "./ruleset/Gemini.yaml", "interval": 86400 }
   };
 
-  // Proxy Groups 定义
-  // 基础地区正则定义
-  const regions = [
-    { name: "🇭🇰 香港", filter: "(?i)香港|HK|HongKong" },
-    { name: "🇹🇼 台湾", filter: "(?i)台湾|TW|Taiwan" },
-    { name: "🇯🇵 日本", filter: "(?i)日本|JP|Japan" },
-    { name: "🇰🇷 韩国", filter: "(?i)韩国|KR|Korea" },
-    { name: "🇸🇬 新加坡", filter: "(?i)新加坡|SG|Singapore" },
-    { name: "🇺🇸 美国", filter: "(?i)美国|US|United States" },
-    { name: "🇬🇧 英国", filter: "(?i)英国|UK|United Kingdom" },
-    { name: "🇩🇪 德国", filter: "(?i)德国|DE|Germany" },
-    { name: "🇨🇦 加拿大", filter: "(?i)加拿大|CA|Canada" },
-    { name: "🇦🇺 澳大利亚", filter: "(?i)澳大利亚|AU|Australia" },
-    { name: "🇷🇺 俄罗斯", filter: "(?i)俄罗斯|RU|Russia" },
-    { name: "🇹🇭 泰国", filter: "(?i)泰国|TH|Thailand" },
-    { name: "🇻🇳 越南", filter: "(?i)越南|VN|Vietnam" },
-    { name: "🇮🇳 印度", filter: "(?i)印度|IN|India" },
-    // 补齐用户提到的新地区
-    { name: "🇳🇱 荷兰", filter: "(?i)荷兰|NL|Netherlands" },
-    { name: "🇵🇭 菲律宾", filter: "(?i)菲律宾|PH|Philippines" },
-    { name: "🇦🇫 阿富汗", filter: "(?i)阿富汗|AF|Afghanistan" },
-    { name: "🇦🇷 阿根廷", filter: "(?i)阿根廷|AR|Argentina" },
-    { name: "🇧🇷 巴西", filter: "(?i)巴西|BR|Brazil" },
-    { name: "🇦🇪 阿联酋", filter: "(?i)阿联酋|AE|UAE|Emirates" },
-    { name: "🇧🇲 百慕大", filter: "(?i)百慕大|BM|Bermuda" },
-    { name: "🇨🇺 古巴", filter: "(?i)古巴|CU|Cuba" },
-    { name: "🇪🇬 埃及", filter: "(?i)埃及|EG|Egypt" },
-    { name: "🇪🇸 西班牙", filter: "(?i)西班牙|ES|Spain" },
-    { name: "🇫🇯 斐济", filter: "(?i)斐济|FJ|Fiji" },
-    { name: "🇬🇱 格陵兰", filter: "(?i)格陵兰|GL|Greenland" },
-    { name: "🇬🇺 关岛", filter: "(?i)关岛|GU|Guam" },
-    { name: "🇰🇭 柬埔寨", filter: "(?i)柬埔寨|KH|Cambodia" },
-    { name: "🇱🇦 老挝", filter: "(?i)老挝|LA|Laos" },
-    { name: "🇲🇲 缅甸", filter: "(?i)缅甸|MM|Myanmar" },
-    { name: "🇲🇳 蒙古", filter: "(?i)蒙古|MN|Mongolia" },
-    { name: "🇲🇴 澳门", filter: "(?i)澳门|MO|Macau" },
-    { name: "🇲🇽 墨西哥", filter: "(?i)墨西哥|MX|Mexico" },
-    { name: "🇳🇬 尼日利亚", filter: "(?i)尼日利亚|NG|Nigeria" },
-    { name: "🇳🇿 新西兰", filter: "(?i)新西兰|NZ|New Zealand" },
-    { name: "🇵🇰 巴基斯坦", filter: "(?i)巴基斯坦|PK|Pakistan" },
-    { name: "🇶🇦 卡塔尔", filter: "(?i)卡塔尔|QA|Qatar" },
-    { name: "🇸🇧 所罗门群岛", filter: "(?i)所罗门群岛|SB|Solomon Islands" },
-    { name: "🇸🇪 瑞典", filter: "(?i)瑞典|SE|Sweden" },
-    { name: "🇸🇴 索马里", filter: "(?i)索马里|SO|Somalia" },
-    { name: "🇹🇱 东帝汶", filter: "(?i)东帝汶|TL|Timor-Leste" },
-    { name: "🇹🇷 土耳其", filter: "(?i)土耳其|TR|Turkey" },
-    { name: "🇺🇦 乌克兰", filter: "(?i)乌克兰|UA|Ukraine" },
-    { name: "🇻🇦 梵蒂冈", filter: "(?i)梵蒂冈|VA|Vatican" },
-    { name: "🇦🇶 南极洲", filter: "(?i)南极洲|AQ|Antarctica" }
-  ];
-
-  // 辅助函数：生成一套包含所有地区的策略组 (Level 1: Region Groups)
-  // suffix: 组名后缀 (如 " Gemini"), url: 测速地址, hidden: 是否隐藏
-  // baseInterval: 基础间隔(秒), offset: 组间偏移(秒), unifiedDelay: 是否开启统一延迟计算
-  // excludeRegex: 需要排除的地区名称正则 (如 "俄罗斯|香港")
-  // tolerance: 容差(ms)，默认 50。AI 类服务建议设高以防跳变。
-  // nodeExclude: [新增] 需要额外排除的节点关键字 (如 "IEPL")
-  function createRegionSets(suffix, url, hidden = true, baseInterval = 100, offset = 0, unifiedDelay = true, excludeRegex = null, tolerance = 50, nodeExclude = null) {
-     // 预先过滤地区
-     const targetRegions = excludeRegex 
-        ? regions.filter(r => !new RegExp(excludeRegex).test(r.name)) 
-        : regions;
-
-     // 基础排除规则
-     const baseExclude = "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新";
-     // 如果有额外的节点排除关键词，拼接到规则中
-     const finalExclude = nodeExclude ? `${baseExclude}|${nodeExclude}` : baseExclude;
-
-     return targetRegions.map((r, index) => ({
-      "name": r.name + suffix,
-      "type": "url-test",
-      "hidden": hidden,
-      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/" + (r.icon || "Global.png"),
-      "include-all": true,
-      "filter": r.filter,
-      "exclude-filter": finalExclude,
-      "url": url,
-      // 错开时间核心逻辑: 基础间隔 + 服务偏移 + (地区索引 * 步长)
-      // 使用 index * 13 确保地区间充分错开，offset 确保服务间错开
-      "interval": baseInterval + offset + (index * 13),
-      "tolerance": tolerance,
-      "unified-delay": unifiedDelay,
-      "lazy": true
-    }));
-  }
-
-  // === Level 1: [底层] 地区自动测速组 (Region Groups) 生成区 ===
-  // ⚠️ [说明]：此处定义的变量 (groupsAuto, groupsGemini...) 属于底层数据源
-  // 它们只是"候选列表" (如: [🇺🇸 美国 Gemini, 🇯🇵 日本 Gemini...])，并非用户面板直接点击的策略组
-  // 真正的 [顶层] 服务组 (Level 2) 是在下方的 config["proxy-groups"] 中引用这些变量创建的
-  // 核心逻辑：创建大量细分地区组，供 Level 2 进行二次优选
-  // 策略调整：Level 1 (全部 60s) 比 Level 2 (100s) 更快，确保 Level 2 测速时能命中已优选的底层节点
+  // ============================================================
+  // proxy-groups 扁平化重构区
+  // ============================================================
   
-  // ✅ 修正：将 "IEPL" 移至第 9 个参数 (nodeExclude)，第 7 个参数 (地区排除) 设为 null
-  // 变更：源头已删除立陶宛，此处不再需要 excludeRegex
-  const groupsAuto    = createRegionSets("",          "http://www.gstatic.com/generate_204", true,  60, 0, false,  null, 50, "IEPL"); 
-  
-  // AI 分组特别优化：Level 1 设为 60s 极速自愈
-  // 1. 排除不支持的地区 (俄罗斯 RU) 及部分 (香港 HK)
-  // 2. Tolerance 统一设为 100ms (自动组保留 50ms)
-  const groupsGemini  = createRegionSets(" Gemini",   "https://gemini.google.com",           true,  60, 6, false, "俄罗斯|香港", 100);
-  const groupsCopilot = createRegionSets(" Copilot",  "https://www.bing.com",                true,  60, 12, false, "俄罗斯", 100);
-  const groupsGithub  = createRegionSets(" GitHub",   "https://api.github.com",              true,  60, 18, false, "俄罗斯", 100);
-  const groupsGPT     = createRegionSets(" GPT",      "https://chatgpt.com",                 true,  60, 24, false, "俄罗斯|香港", 100);
-  // 新增: Telegram 专用组 (排除立陶宛以免假低延迟干扰，使用 TG 官方 API 测速)
-  const groupsTelegram= createRegionSets(" Telegram", "https://api.telegram.org",            true,  60, 30, false, "俄罗斯", 100);
+  // 0. 基础排除正则 (排除流量/过期/官网等非节点项目)
+  const baseExclude = "(?i)流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新";
 
-  // 将所有底层组展平，准备加入 config["proxy-groups"]
-  const allRegionGroups = [
-    ...groupsAuto,
-    ...groupsGemini,
-    ...groupsCopilot,
-    ...groupsGithub,
-    ...groupsGPT,
-    ...groupsTelegram
-  ];
+  // 1. 定义扁平化的 Proxy Groups
   config["proxy-groups"] = [
-    // === Level 2: [顶层] 核心服务组 (Service Groups) ===
-    // 用户在面板中直接看到的策略组 (如 "Gemini", "自动选择")
-    // 逻辑：从 Level 1 的地区组中自动选择延迟最低的节点
     {
       "name": "自动选择",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png",
-      "proxies": groupsAuto.map(g => g.name),
+      "include-all": true,
+      "filter": `^(?!.*(${baseExclude})).*`, // 包含所有有效节点
       "url": "http://www.gstatic.com/generate_204",
-      "interval": 100,
+      "interval": 300,
       "tolerance": 50,
-      "unified-delay": false,
+      "unified-delay": true, // 开启统一延迟，更准确
       "lazy": true
     },
     {
       "name": "Gemini",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
-      "proxies": groupsGemini.map(g => g.name),
+      "include-all": true,
+      "filter": `^(?!.*(${baseExclude}|俄罗斯|香港|HongKong|HK|Russia|RU)).*`, // 排除 HK/RU
       "url": "https://gemini.google.com",
-      "interval": 100,
-      "tolerance": 100,
-      "unified-delay": false,
+      "interval": 310, // 错开 10s
+      "tolerance": 50,
+      "unified-delay": true,
       "lazy": true
     },
     {
       "name": "Copilot",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png",
-      "proxies": groupsCopilot.map(g => g.name),
+      "include-all": true,
+      "filter": `^(?!.*(${baseExclude}|俄罗斯|Russia|RU)).*`, // 排除 RU
       "url": "https://www.bing.com",
-      "interval": 100,
-      "tolerance": 100,
-      "unified-delay": false,
+      "interval": 320, // 错开 20s
+      "tolerance": 50,
+      "unified-delay": true,
       "lazy": true
     },
     {
       "name": "GitHub Copilot",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/github.png",
-      "proxies": groupsGithub.map(g => g.name),
+      "include-all": true,
+      "filter": `^(?!.*(${baseExclude}|俄罗斯|Russia|RU)).*`,
       "url": "https://api.github.com",
-      "interval": 100,
-      "tolerance": 100,
-      "unified-delay": false,
+      "interval": 330, // 错开 30s
+      "tolerance": 50,
+      "unified-delay": true,
       "lazy": true
     },
     {
       "name": "ChatGPT",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
-      "proxies": groupsGPT.map(g => g.name),
+      "include-all": true,
+      "filter": `^(?!.*(${baseExclude}|香港|HongKong|HK|俄罗斯|Russia|RU)).*`,
       "url": "https://chatgpt.com",
-      "interval": 100,
-      "tolerance": 100,
-      "unified-delay": false,
+      "interval": 340, // 错开 40s
+      "tolerance": 50,
+      "unified-delay": true,
       "lazy": true
     },
     {
       "name": "Telegram",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png",
-      "proxies": groupsTelegram.map(g => g.name),
+      "include-all": true,
+      "filter": `^(?!.*(${baseExclude}|俄罗斯|Russia|RU)).*`,
+      // 排除立陶宛防止假延迟？扁平化测速会自动剔除假延迟节点，故不再强制正则排除，靠测速说话
       "url": "https://api.telegram.org",
-      "interval": 100,
-      "tolerance": 100,
-      "unified-delay": false,
+      "interval": 350, // 错开 50s
+      "tolerance": 50,
+      "unified-delay": true,
       "lazy": true
     },
 
-    // === Level 1: 底层地区组 (由辅助函数生成) ===
-    ...allRegionGroups,
-
-    // === Manual Select Groups (上层手动选择组) ===
+    // 手动选择区
     {
       "name": "国内",
       "type": "select",
