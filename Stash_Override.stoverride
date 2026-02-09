@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-09 [Stash Override v1.34]
+﻿# Last Updated: 2026-02-10 [Stash Override v1.35]
 # 移植自 PC 端 Mihomo_Override.js v1.68
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.34"
-desc: "v1.34 | iOS 深度优化: 启用原生 Geosite, DoQ DNS, 以及省电策略"
+name: "Stash Override v1.35"
+desc: "v1.35 | 修复规则残留: 强制替换 rule-providers"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
