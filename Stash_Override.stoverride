@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-10 [Stash Override v1.35]
+﻿# Last Updated: 2026-02-10 [Stash Override v1.36]
 # 移植自 PC 端 Mihomo_Override.js v1.68
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.35"
-desc: "v1.35 | 修复规则残留: 强制替换 rule-providers"
+name: "Stash Override v1.36"
+desc: "v1.36 | 终极版: Tile面板 + 极致省电配置 + DoQ"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -12,8 +12,9 @@ icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # 1. TCP 并发 & 基础优化
 tcp-concurrent: true
 keep-alive-interval: 30
-allow-lan: true
-bind-address: "*"
+prefer-ipv6: false # 📱 iOS 5G 优化: 强制关闭 IPv6 防止 Google/YouTube 延迟过高
+allow-lan: false   # 🛡️ 安全加固: 手机端默认关闭局域网共享，防止被扫描
+bind-address: "*"  # 配合 allow-lan: false，此项仅在本机生效
 # 2. GeoData 内存优化模式
 geodata-mode: true
 geodata-loader: memconservative
@@ -121,6 +122,45 @@ rewrite:
 script:
   shortcuts:
     quic_block: network == 'udp' and dst_port == 443
+  
+  # 📊 首页可视化监控面板 (Tiles)
+  tiles:
+    - name: "Network Info"
+      interval: 600
+      title: "🌍 网络信息"
+      content: "刷新中..."
+      icon: "network"
+      backgroundColor: "#222222"
+      script: |
+        function getFlagEmoji(countryCode) {
+            const codePoints = countryCode.toUpperCase().split('').map(char => 127397 + char.charCodeAt());
+            return String.fromCodePoint(...codePoints);
+        }
+        $httpClient.get('http://ip-api.com/json/?lang=zh-CN', function(error, response, data){
+            var res = JSON.parse(data);
+            $done({
+                title: getFlagEmoji(res.countryCode) + " " + res.country,
+                content: "IP: " + res.query + "\nISP: " + res.isp,
+                icon: "network"
+            });
+        });
+
+    - name: "Traffic Stats"
+      interval: 300
+      title: "📈 流量统计"
+      content: "加载中..."
+      icon: "arrow.up.arrow.down"
+      backgroundColor: "#1a472a"
+      script: |
+        let traffic = $surge.traffic();
+        let up = (traffic.up / 1024 / 1024).toFixed(2);
+        let down = (traffic.down / 1024 / 1024).toFixed(2);
+        $done({
+            title: "📈 流量统计",
+            content: "⬆️ 上行: " + up + " MB\n⬇️ 下行: " + down + " MB",
+            icon: "arrow.up.arrow.down"
+        });
+
 # ==========================================
 # 策略组 (Proxy Groups) - 核心逻辑移植
 # ==========================================
@@ -132,7 +172,7 @@ proxy-groups: #!replace
     # 策略优化: 移除香港节点的排除 ("香港|hongkong|hk|HK|Hong|Kong|")，大幅降低通用浏览延迟
     filter: "(?i)^(?!.*(法国|France|FR|立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "https://www.gstatic.com/generate_204"
-    interval: 300
+    interval: 600   # 🔋 极致省电: 延长测速间隔至 10分钟，减少基带唤醒
     tolerance: 50
     unified-delay: true
     lazy: true
@@ -144,7 +184,7 @@ proxy-groups: #!replace
     # 逻辑: 只要不是流量/到期等关键词，全部保留 (含 HK/SG)
     filter: "(?i)^(?!.*(法国|France|FR|立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "http://www.gstatic.com/generate_204"
-    interval: 350
+    interval: 600   # 🔋 极致省电
     tolerance: 50
     unified-delay: false # ⚡ 极速模式
     lazy: true
@@ -156,7 +196,7 @@ proxy-groups: #!replace
     # 逻辑: 剔除 HK/HongKong/香港/CN/China 以及 俄罗斯/Russia/RU/立陶宛/Lithuania
     filter: "(?i)^(?!.*(法国|France|FR|立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|Russia|香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "http://www.gstatic.com/generate_204"
-    interval: 400
+    interval: 600   # 🔋 极致省电
     tolerance: 100
     unified-delay: false # ⚡ 极速模式
     lazy: true
@@ -168,7 +208,7 @@ proxy-groups: #!replace
     # 排除立陶宛和俄罗斯
     filter: "(?i)^(?!.*(法国|France|FR|俄罗斯|Russia|RU|立陶宛|Lithuania|LT|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|联系|网站|入群|专线)).*"
     url: "https://api.telegram.org"
-    interval: 450
+    interval: 600   # 🔋 极致省电
     tolerance: 100
     unified-delay: true
 
@@ -230,7 +270,7 @@ rule-providers: #!replace
 # 规则 (Rules)
 # ==========================================
 rules: #!replace
-  - SCRIPT,quic_block,REJECT
+  # - SCRIPT,quic_block,REJECT # ⚠️ 默认关闭 QUIC 拦截，以免影响 Hysteria2 协议性能
   
   # === 1. 硬性直连与局域网 ===
   - GEOIP,PRIVATE,DIRECT,no-resolve
