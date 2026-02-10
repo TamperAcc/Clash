@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.75  | 更新日期: 2026-02-10
+// 版本: v1.76  | 更新日期: 2026-02-10
 // 移植自 ClashVerge.yaml "PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.75 (防送中优化)...");
+  console.log("✅ 加载脚本 v1.76 (防送中优化)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -238,6 +238,10 @@ function main(config) {
     "DOMAIN-SUFFIX,msftconnecttest.com,DIRECT",
     "DOMAIN-SUFFIX,msftncsi.com,DIRECT",
 
+    // 🛡️ 强制阻断 QUIC (UDP 443) 以解决 Google/YouTube 流畅度问题和 1060 错误
+    // 强制回退到 TCP，提高代理稳定性
+    "AND,((NETWORK,UDP),(DST-PORT,443)),REJECT",
+
     // 广告与隐私拦截 (前置以优化性能 - 优先丢弃垃圾流量)
     "RULE-SET,reject,REJECT",
     "DOMAIN-SUFFIX,doubleclick.net,REJECT",
@@ -261,6 +265,7 @@ function main(config) {
     "DOMAIN,generativelanguage.googleapis.com,Gemini",
     "DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,Gemini",
     "DOMAIN-SUFFIX,opa-pa.googleapis.com,Gemini",
+    "DOMAIN-SUFFIX,waa-pa.googleapis.com,Gemini", // 新增: Web & App Activity
     "DOMAIN-SUFFIX,client-channel.google.com,Gemini",
     "DOMAIN-SUFFIX,assistant.google.com,Gemini",
     "DOMAIN-SUFFIX,ai.google.com,Gemini",
