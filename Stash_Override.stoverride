@@ -221,14 +221,47 @@ rule-providers: #!replace
     interval: 86400
     format: text
     type: http
+  ai_services:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml
+    path: ./ruleset/ai_services.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
 
 # ==========================================
 # 规则 (Rules)
 # ==========================================
 rules: #!replace
-  - SCRIPT,quic_block,REJECT # 🛡️ 强制关闭 QUIC，确保 Google/YouTube 流量稳定走 TCP 代理
+  - SCRIPT,quic_block,REJECT # 🛡️ 强制关闭 QUIC
   
-  # === 1. 硬性直连与局域网 ===
+  # === 0. AI 核心规则 (前置防止漏网) ===
+  # OpenAI / ChatGPT
+  - DOMAIN-SUFFIX,openai.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,chatgpt.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,oaistatic.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,oaiusercontent.com,🤖 生成式 AI
+  # Gemini / Google AI
+  - DOMAIN-SUFFIX,gemini.google.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,bard.google.com,🤖 生成式 AI
+  - DOMAIN,generativelanguage.googleapis.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,opa-pa.googleapis.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,client-channel.google.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,assistant.google.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,ai.google.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,aistudio.google.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,makersuite.google.com,🤖 生成式 AI
+  # Claude
+  - DOMAIN-SUFFIX,claude.ai,🤖 生成式 AI
+  - DOMAIN-SUFFIX,anthropic.com,🤖 生成式 AI
+  # Copilot / Bing AI
+  - DOMAIN,sydney.bing.com,🤖 生成式 AI
+  - DOMAIN,edgeservices.bing.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,githubcopilot.com,🤖 生成式 AI
+  
+  # 引用外部规则集 (Meta AI Chat)
+  - RULE-SET,ai_services,🤖 生成式 AI
   - GEOIP,PRIVATE,DIRECT,no-resolve
   - DOMAIN-SUFFIX,lan,DIRECT
   - DOMAIN-SUFFIX,local,DIRECT
@@ -312,28 +345,7 @@ rules: #!replace
   - DOMAIN,copilot-proxy.githubusercontent.com,🔍 搜索与开发
   - DOMAIN,api.github.com,🔍 搜索与开发
   
-  # 2. 生成式 AI -> 🤖 生成式 AI (求稳，避 HK/CN)
-  - DOMAIN-SUFFIX,githubcopilot.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,claude.ai,🤖 生成式 AI
-  - DOMAIN-SUFFIX,anthropic.com,🤖 生成式 AI
-  - DOMAIN,sydney.bing.com,🤖 生成式 AI
-  - DOMAIN,edgeservices.bing.com,🤖 生成式 AI
-  - GEOSITE,category-ai-chat-!cn,🤖 生成式 AI
-  
   # 3. Google -> 手术刀式分离
-  # Gemini 走稳
-  - DOMAIN-SUFFIX,gemini.google.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,bard.google.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,aistudio.google.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,makersuite.google.com,🤖 生成式 AI
-  - DOMAIN,generativelanguage.googleapis.com,🤖 生成式 AI
-  # Mobile/Assistant endpoints (关键修复: 解决 iOS Google App/Gemini 提示区域不可用)
-  - DOMAIN-SUFFIX,opa-pa.googleapis.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,client-channel.google.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,assistant.google.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,ai.google.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,googleapis.cn,🤖 生成式 AI
   # 其他 Google (搜索/地图/YouTube) 走快
   - GEOSITE,google,🔍 搜索与开发
   - GEOSITE,youtube,YouTube 4K
