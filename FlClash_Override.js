@@ -1,12 +1,12 @@
 ﻿// FLClash / Mihomo Party 配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/FlClash_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/FlClash_Override.js
-// 版本: v1.19 (自动更新版) | 更新日期: 2026-02-10
+// 版本: v1.20 (自动更新版) | 更新日期: 2026-02-10
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印日志方便调试 (在软件日志中可见)
-  console.log("🔵 [Script] 正在应用 FlClash 覆写脚本 v1.19...");
+  console.log("🔵 [Script] 正在应用 FlClash 覆写脚本 v1.20...");
 
 
 
@@ -231,7 +231,16 @@ function main(config) {
     "DOMAIN-SUFFIX,msftncsi.com,DIRECT",
     "RULE-SET,reject,REJECT",
     
-    // AI 服务
+    // AI 服务 - 核心域名防漏
+    "DOMAIN-SUFFIX,openai.com,AI自动优选",
+    "DOMAIN-SUFFIX,chatgpt.com,AI自动优选",
+    "DOMAIN-SUFFIX,gemini.google.com,AI自动优选",
+    "DOMAIN-SUFFIX,bard.google.com,AI自动优选",
+    "DOMAIN,generativelanguage.googleapis.com,AI自动优选",
+    "DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,AI自动优选",
+    "DOMAIN-SUFFIX,opa-pa.googleapis.com,AI自动优选",
+    
+    // AI 服务 - 原有规则
     "DOMAIN,copilot-proxy.githubusercontent.com,AI自动优选",
     "DOMAIN,api.github.com,AI自动优选",
     "DOMAIN-SUFFIX,githubcopilot.com,AI自动优选",
