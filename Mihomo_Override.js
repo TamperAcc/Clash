@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.70  | 更新日期: 2026-02-10
+// 版本: v1.72  | 更新日期: 2026-02-10
 // 移植自 ClashVerge.yaml "PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.70 (ES5兼容性修复)...");
+  console.log("✅ 加载脚本 v1.72 (防送中优化)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -136,9 +136,10 @@ function main(config) {
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
       "include-all": true,
       "filter": "^(?!.*(" + baseExclude + "|俄罗斯|香港|HongKong|HK|Russia|RU)).*", // 排除 HK/RU
-      "url": "https://gemini.google.com",
+      "url": "https://www.youtube.com", // 改用 YouTube 检测，比 gemini 域名更能有效识别送中/Captcha IP
       "interval": 310, // 错开 10s
       "tolerance": 50,
+      "expected-status": 200, // 强制要求 200 OK，排除验证码或重定向页面
       "unified-delay": true,
       "lazy": true
     },

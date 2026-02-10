@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-10 [Stash Override v1.37]
-# 移植自 PC 端 Mihomo_Override.js v1.68
+﻿# Last Updated: 2026-02-10 [Stash Override v1.38]
+# 移植自 PC 端 Mihomo_Override.js v1.72
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.37"
-desc: "v1.37 | 纯净版: 极致省电配置 + DoQ + 隐私防护"
+name: "Stash Override v1.38"
+desc: "v1.38 | 纯净版: 极致省电配置 + DoQ + 防送中优化"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -150,7 +150,8 @@ proxy-groups: #!replace
     include-all: true
     # 逻辑: 剔除 HK/HongKong/香港/CN/China 以及 俄罗斯/Russia/RU/立陶宛/Lithuania
     filter: "(?i)^(?!.*(法国|France|FR|立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|Russia|香港|hongkong|hk|HK|Hong|Kong|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
-    url: "http://www.gstatic.com/generate_204"
+    url: "https://www.youtube.com" # 优化: 升级为 YouTube 纯净度检测 (防送中)
+    expected-status: 200           # 优化: 强制要求 200 OK，同步 PC 端逻辑
     interval: 600   # 🔋 极致省电
     tolerance: 100
     unified-delay: false # ⚡ 极速模式
@@ -323,6 +324,9 @@ rules: #!replace
   # Gemini 走稳
   - DOMAIN-SUFFIX,gemini.google.com,🤖 生成式 AI
   - DOMAIN-SUFFIX,bard.google.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,aistudio.google.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,makersuite.google.com,🤖 生成式 AI
+  - DOMAIN,generativelanguage.googleapis.com,🤖 生成式 AI
   # 其他 Google (搜索/地图/YouTube) 走快
   - GEOSITE,google,🔍 搜索与开发
   - GEOSITE,youtube,YouTube 4K
