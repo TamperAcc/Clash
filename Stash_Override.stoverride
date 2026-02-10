@@ -1,9 +1,9 @@
-﻿# Last Updated: 2026-02-10 [Stash Override v1.38]
+﻿# Last Updated: 2026-02-10 [Stash Override v1.39]
 # 移植自 PC 端 Mihomo_Override.js v1.72
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.38"
+name: "Stash Override v1.39"
 desc: "v1.38 | 纯净版: 极致省电配置 + DoQ + 防送中优化"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
@@ -226,7 +226,7 @@ rule-providers: #!replace
 # 规则 (Rules)
 # ==========================================
 rules: #!replace
-  # - SCRIPT,quic_block,REJECT # ⚠️ 默认关闭 QUIC 拦截，以免影响 Hysteria2 协议性能
+  - SCRIPT,quic_block,REJECT # 🛡️ 强制关闭 QUIC，确保 Google/YouTube 流量稳定走 TCP 代理
   
   # === 1. 硬性直连与局域网 ===
   - GEOIP,PRIVATE,DIRECT,no-resolve
@@ -327,6 +327,13 @@ rules: #!replace
   - DOMAIN-SUFFIX,aistudio.google.com,🤖 生成式 AI
   - DOMAIN-SUFFIX,makersuite.google.com,🤖 生成式 AI
   - DOMAIN,generativelanguage.googleapis.com,🤖 生成式 AI
+  # Mobile/Assistant endpoints (关键修复: 解决 iOS Google App/Gemini 提示区域不可用)
+  - DOMAIN-SUFFIX,opa-pa.googleapis.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,client-channel.google.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,assistant.google.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,ai.google.com,🤖 生成式 AI
+  - DOMAIN-SUFFIX,googleapis.cn,🤖 生成式 AI
   # 其他 Google (搜索/地图/YouTube) 走快
   - GEOSITE,google,🔍 搜索与开发
   - GEOSITE,youtube,YouTube 4K
@@ -345,3 +352,10 @@ rules: #!replace
   - GEOIP,CN,国内
   
   - MATCH,国外通用
+
+# ==========================================
+# 脚本定义 (Scripts)
+# ==========================================
+script:
+  shortcuts:
+    quic_block: network == 'udp' and dst_port == 443
