@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-10 [Stash Override v1.42]
-# 移植自 PC 端 Mihomo_Override.js v1.75
+﻿# Last Updated: 2026-02-10 [Stash Override v1.43]
+# 移植自 PC 端 Mihomo_Override.js v1.76
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.42"
-desc: "v1.42 | 纯净版: 极致省电配置 + DoQ + 防送中优化"
+name: "Stash Override v1.43"
+desc: "v1.43 | 纯净版: 极致省电配置 + DoQ + 防送中优化"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -235,6 +235,9 @@ rule-providers: #!replace
 rules: #!replace
   - SCRIPT,quic_block,REJECT # 🛡️ 强制关闭 QUIC
   
+  # Brave Wallet (允许香港)
+  - DOMAIN-SUFFIX,brave.com,自动选择
+
   # === 0. AI 核心规则 (前置防止漏网) ===
   # OpenAI / ChatGPT
   - DOMAIN-SUFFIX,openai.com,🤖 生成式 AI

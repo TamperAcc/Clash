@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.76  | 更新日期: 2026-02-10
+// 版本: v1.77  | 更新日期: 2026-02-10
 // 移植自 ClashVerge.yaml "PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.76 (防送中优化)...");
+  console.log("✅ 加载脚本 v1.77 (防送中优化)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
