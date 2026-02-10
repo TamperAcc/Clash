@@ -162,7 +162,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
       "include-all": true,
-      "exclude-filter": "(?i)立陶宛|Lithuania|LT|俄罗斯|Russia|RU|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
+      "exclude-filter": "(?i)立陶宛|Lithuania|LT|俄罗斯|Russia|RU|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
       "url": "https://www.youtube.com", // 检测送中/Captcha IP
       "interval": 300,
       "tolerance": 50,

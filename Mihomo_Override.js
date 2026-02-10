@@ -135,7 +135,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
       "include-all": true,
-      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau)).*", // 排除 HK/RU/Macau
+      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 HK/RU/Macau/KP/CU
       "url": "https://www.youtube.com", // 改用 YouTube 检测，比 gemini 域名更能有效识别送中/Captcha IP
       "interval": 310, // 错开 10s
       "tolerance": 50,
@@ -148,7 +148,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png",
       "include-all": true,
-      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU)).*", // 排除 RU
+      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 RU/KP/CU
       "url": "https://www.bing.com",
       "interval": 320, // 错开 20s
       "tolerance": 50,
@@ -160,7 +160,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/github.png",
       "include-all": true,
-      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU)).*",
+      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://api.github.com",
       "interval": 330, // 错开 30s
       "tolerance": 50,
@@ -172,7 +172,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
       "include-all": true,
-      "filter": "^(?!.*(" + baseExclude + "|香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau)).*",
+      "filter": "^(?!.*(" + baseExclude + "|香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://chatgpt.com",
       "interval": 340, // 错开 40s
       "tolerance": 50,

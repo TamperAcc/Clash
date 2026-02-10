@@ -148,8 +148,8 @@ proxy-groups: #!replace
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
-    # 逻辑: 剔除 HK/HongKong/香港/CN/China/澳门/Macau 以及 俄罗斯/Russia/RU/立陶宛/Lithuania
-    filter: "(?i)^(?!.*(法国|France|FR|立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|Russia|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
+    # 逻辑: 剔除 HK/HongKong/香港/CN/China/澳门/Macau 以及 俄罗斯/Russia/RU/立陶宛/Lithuania/朝鲜/古巴
+    filter: "(?i)^(?!.*(法国|France|FR|立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|Russia|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "https://www.youtube.com" # 优化: 升级为 YouTube 纯净度检测 (防送中)
     expected-status: 200           # 优化: 强制要求 200 OK，同步 PC 端逻辑
     interval: 600   # 🔋 极致省电
