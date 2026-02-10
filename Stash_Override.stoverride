@@ -4,7 +4,7 @@
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
 name: "Stash Override v1.39"
-desc: "v1.38 | 纯净版: 极致省电配置 + DoQ + 防送中优化"
+desc: "v1.39 | 纯净版: 极致省电配置 + DoQ + 防送中优化"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
