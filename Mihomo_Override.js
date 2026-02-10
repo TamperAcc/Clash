@@ -123,7 +123,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png",
       "include-all": true,
-      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除过期/流量/RU/KP/CU
+      "filter": "^(?!.*(" + baseExclude + "|IEPL|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除过期/流量/IEPL/RU/KP/CU
       "url": "http://www.gstatic.com/generate_204",
       "interval": 300,
       "tolerance": 50,

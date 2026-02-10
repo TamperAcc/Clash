@@ -124,8 +124,8 @@ proxy-groups: #!replace
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
-    # 策略优化: 移除香港节点的排除 ("香港|hongkong|hk|HK|Hong|Kong|")，大幅降低通用浏览延迟
-    filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
+    # 策略优化: 移除香港节点的排除 ("香港|hongkong|hk|HK|Hong|Kong|")，大幅降低通用浏览延迟; 排除 IEPL 以节省专线流量
+    filter: "(?i)^(?!.*(IEPL|立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "https://www.gstatic.com/generate_204"
     interval: 600   # 🔋 极致省电: 延长测速间隔至 10分钟，减少基带唤醒
     tolerance: 50
