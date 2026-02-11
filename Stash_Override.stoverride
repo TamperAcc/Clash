@@ -74,10 +74,10 @@ dns:
     - 119.29.29.29 # 腾讯 UDP (兜底备用)
     # - system # ❌ 移除系统 DNS: iOS 上运营商DNS经常污染节点域名导致连不上
   
-  # ✅ 新增 Fallback: 采用 TCP 协议连接 OpenDNS，比 Google 直连更稳，解决 IP 归属误判
+  # ✅ 新增 Fallback: 采用 OpenDNS TCP (更稳) + Cloudflare DoH (去污染)，移除 Google TCP
   fallback:
     - tcp://208.67.222.222:443
-    - tcp://8.8.4.4:53
+    - https://1.1.1.1/dns-query
   
   fallback-filter:
     geoip: true
@@ -252,7 +252,7 @@ rules: #!replace
   - DOMAIN-SUFFIX,fast.com,国外通用
   
   # 优化: 移除冗余 CDN 及国内域名列表, 使用 Geosite:cn 统一代理
-  - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT
+  # - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT (已移除，防JSdelivr污染)
   
   - DOMAIN-SUFFIX,stackoverflow.com,自动选择
   # 社交
