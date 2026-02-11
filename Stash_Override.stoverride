@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-11 [Stash Override v1.44]
+﻿# Last Updated: 2026-02-11 [Stash Override v1.45]
 # 移植自 PC 端 Mihomo_Override.js v1.76
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.44"
-desc: "v1.44 | 纯净版: 内存泄露紧急修复 + 屏蔽IPv6"
+name: "Stash Override v1.45"
+desc: "v1.45 | 纯净版: Geosite 深度优化 + 全面精简"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -198,18 +198,9 @@ proxy-groups: #!replace
       - 自动选择
       - 🔍 搜索与开发
 # ==========================================
-# 规则集合 (Rule Providers) 
+# 规则集合 (Rule Providers) - ❌ 已废弃 (全量迁移至 Geosite)
 # ==========================================
-rule-providers: #!replace
-  # 🗑️ 移除 heavy rule-sets (reject/apple/icloud) 以解决 iOS 10MB 内存警告
-  # 改用 Geosite (binary) 进行匹配
-  ai_services:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/category-ai-chat-!cn.yaml
-    path: ./ruleset/ai_services.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
+# rule-providers: #!replace
 
 # ==========================================
 # 规则 (Rules)
@@ -220,33 +211,10 @@ rules: #!replace
   # Brave Wallet (允许香港)
   - DOMAIN-SUFFIX,brave.com,自动选择
 
-  # === 0. AI 核心规则 (前置防止漏网) ===
-  # OpenAI / ChatGPT
-  - DOMAIN-SUFFIX,openai.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,chatgpt.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,oaistatic.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,oaiusercontent.com,🤖 生成式 AI
-  # Gemini / Google AI
-  - DOMAIN-SUFFIX,gemini.google.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,bard.google.com,🤖 生成式 AI
-  - DOMAIN,generativelanguage.googleapis.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,opa-pa.googleapis.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,client-channel.google.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,assistant.google.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,ai.google.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,aistudio.google.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,makersuite.google.com,🤖 生成式 AI
-  # Claude
-  - DOMAIN-SUFFIX,claude.ai,🤖 生成式 AI
-  - DOMAIN-SUFFIX,anthropic.com,🤖 生成式 AI
-  # Copilot / Bing AI
-  - DOMAIN,sydney.bing.com,🤖 生成式 AI
-  - DOMAIN,edgeservices.bing.com,🤖 生成式 AI
-  - DOMAIN-SUFFIX,githubcopilot.com,🤖 生成式 AI
+  # === 0. AI 核心规则 (Geosite 统一匹配) ===
+  # 🚀 AI 规则优化: 使用 Geosite 替代 Rule Set (内存极省)
+  - GEOSITE,category-ai-chat-!cn,🤖 生成式 AI
   
-  # 引用外部规则集 (Meta AI Chat)
-  - RULE-SET,ai_services,🤖 生成式 AI
   - GEOIP,PRIVATE,DIRECT,no-resolve
   - DOMAIN-SUFFIX,lan,DIRECT
   - DOMAIN-SUFFIX,local,DIRECT
@@ -255,17 +223,7 @@ rules: #!replace
   # === 2. 广告拦截与隐私保护 (Geosite 内存优化) ===
   # ♻️ 替换 RULE-SET,reject 为 Geosite,category-ads-all
   - GEOSITE,category-ads-all,REJECT
-  - DOMAIN-SUFFIX,tracking.miui.com,REJECT
-  - DOMAIN-SUFFIX,app-measurement.com,REJECT
-  - DOMAIN-SUFFIX,googleadservices.com,REJECT
-  - DOMAIN-SUFFIX,doubleclick.net,REJECT
-  - DOMAIN-SUFFIX,googlesyndication.com,REJECT
-  - DOMAIN-KEYWORD,adservice,REJECT
-  - DOMAIN-KEYWORD,analytics,REJECT
-  - DOMAIN-KEYWORD,omniture,REJECT
-  - DOMAIN-KEYWORD,adview,REJECT
-  - DOMAIN-SUFFIX,appsflyer.com,REJECT
-  - DOMAIN-SUFFIX,adjust.com,REJECT
+  # (移除 redundant 显式域名，交由 Geosite 处理)
   
   # === 3. 进程匹配 (iOS/macOS) ===
   # 🧹 清理：移除了大量 Windows .exe 规则，减少 iOS 匹配开销
@@ -285,35 +243,21 @@ rules: #!replace
   - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
   - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
   
+  - DOMAIN-SUFFIX,apple.com,DIRECT
+  - DOMAIN-SUFFIX,icloud.com,DIRECT
+  - GEOSITE,apple,DIRECT
+  
   # 测速服务
-  - DOMAIN-SUFFIX,speedtest.net,DIRECT
-  - DOMAIN-SUFFIX,ookla.com,DIRECT
+  - GEOSITE,ookla-speedtest,DIRECT
   - DOMAIN-SUFFIX,fast.com,国外通用
   
+  # 优化: 移除冗余 CDN 及国内域名列表, 使用 Geosite:cn 统一代理
   - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT
-  - DOMAIN-SUFFIX,unpkg.com,DIRECT
-  - DOMAIN-SUFFIX,staticfile.org,DIRECT
-  - DOMAIN-SUFFIX,bootcdn.cn,DIRECT
-  - DOMAIN-SUFFIX,bilibili.com,DIRECT
-  - DOMAIN-SUFFIX,hdslb.com,DIRECT
-  - DOMAIN-SUFFIX,acgvideo.com,DIRECT
-  - DOMAIN-SUFFIX,iqiyi.com,DIRECT
-  - DOMAIN-SUFFIX,youku.com,DIRECT
-  - DOMAIN-SUFFIX,163.com,DIRECT
-  - DOMAIN-SUFFIX,music.163.com,DIRECT
-  - DOMAIN-SUFFIX,qqmusic.qq.com,DIRECT
-  - DOMAIN-SUFFIX,jd.com,DIRECT
-  - DOMAIN-SUFFIX,taobao.com,DIRECT
-  - DOMAIN-SUFFIX,tmall.com,DIRECT
   
   - DOMAIN-SUFFIX,stackoverflow.com,自动选择
   # 社交
   - GEOSITE,telegram,Telegram
   - GEOIP,telegram,Telegram
-  - DOMAIN-SUFFIX,tx.me,Telegram
-  - DOMAIN-SUFFIX,t.me,Telegram
-  - DOMAIN-SUFFIX,telegram.org,Telegram
-  - DOMAIN-SUFFIX,telegram-cdn.org,Telegram
   
   # DOMAIN-SUFFIX,stackexchange.com,自动选择
   - DOMAIN-SUFFIX,npmjs.com,自动选择
