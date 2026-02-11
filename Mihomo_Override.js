@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.77  | 更新日期: 2026-02-10
+// 版本: v1.79  | 更新日期: 2026-02-11
 // 移植自 ClashVerge.yaml "PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.77 (防送中优化)...");
+  console.log("✅ 加载脚本 v1.79 (修复拼写错误 + 学术网站优化)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -97,17 +97,9 @@ function main(config) {
     }
   };
 
-  // 5. Rule Providers (保持不变)
-  config["rule-providers"] = {
-    "reject": { "type": "http", "behavior": "domain", "url": "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt", "path": "./ruleset/reject.yaml", "interval": 86400 },
-    "icloud": { "type": "http", "behavior": "domain", "url": "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt", "path": "./ruleset/icloud.yaml", "interval": 86400 },
-    "apple":  { "type": "http", "behavior": "domain", "url": "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/apple.txt", "path": "./ruleset/apple.yaml", "interval": 86400 },
-    "google": { "type": "http", "behavior": "classical", "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.yaml", "path": "./ruleset/Google.yaml", "interval": 86400 },
-    "github": { "type": "http", "behavior": "classical", "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.yaml", "path": "./ruleset/GitHub.yaml", "interval": 86400 },
-    "openai": { "type": "http", "behavior": "classical", "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.yaml", "path": "./ruleset/OpenAI.yaml", "interval": 86400 },
-    "copilot":{ "type": "http", "behavior": "classical", "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.yaml", "path": "./ruleset/Copilot.yaml", "interval": 86400 },
-    "gemini": { "type": "http", "behavior": "classical", "url": "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.yaml", "path": "./ruleset/Gemini.yaml", "interval": 86400 }
-  };
+  // 5. Rule Providers (已废弃 - 全面转向 Geosite)
+  // ❌ 移除所有外部规则源，消除网络依赖，大幅提升启动速度
+  config["rule-providers"] = {}; 
 
   // ============================================================
   // proxy-groups 扁平化重构区
@@ -242,22 +234,11 @@ function main(config) {
     // 强制回退到 TCP，提高代理稳定性
     "AND,((NETWORK,UDP),(DST-PORT,443)),REJECT",
 
-    // 广告与隐私拦截 (前置以优化性能 - 优先丢弃垃圾流量)
-    "RULE-SET,reject,REJECT",
-    "DOMAIN-SUFFIX,doubleclick.net,REJECT",
-    "DOMAIN-SUFFIX,googleadservices.com,REJECT",
-    "DOMAIN-SUFFIX,googlesyndication.com,REJECT",
-    "DOMAIN-SUFFIX,google-analytics.com,REJECT",
-    "DOMAIN-SUFFIX,googletagmanager.com,REJECT",
-    "DOMAIN-SUFFIX,app-measurement.com,REJECT",
-    "DOMAIN-SUFFIX,appsflyer.com,REJECT",
-    "DOMAIN-SUFFIX,adjust.com,REJECT",
+    // 广告与隐私拦截 (Geosite 替代 Rule-Set)
+    "GEOSITE,category-ads-all,REJECT",
+    // 冗余的显式域名规则已包含在 Geosite 中，如果为了保险可保留，但 Geosite 通常已足够
     "DOMAIN-SUFFIX,tracking.miui.com,REJECT",
-    "DOMAIN-KEYWORD,adservice,REJECT",
-    "DOMAIN-KEYWORD,analytics,REJECT",
-    "DOMAIN-KEYWORD,omniture,REJECT",
-    "DOMAIN-KEYWORD,adview,REJECT",
-
+    
     // AI 服务 - 核心域名强制分流 (防止漏网致 1060 错误)
     // Google AI / Gemini (关键: opa-pa/proactivebackend)
     "DOMAIN-SUFFIX,gemini.google.com,Gemini",
@@ -279,15 +260,23 @@ function main(config) {
     "DOMAIN-SUFFIX,oaistatic.com,ChatGPT",
     "DOMAIN-SUFFIX,oaiusercontent.com,ChatGPT",
 
-    // AI 服务 - Rule Sets (兜底)
-    "RULE-SET,openai,ChatGPT",
+    // AI 服务 - Rule Sets (已废弃，清理残留)
+    "GEOSITE,openai,ChatGPT",
+
     // 修复 Bing 重定向循环：国内版 Bing 强制直连，国际版 Copilot 走代理
     "DOMAIN,cn.bing.com,DIRECT",
-    "RULE-SET,copilot,Copilot",
-    "RULE-SET,gemini,Gemini",
-    "RULE-SET,github,GitHub Copilot",
-    // AI 服务 - 兜底
-    "RULE-SET,google,Google",
+    // Copilot 依赖 Bing/Microsoft，手动保底
+    "DOMAIN-SUFFIX,bing.com,Copilot", 
+    "DOMAIN-SUFFIX,copilot.microsoft.com,Copilot",
+    
+    // GitHub Copilot & GitHub
+    "GEOSITE,github,GitHub Copilot",
+    
+    // AI 服务 - 兜底 (Gemini 通常包含在 Google Geosite 中，防止误伤优先放前面)
+    "GEOSITE,google,Google",
+
+    // 📚 学术网站 (国外) - 新增
+    "GEOSITE,category-scholar-!cn,国外通用",
 
     // 进程 (Windows)
     "PROCESS-NAME,WeChat.exe,DIRECT",
@@ -330,8 +319,7 @@ function main(config) {
     "DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT",
     "DOMAIN-SUFFIX,tlu.dl.delivery.mp.microsoft.com,DIRECT",
     "GEOSITE,microsoft,自动选择",
-    "RULE-SET,icloud,DIRECT",
-    "RULE-SET,apple,DIRECT",
+    "GEOSITE,apple,DIRECT",
 
     // 游戏与 Bambu
     "DOMAIN-SUFFIX,steamserver.net,DIRECT",
