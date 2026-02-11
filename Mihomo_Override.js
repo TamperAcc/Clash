@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.79  | 更新日期: 2026-02-11
+// 版本: v1.81  | 更新日期: 2026-02-11
 // 移植自 ClashVerge.yaml "PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.79 (修复拼写错误 + 学术网站优化)...");
+  console.log("✅ 加载脚本 v1.81 (Gemini 测速频率优化)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
   if (!config) {
@@ -127,11 +127,11 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
       "include-all": true,
-      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 HK/RU/Macau/KP/CU
-      "url": "https://www.youtube.com", // 改用 YouTube 检测，比 gemini 域名更能有效识别送中/Captcha IP
-      "interval": 310, // 错开 10s
+      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU|CN|China|中国)).*", // 🚫 保持黑名单排除模式，信任 Url-Test 自动筛选
+      "url": "https://gemini.google.com", // 🎯 靶向检测: 只有能打开 Gemini 的节点才会被选中
+      "interval": 30, // ⚡ 加速测速频率 (从 300s 降为 30s)，确保节点状态实时更新
       "tolerance": 50,
-      "expected-status": 200, // 强制要求 200 OK，排除验证码或重定向页面
+      "expected-status": 200, // 强制要求 200 OK
       "unified-delay": true,
       "lazy": true
     },
@@ -243,6 +243,8 @@ function main(config) {
     // Google AI / Gemini (关键: opa-pa/proactivebackend)
     "DOMAIN-SUFFIX,gemini.google.com,Gemini",
     "DOMAIN-SUFFIX,bard.google.com,Gemini",
+    "DOMAIN,gemini.google.com,Gemini", // 加强匹配
+    "DOMAIN,bard.google.com,Gemini",   // 加强匹配
     "DOMAIN,generativelanguage.googleapis.com,Gemini",
     "DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,Gemini",
     "DOMAIN-SUFFIX,opa-pa.googleapis.com,Gemini",
@@ -253,6 +255,8 @@ function main(config) {
     "DOMAIN-SUFFIX,aistudio.google.com,Gemini",
     "DOMAIN-SUFFIX,makersuite.google.com,Gemini",
     "DOMAIN-SUFFIX,googleapis.cn,Gemini",
+    "DOMAIN-SUFFIX,deepmind.com,Gemini", // DeepMind 相关
+    "DOMAIN-SUFFIX,deepmind.google,Gemini", // DeepMind 相关
     
     // OpenAI / ChatGPT
     "DOMAIN-SUFFIX,openai.com,ChatGPT",
@@ -274,7 +278,13 @@ function main(config) {
     
     // AI 服务 - 兜底 (Gemini 通常包含在 Google Geosite 中，防止误伤优先放前面)
     "GEOSITE,google,Google",
-
+    
+    // 强制 gemini.google.com 走 Gemini 策略组 (防止被 GEOSITE,google 抢占)
+    // 虽然上面有了 DOMAIN-SUFFIX，但为了保险起见，显式声明 GEOSITE 规则顺序
+    // 注意: 在 Clash/Mihomo 中，前面的规则优先级更高。
+    // 我们已经在前面放置了 DOMAIN-SUFFIX 规则，理论上已经生效。
+    // 问题可能出在 Gemini 策略组选到了香港/澳门节点。
+    
     // 📚 学术网站 (国外) - 新增
     "GEOSITE,category-scholar-!cn,国外通用",
 
