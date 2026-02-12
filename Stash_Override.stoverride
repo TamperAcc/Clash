@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-11 [Stash Override v1.47]
+﻿# Last Updated: 2026-02-12 [Stash Override v1.48]
 # 移植自 PC 端 Mihomo_Override.js v1.82
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.47"
-desc: "v1.47 | Gemini: 排除日本节点 (防数据中心风控)"
+name: "Stash Override v1.48"
+desc: "v1.48 | 修复 Apple DNS 解析超时"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -56,14 +56,15 @@ dns:
     - "time.*.edu.cn"
   
   nameserver-policy:
-    '+.apple.com': 'system'
-    '+.icloud.com': 'system'
-    '+.mzstatic.com': 'system'
-    '+.id.apple.com': 'system'
-    '+.itunes.apple.com': 'system'
-    '+.apps.apple.com': 'system'
-    '+.crashlytics.com': 'system'
-    'geosite:cn': '119.29.29.29'
+    '+.apple.com': 'https://doh.pub/dns-query'
+    '+.icloud.com': 'https://doh.pub/dns-query'
+    '+.icloud-content.com': 'https://doh.pub/dns-query'
+    '+.mzstatic.com': 'https://doh.pub/dns-query'
+    '+.id.apple.com': 'https://doh.pub/dns-query'
+    '+.itunes.apple.com': 'https://doh.pub/dns-query'
+    '+.apps.apple.com': 'https://doh.pub/dns-query'
+    '+.crashlytics.com': 'https://doh.pub/dns-query'
+    'geosite:cn': 'https://doh.pub/dns-query'
     '+.bambulab.cn': '119.29.29.29'
     # ⬇️ 同步 Mihomo: 补充 Bambu Global 域名
     '+.bambulab.com': '119.29.29.29'
