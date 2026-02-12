@@ -282,6 +282,7 @@ rules: #!replace
   - GEOSITE,youtube,YouTube 4K
   
   # 4. Microsoft/GitHub -> 🔍 搜索与开发 (求快)
+  - GEOSITE,github,🔍 搜索与开发
   - DOMAIN-SUFFIX,github.com,🔍 搜索与开发
   - DOMAIN-SUFFIX,githubusercontent.com,🔍 搜索与开发
   - DOMAIN-SUFFIX,github.io,🔍 搜索与开发
