@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-12 [Stash Override v1.49]
+﻿# Last Updated: 2026-02-12 [Stash Override v1.50]
 # 移植自 PC 端 Mihomo_Override.js v1.83
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.49"
-desc: "v1.49 | 补全 GitHub 代理规则 (修复 Sub-Store 更新失败)"
+name: "Stash Override v1.50"
+desc: "v1.50 | 修复 Google/GitHub 资源下载，优化 Fallback 逻辑"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -70,15 +70,13 @@ dns:
     '+.bambulab.com': '119.29.29.29'
   
   nameserver: #!replace
-    - quic://dns.alidns.com:853 # 🚀 阿里 DoQ: 0-RTT 连接，5G/WiFi 切换不断流
-    - https://doh.pub/dns-query # 腾讯 DoH (iOS 推荐: 抗劫持能力最强，解决节点超时)
-    - 119.29.29.29 # 腾讯 UDP (兜底备用)
-    # - system # ❌ 移除系统 DNS: iOS 上运营商DNS经常污染节点域名导致连不上
+    - 223.5.5.5 # 🚀 阿里 DNS: 响应最快，兼容所有网络环境
+    - 119.29.29.29 # 腾讯 DNS: 备用
   
-  # ✅ 新增 Fallback: 采用 OpenDNS TCP (更稳) + Cloudflare DoH (去污染)，移除 Google TCP
+  # ✅ 优化 Fallback: 移除连不上的国外 DNS，改用国内高可用 DoH (防劫持且能连通)
   fallback:
-    - tcp://208.67.222.222:443
-    - https://1.1.1.1/dns-query
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
   
   fallback-filter:
     geoip: true
@@ -285,6 +283,7 @@ rules: #!replace
   - GEOSITE,github,🔍 搜索与开发
   - DOMAIN-SUFFIX,github.com,🔍 搜索与开发
   - DOMAIN-SUFFIX,githubusercontent.com,🔍 搜索与开发
+  - DOMAIN,release-assets.githubusercontent.com,🔍 搜索与开发
   - DOMAIN-SUFFIX,github.io,🔍 搜索与开发
   - GEOSITE,microsoft,🔍 搜索与开发
   
