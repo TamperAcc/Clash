@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-12 [Stash Override v1.50]
-# 移植自 PC 端 Mihomo_Override.js v1.83
+﻿# Last Updated: 2026-02-12 [Stash Override v1.51]
+# 移植自 PC 端 Mihomo_Override.js v1.85
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.50"
-desc: "v1.50 | 修复 Google/GitHub 资源下载，优化 Fallback 逻辑"
+name: "Stash Override v1.51"
+desc: "v1.51 | Gemini: 补全 澳门/MO 与 立陶宛/LT 过滤"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -152,8 +152,8 @@ proxy-groups: #!replace
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
-    # 逻辑: 剔除 HK/HongKong/香港/CN/China/澳门/Macau/Japan/日本 以及 俄罗斯/Russia/RU/立陶宛/Lithuania/朝鲜/古巴
-    filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|Russia|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|日本|Japan|JP|朝鲜|Korea|KP|古巴|Cuba|CU|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
+    # 逻辑: 剔除 HK/HongKong/香港/CN/China/澳门/Macau/Japan/日本/JP/MO/LT 以及 俄罗斯/Russia/RU/立陶宛/Lithuania/朝鲜/古巴
+    filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|Russia|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|MO|日本|Japan|JP|朝鲜|Korea|KP|古巴|Cuba|CU|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "https://gemini.google.com" # 优化: 升级为 Gemini 靶向检测 (防送中 + 防日本假阳性)
     expected-status: 200           # 优化: 强制要求 200 OK，同步 PC 端逻辑
     interval: 600   # 🔋 极致省电
