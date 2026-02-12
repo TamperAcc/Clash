@@ -70,12 +70,16 @@ dns:
     '+.bambulab.com': '119.29.29.29'
   
   nameserver: #!replace
-    - 223.5.5.5 # 🚀 阿里 DNS: 响应最快，兼容所有网络环境
-    - 119.29.29.29 # 腾讯 DNS: 备用
-  
-  # ✅ 优化 Fallback: 移除连不上的国外 DNS，改用国内高可用 DoH (防劫持且能连通)
+    - 223.5.5.5 # 🚀 阿里 DNS: 响应最快，兼容所有网络环境 (移动网络首选 UDP)
+    - 119.29.29.29 # 腾讯 DNS: 备用 UDP
+    # ⚠️ 注意: 在 iOS 移动网络下，使用 DoQ/DoH 可能会被运营商断流，因此首选标准 UDP
+
+  # ✅ 优化 Fallback (兜底解析): 
+  # 原理: 当 UDP 解析失败或被判定为污染 IP 时使用。
+  # 修改: 移除连不上的国外 DNS (1.1.1.1)，改用国内高可用 DoH。
+  # 目的: 防止因 Fallback DNS 连不上导致的 "context deadline exceeded" 卡死。
   fallback:
-    - https://doh.pub/dns-query
+    - https://doh.pub/dns-query # 腾讯 DoH (防劫持兜底)
     - https://dns.alidns.com/dns-query
   
   fallback-filter:
