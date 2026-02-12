@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.83  | 更新日期: 2026-02-12
+// 版本: v1.84  | 更新日期: 2026-02-12
 // 移植自 ClashVerge.yaml "PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.83 (修复 Apple DNS 解析超时)...");
+  console.log("✅ 加载脚本 v1.84 (优化 DNS Fallback 策略)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -58,13 +58,13 @@ function main(config) {
       "*.bambulab.com", "*.bambulab.cn"
     ],
     "nameserver": [
-      "223.5.5.5", "119.29.29.29",
-      "quic://dns.alidns.com:853" // 尝试使用 QUIC DNS
+      "223.5.5.5", "119.29.29.29"
+      // "quic://dns.alidns.com:853" // ❌ 移除 QUIC: 减少部分网络环境下的干扰
     ],
+    // ✅ 优化 Fallback: 移除连不上的国外 DNS，改用国内高可用 DoH (防劫持且能连通)
     "fallback": [
-      "https://doh.pub/dns-query",
-      "tcp://208.67.222.222:443",
-      "tls://8.8.4.4:853"
+      "https://doh.pub/dns-query", // 腾讯 DoH
+      "https://dns.alidns.com/dns-query" // 阿里 DoH
     ],
     "fallback-filter": { "geoip": true, "geoip-code": "CN", "ipcidr": ["240.0.0.0/4"] },
     "nameserver-policy": {
