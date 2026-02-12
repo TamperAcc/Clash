@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.82  | 更新日期: 2026-02-11
+// 版本: v1.83  | 更新日期: 2026-02-12
 // 移植自 ClashVerge.yaml "PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.82 (Gemini 排除日本节点)...");
+  console.log("✅ 加载脚本 v1.83 (修复 Apple DNS 解析超时)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -69,7 +69,11 @@ function main(config) {
     "fallback-filter": { "geoip": true, "geoip-code": "CN", "ipcidr": ["240.0.0.0/4"] },
     "nameserver-policy": {
       "geosite:cn": "223.5.5.5",
-      "geosite:apple": "system",
+      "geosite:apple": "223.5.5.5",
+      "+.icloud.com": "223.5.5.5",
+      "+.icloud-content.com": "223.5.5.5",
+      "+.mzstatic.com": "223.5.5.5",
+      "+.apple.com": "223.5.5.5",
       "+.bambulab.cn": "119.29.29.29",
       "+.bambulab.com": "119.29.29.29"
     }
