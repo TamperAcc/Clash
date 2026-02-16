@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-17 [Stash Override v1.74]
+﻿# Last Updated: 2026-02-17 [Stash Override v1.75]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.74"
-desc: "v1.74 | 终极修复: STUN 规则下沉至 CN 之前，防止 Telegram/Discord 通话被直连阻断"
+name: "Stash Override v1.75"
+desc: "v1.75 | 强制刷新: 确保 STUN 规则顺序已生效 (Geosite:CN 之前)"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
