@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-17 [Stash Override v1.68]
+﻿# Last Updated: 2026-02-17 [Stash Override v1.69]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.68"
-desc: "v1.68 | 修正 YAML 格式: system 关键字加引号"
+name: "Stash Override v1.69"
+desc: "v1.69 | 优化 Sniffer 配置: 预置 HTTP/3 (QUIC) 嗅探参数"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -97,7 +97,7 @@ dns:
 # 4.1 Sniffer 嗅探 (iOS 省电优化)
 # ⚠️ 注意: 除非必须，否则建议关闭或仅特定协议开启，以降低 CPU 唤醒
 sniffer:
-  enable: false  # 🔋 省电优先：默认关闭嗅探，减少发热。仅当需要根据 SNI 分流纯 IP 请求时才开启。
+  enable: false  # 🔋 省电优先。若需精确分流由纯 IP 访问的域名(如 Spotify/Netflix)，可在此开启
   parse-pure-ip: true
   override-destination: true
   sniff:
@@ -105,6 +105,8 @@ sniffer:
       ports: [80, 8080, 8880]
       override-destination: true
     TLS:
+      ports: [443, 8443]
+    QUIC: # v3.3.0+ 支持 HTTP/3 嗅探
       ports: [443, 8443]
 # 5. MitM (HTTPS 解密)
 mitm:
