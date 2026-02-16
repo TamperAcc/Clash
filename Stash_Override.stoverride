@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-17 [Stash Override v1.60]
+﻿# Last Updated: 2026-02-17 [Stash Override v1.61]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.60"
-desc: "v1.60 | 新增 IPv6 强制阻断规则"
+name: "Stash Override v1.61"
+desc: "v1.61 | 修复 IPv6 DoH 连接报错 (Hosts劫持)"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -25,6 +25,12 @@ geox-url:
   mmdb: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
 # 3. 模拟指纹
 global-client-fingerprint: chrome
+
+# 3.1 Hosts 劫持 (解决 DoH 域名解析出 IPv6 导致的连接报错)
+hosts:
+  "dns.alidns.com": 223.5.5.5
+  "doh.pub": 119.29.29.29
+
 # 4. DNS 设置
 dns:
   enable: true
