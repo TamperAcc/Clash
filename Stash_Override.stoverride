@@ -69,19 +69,19 @@ dns:
   # 🛡️ 策略分流 (解决 context deadline exceeded 报错)
   nameserver-policy:
     # Apple/iCloud 极其敏感，强制走 System (iOS系统原生DNS) 以消除报错
-    '+.apple.com': system
-    '+.icloud.com': system
-    '+.icloud-content.com': system
-    '+.mzstatic.com': system
-    '+.id.apple.com': system
-    '+.itunes.apple.com': system
-    '+.apps.apple.com': system
-    '+.crashlytics.com': system
+    '+.apple.com': 'system'
+    '+.icloud.com': 'system'
+    '+.icloud-content.com': 'system'
+    '+.mzstatic.com': 'system'
+    '+.id.apple.com': 'system'
+    '+.itunes.apple.com': 'system'
+    '+.apps.apple.com': 'system'
+    '+.crashlytics.com': 'system'
     # Bambu Lab 也建议走 System 确保局域网发现
-    '+.bambulab.cn': system
-    '+.bambulab.com': system
+    '+.bambulab.cn': 'system'
+    '+.bambulab.com': 'system'
     # 国内 Geosite 走腾讯 UDP (快)
-    'geosite:cn': 119.29.29.29
+    'geosite:cn': '119.29.29.29'
 
   fallback:
     # 移动网络下，Fallback 仅作为 nameserver 彻底挂掉的冷备
