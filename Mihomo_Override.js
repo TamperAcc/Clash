@@ -229,6 +229,7 @@ function main(config) {
     "DOMAIN-SUFFIX,local,DIRECT",
     "DOMAIN-SUFFIX,home.arpa,DIRECT",
     "DOMAIN-SUFFIX,yfjc.xyz,DIRECT",
+    "DOMAIN-SUFFIX,1huanlesap02.top,DIRECT", // user requested: test.1huanlesap02.top -> DIRECT
     
     // 基础 - 微软连通性测试 (IPv6 需 Reject 以避免卡顿)
     "DOMAIN,ipv6.msftconnecttest.com,REJECT",
