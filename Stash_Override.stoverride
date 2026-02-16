@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-17 [Stash Override v1.62]
+﻿# Last Updated: 2026-02-17 [Stash Override v1.63]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.62"
-desc: "v1.62 | 紧急修复: 移除 Hosts 劫持，回滚至标准 UDP DNS 以解决断网"
+name: "Stash Override v1.63"
+desc: "v1.63 | 修复 DNS 报错: 添加 default-nameserver 并使用 IP-DoH"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -33,6 +33,10 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   respect-rules: true
+  # 🚀 Bootstrap DNS: 必须配置，否则无法解析 DoH 域名
+  default-nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
   fake-ip-filter:
     - "*.lan"
     - "*.local"
