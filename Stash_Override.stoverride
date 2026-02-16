@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-17 [Stash Override v1.73]
+﻿# Last Updated: 2026-02-17 [Stash Override v1.74]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.73"
-desc: "v1.73 | 规则安全加固: Google 规则前置，彻底防止 Gemini 被 STUN 直连"
+name: "Stash Override v1.74"
+desc: "v1.74 | 终极修复: STUN 规则下沉至 CN 之前，防止 Telegram/Discord 通话被直连阻断"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -189,14 +189,8 @@ rules: #!replace
   # 🚀 AI 规则优化: 使用 Geosite 替代 Rule Set (内存极省)
   - GEOSITE,openai,ChatGPT
   - GEOSITE,category-ai-chat-!cn,Gemini
-  # 🛡️ Google 全家桶 (含 Gemini/YouTube/Voice) 提前匹配
-  # 防止通用 Google STUN/UDP 流量掉入下方的直连规则，导致 Gemini 区域报错
-  - GEOSITE,google,Gemini
+  # - GEOSITE,google,Gemini (STUN 修复后，无需在此处强制前提，恢复原位即可减少误伤) - [v1.74 回退]
 
-  # ⚡️ STUN 协议直连 (v1.71/v1.73 调整位置)
-  # 移至 AI/Google 规则之后，防止 ChatGPT/Gemini 语音模式泄漏国内 IP
-  - PROTOCOL,STUN,DIRECT
-  
   - GEOIP,PRIVATE,DIRECT,no-resolve
   - DOMAIN-SUFFIX,lan,DIRECT
   - DOMAIN-SUFFIX,local,DIRECT
@@ -259,9 +253,9 @@ rules: #!replace
   - DOMAIN,copilot-proxy.githubusercontent.com,自动选择
   - DOMAIN,api.github.com,自动选择
   
-  # 3. Google -> Gemini (用户指定) - [已上移至 0. 核心区]
+  # 3. Google -> Gemini (用户指定) - [v1.74 恢复原位]
   # 其他 Google (搜索/地图/YouTube) 走快
-  # - GEOSITE,google,Gemini
+  - GEOSITE,google,Gemini
   - GEOSITE,youtube,自动选择
   
   # 4. Microsoft/GitHub -> 自动选择 (求快)
@@ -274,6 +268,11 @@ rules: #!replace
   
   # ♻️ 替换 RULE-SET,icloud/apple 为 Geosite,apple (内存优化)
   - GEOSITE,apple,DIRECT
+
+  # ⚡️ STUN 协议直连 (v1.74 最终位置)
+  # 此时这里都是“未命中”上面任何代理规则的 STUN 流量。
+  # 既排除了 AI/Google/TG (已走代理)，又保留了 P2P 游戏/WhatsApp (走直连)
+  - PROTOCOL,STUN,DIRECT
   
   - GEOSITE,cn,国内
   - GEOSITE,geolocation-!cn,自动选择
