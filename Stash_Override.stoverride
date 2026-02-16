@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-17 [Stash Override v1.65]
+﻿# Last Updated: 2026-02-17 [Stash Override v1.66]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.65"
-desc: "v1.65 | 分流 DNS: Apple走System防报错，其他走DoH防劫持"
+name: "Stash Override v1.66"
+desc: "v1.66 | 适配 iOS Stash v3.3.0+ 协议语法"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -197,8 +197,8 @@ proxy-groups: #!replace
 # ==========================================
 rules: #!replace
 
-  # �🛡️ 强制关闭 QUIC (使用原生规则替代 Script，极大节省内存)
-  - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
+  # 🛡️ 强制关闭 QUIC (v3.3.0+ 新语法: PROTOCOL 匹配更精准，覆盖所有端口)
+  - PROTOCOL,QUIC,REJECT
   
   # Brave Wallet (允许香港)
   - DOMAIN-SUFFIX,brave.com,自动选择
