@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-16 [Stash Override v1.56]
+﻿# Last Updated: 2026-02-17 [Stash Override v1.58]
 # 移植自 PC 端 Mihomo_Override.js v1.88
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.57"
-desc: "v1.57 | 新增 ChatGPT 专用策略组"
+name: "Stash Override v1.58"
+desc: "v1.58 | 优化 url-test 测速错峰"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -132,7 +132,7 @@ proxy-groups: #!replace
     filter: "(?i)^(?!.*(IEPL|立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "https://www.gstatic.com/generate_204"
     interval: 600   # 🔋 极致省电
-    tolerance: 50
+    tolerance: 100
     unified-delay: true
     lazy: true
 
@@ -144,7 +144,7 @@ proxy-groups: #!replace
     filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|MO|日本|Japan|JP|韩国|Korea|KR|朝鲜|KP|古巴|Cuba|CU|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站)).*"
     url: "https://gemini.google.com" 
     expected-status: 200
-    interval: 600
+    interval: 630
     tolerance: 100
     unified-delay: false
     lazy: true
