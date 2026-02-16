@@ -6,7 +6,7 @@
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.89 (Gemini/ChatGPT 策略同步: 剔除 Korea/KR 但保留 Seoul)...");
+  console.log("✅ 加载脚本 v1.88 (Gemini 策略调整: 剔除 Korea/KR 但保留 Seoul)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -132,12 +132,36 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
       "include-all": true,
-      // 逻辑: 剔除 HK/CN/JP/MO/LT/RU/KP/CU 用于 AI 防风控 (加上韩国/KR)
-      "filter": "^(?!.*(" + baseExclude + "|立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|MO|日本|Japan|JP|韩国|Korea|KR|朝鲜|KP|古巴|Cuba|CU|圣何塞)).*",
-      "url": "https://gemini.google.com", 
-      "interval": 600, 
-      "tolerance": 100,
-      "expected-status": 200, 
+      // 🚫 严格排除: 香港/HK, 澳门/Macau/MO, 俄罗斯/RU, 立陶宛/Lithuania/LT, 日本/Japan/JP, 韩国/KR, 中国/CN/China
+      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*",
+      "url": "https://gemini.google.com", // 🎯 靶向检测: 只有能打开 Gemini 的节点才会被选中
+      "interval": 30, // ⚡ 加速测速频率 (从 300s 降为 30s)，确保节点状态实时更新
+      "tolerance": 50,
+      "expected-status": 200, // 强制要求 200 OK
+      "unified-delay": true,
+      "lazy": true
+    },
+    {
+      "name": "Copilot",
+      "type": "url-test",
+      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png",
+      "include-all": true,
+      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 RU/KP/CU
+      "url": "https://www.bing.com",
+      "interval": 320, // 错开 20s
+      "tolerance": 50,
+      "unified-delay": true,
+      "lazy": true
+    },
+    {
+      "name": "GitHub Copilot",
+      "type": "url-test",
+      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/github.png",
+      "include-all": true,
+      "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
+      "url": "https://api.github.com",
+      "interval": 330, // 错开 30s
+      "tolerance": 50,
       "unified-delay": true,
       "lazy": true
     },
@@ -146,11 +170,10 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
       "include-all": true,
-      // 逻辑: 严格风控，剔除 HK/CN/MO/RU/KP/CU/IR/SY
-      "filter": "^(?!.*(" + baseExclude + "|立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|MO|朝鲜|KP|古巴|Cuba|CU|伊朗|Iran|SY|叙利亚)).*",
-      "url": "https://chat.openai.com",
-      "interval": 600, 
-      "tolerance": 100,
+      "filter": "^(?!.*(" + baseExclude + "|香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
+      "url": "https://chatgpt.com",
+      "interval": 340, // 错开 40s
+      "tolerance": 50,
       "unified-delay": true,
       "lazy": true
     },
@@ -254,11 +277,11 @@ function main(config) {
     // 修复 Bing 重定向循环：国内版 Bing 强制直连，国际版 Copilot 走代理
     "DOMAIN,cn.bing.com,DIRECT",
     // Copilot 依赖 Bing/Microsoft，手动保底
-    "DOMAIN-SUFFIX,bing.com,自动选择", 
-    "DOMAIN-SUFFIX,copilot.microsoft.com,自动选择",
+    "DOMAIN-SUFFIX,bing.com,Copilot", 
+    "DOMAIN-SUFFIX,copilot.microsoft.com,Copilot",
     
     // GitHub Copilot & GitHub
-    "GEOSITE,github,自动选择",
+    "GEOSITE,github,GitHub Copilot",
     
     // AI 服务 - 兜底 (Gemini 通常包含在 Google Geosite 中，防止误伤优先放前面)
     "GEOSITE,google,Google",
