@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-16 [Stash Override v1.53]
+﻿# Last Updated: 2026-02-16 [Stash Override v1.55]
 # 移植自 PC 端 Mihomo_Override.js v1.87
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.53"
-desc: "v1.53 | 新增 1huanlesap02.top 直连"
+name: "Stash Override v1.55"
+desc: "v1.55 | 极简模式: 仅保留自动选择策略组以解决 OOM, 谷歌全家桶通过 Gemini 组分流"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -128,49 +128,26 @@ proxy-groups: #!replace
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
-    # 策略优化: 移除香港节点的排除 ("香港|hongkong|hk|HK|Hong|Kong|")，大幅降低通用浏览延迟; 排除 IEPL 以节省专线流量
+    # 策略优化: 移除香港节点排除，大幅降低通用延迟; 排除 IEPL 以节省专线
     filter: "(?i)^(?!.*(IEPL|立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "https://www.gstatic.com/generate_204"
-    interval: 600   # 🔋 极致省电: 延长测速间隔至 10分钟，减少基带唤醒
+    interval: 600   # 🔋 极致省电
     tolerance: 50
     unified-delay: true
     lazy: true
 
-  - name: 🔍 搜索与开发
+  - name: Gemini
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     include-all: true
-    # 逻辑: 只要不是流量/到期等关键词，全部保留 (含 HK/SG)
-    filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
-    url: "http://www.gstatic.com/generate_204"
-    interval: 600   # 🔋 极致省电
-    tolerance: 50
-    unified-delay: false # ⚡ 极速模式
-    lazy: true
-
-  - name: 🤖 生成式 AI
-    type: url-test
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
-    include-all: true
-    # 逻辑: 剔除 HK/HongKong/香港/CN/China/澳门/Macau/Japan/日本/JP/MO/LT 以及 俄罗斯/Russia/RU/立陶宛/Lithuania/朝鲜/古巴
-    filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|Russia|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|MO|日本|Japan|JP|朝鲜|Korea|KP|古巴|Cuba|CU|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
-    url: "https://gemini.google.com" # 优化: 升级为 Gemini 靶向检测 (防送中 + 防日本假阳性)
-    expected-status: 200           # 优化: 强制要求 200 OK，同步 PC 端逻辑
-    interval: 600   # 🔋 极致省电
+    # 逻辑: 剔除 HK/CN/JP/MO/LT/RU/KP/CU 用于 AI 防风控
+    filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|MO|日本|Japan|JP|朝鲜|Korea|KP|古巴|Cuba|CU|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站)).*"
+    url: "https://gemini.google.com" 
+    expected-status: 200
+    interval: 600
     tolerance: 100
-    unified-delay: false # ⚡ 极速模式
+    unified-delay: false
     lazy: true
-
-  - name: Telegram
-    type: url-test
-    icon: https://raw.githubusercontent.com/Orz-3/mini/master/Color/Telegram.png
-    include-all: true
-    # 排除立陶宛和俄罗斯
-    filter: "(?i)^(?!.*(俄罗斯|Russia|RU|立陶宛|Lithuania|LT|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|联系|网站|入群|专线)).*"
-    url: "https://api.telegram.org"
-    interval: 600   # 🔋 极致省电
-    tolerance: 100
-    unified-delay: true
 
   - name: 国内
     type: select
@@ -178,28 +155,7 @@ proxy-groups: #!replace
     proxies:
       - DIRECT
       - 自动选择
-  
-  - name: Google Search
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
-    proxies:
-      - 🔍 搜索与开发
-      - 🤖 生成式 AI
-      - 自动选择
 
-  - name: YouTube 4K
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
-    proxies:
-      - 自动选择
-      - 🔍 搜索与开发
-      
-  - name: 国外通用
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
-    proxies:
-      - 自动选择
-      - 🔍 搜索与开发
 # ==========================================
 # 规则集合 (Rule Providers) - ❌ 已废弃 (全量迁移至 Geosite)
 # ==========================================
@@ -209,14 +165,15 @@ proxy-groups: #!replace
 # 规则 (Rules)
 # ==========================================
 rules: #!replace
-  - SCRIPT,quic_block,REJECT # 🛡️ 强制关闭 QUIC
+  # 🛡️ 强制关闭 QUIC (使用原生规则替代 Script，极大节省内存)
+  - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
   
   # Brave Wallet (允许香港)
   - DOMAIN-SUFFIX,brave.com,自动选择
 
   # === 0. AI 核心规则 (Geosite 统一匹配) ===
   # 🚀 AI 规则优化: 使用 Geosite 替代 Rule Set (内存极省)
-  - GEOSITE,category-ai-chat-!cn,🤖 生成式 AI
+  - GEOSITE,category-ai-chat-!cn,Gemini
   
   - GEOIP,PRIVATE,DIRECT,no-resolve
   - DOMAIN-SUFFIX,lan,DIRECT
@@ -253,7 +210,7 @@ rules: #!replace
   
   # 测速服务
   - GEOSITE,ookla-speedtest,DIRECT
-  - DOMAIN-SUFFIX,fast.com,国外通用
+  - DOMAIN-SUFFIX,fast.com,自动选择
   - DOMAIN-SUFFIX,startspoint.com,自动选择
   
   # 优化: 移除冗余 CDN 及国内域名列表, 使用 Geosite:cn 统一代理
@@ -261,8 +218,8 @@ rules: #!replace
   
   - DOMAIN-SUFFIX,stackoverflow.com,自动选择
   # 社交
-  - GEOSITE,telegram,Telegram
-  - GEOIP,telegram,Telegram
+  - GEOSITE,telegram,自动选择
+  - GEOIP,telegram,自动选择
   
   # DOMAIN-SUFFIX,stackexchange.com,自动选择
   - DOMAIN-SUFFIX,npmjs.com,自动选择
@@ -274,24 +231,24 @@ rules: #!replace
   
   # === AI & 搜索 精细化分流 ===
   
-  # 1. Copilot VScode 插件 -> 🔍 搜索与开发 (求快，走 HK/SG)
+  # 1. Copilot VScode 插件 -> 自动选择 (求快，允许 HK/SG)
   # 修复 Bing 重定向循环：国内版 Bing 强制直连
   - DOMAIN,cn.bing.com,DIRECT
-  - DOMAIN,copilot-proxy.githubusercontent.com,🔍 搜索与开发
-  - DOMAIN,api.github.com,🔍 搜索与开发
+  - DOMAIN,copilot-proxy.githubusercontent.com,自动选择
+  - DOMAIN,api.github.com,自动选择
   
-  # 3. Google -> 手术刀式分离
+  # 3. Google -> Gemini (用户指定)
   # 其他 Google (搜索/地图/YouTube) 走快
-  - GEOSITE,google,🔍 搜索与开发
-  - GEOSITE,youtube,YouTube 4K
+  - GEOSITE,google,Gemini
+  - GEOSITE,youtube,自动选择
   
-  # 4. Microsoft/GitHub -> 🔍 搜索与开发 (求快)
-  - GEOSITE,github,🔍 搜索与开发
-  - DOMAIN-SUFFIX,github.com,🔍 搜索与开发
-  - DOMAIN-SUFFIX,githubusercontent.com,🔍 搜索与开发
-  - DOMAIN,release-assets.githubusercontent.com,🔍 搜索与开发
-  - DOMAIN-SUFFIX,github.io,🔍 搜索与开发
-  - GEOSITE,microsoft,🔍 搜索与开发
+  # 4. Microsoft/GitHub -> 自动选择 (求快)
+  - GEOSITE,github,自动选择
+  - DOMAIN-SUFFIX,github.com,自动选择
+  - DOMAIN-SUFFIX,githubusercontent.com,自动选择
+  - DOMAIN,release-assets.githubusercontent.com,自动选择
+  - DOMAIN-SUFFIX,github.io,自动选择
+  - GEOSITE,microsoft,自动选择
   
   # ♻️ 替换 RULE-SET,icloud/apple 为 Geosite,apple (内存优化)
   - GEOSITE,apple,DIRECT
@@ -301,11 +258,8 @@ rules: #!replace
   - GEOIP,cn,国内
   - GEOIP,CN,国内
   
-  - MATCH,国外通用
+  - MATCH,自动选择
 
 # ==========================================
-# 脚本定义 (Scripts)
+# 脚本定义 (Scripts) - ❌ 已移除以节省内存
 # ==========================================
-script:
-  shortcuts:
-    quic_block: network == 'udp' and dst_port == 443
