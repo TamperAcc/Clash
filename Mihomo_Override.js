@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.88  | 更新日期: 2026-02-16
+// 版本: v1.89  | 更新日期: 2026-02-17
 // 移植自 ClashVerge.yaml "PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.88 (Gemini 策略调整: 剔除 Korea/KR 但保留 Seoul)...");
+  console.log("✅ 加载脚本 v1.89 (Tolerance 50->100ms 提升稳定性)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -123,7 +123,7 @@ function main(config) {
       "filter": "^(?!.*(" + baseExclude + "|IEPL|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除过期/流量/IEPL/RU/KP/CU
       "url": "http://www.gstatic.com/generate_204",
       "interval": 300,
-      "tolerance": 50,
+      "tolerance": 100,
       "unified-delay": true, // 开启统一延迟，更准确
       "lazy": true
     },
@@ -136,7 +136,7 @@ function main(config) {
       "filter": "^(?!.*(" + baseExclude + "|俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*",
       "url": "https://gemini.google.com", // 🎯 靶向检测: 只有能打开 Gemini 的节点才会被选中
       "interval": 30, // ⚡ 加速测速频率 (从 300s 降为 30s)，确保节点状态实时更新
-      "tolerance": 50,
+      "tolerance": 100,
       "expected-status": 200, // 强制要求 200 OK
       "unified-delay": true,
       "lazy": true
@@ -149,7 +149,7 @@ function main(config) {
       "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 RU/KP/CU
       "url": "https://www.bing.com",
       "interval": 320, // 错开 20s
-      "tolerance": 50,
+      "tolerance": 100,
       "unified-delay": true,
       "lazy": true
     },
@@ -161,7 +161,7 @@ function main(config) {
       "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://api.github.com",
       "interval": 330, // 错开 30s
-      "tolerance": 50,
+      "tolerance": 100,
       "unified-delay": true,
       "lazy": true
     },
@@ -173,7 +173,7 @@ function main(config) {
       "filter": "^(?!.*(" + baseExclude + "|香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://chatgpt.com",
       "interval": 340, // 错开 40s
-      "tolerance": 50,
+      "tolerance": 100,
       "unified-delay": true,
       "lazy": true
     },
@@ -186,7 +186,7 @@ function main(config) {
       // 排除立陶宛防止假延迟？扁平化测速会自动剔除假延迟节点，故不再强制正则排除，靠测速说话
       "url": "https://api.telegram.org",
       "interval": 350, // 错开 50s
-      "tolerance": 50,
+      "tolerance": 100,
       "unified-delay": true,
       "lazy": true
     },
