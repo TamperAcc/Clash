@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-17 [Stash Override v1.59]
+﻿# Last Updated: 2026-02-17 [Stash Override v1.60]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.59"
-desc: "v1.59 | 优化 ChatGPT 测速错峰"
+name: "Stash Override v1.60"
+desc: "v1.60 | 新增 IPv6 强制阻断规则"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -178,7 +178,10 @@ proxy-groups: #!replace
 # 规则 (Rules)
 # ==========================================
 rules: #!replace
-  # 🛡️ 强制关闭 QUIC (使用原生规则替代 Script，极大节省内存)
+  # � 阻断 IPv6 (解决 no route to host 报错)
+  - IP-CIDR6,::/0,REJECT,no-resolve
+
+  # �🛡️ 强制关闭 QUIC (使用原生规则替代 Script，极大节省内存)
   - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
   
   # Brave Wallet (允许香港)
