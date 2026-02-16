@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-17 [Stash Override v1.69]
+﻿# Last Updated: 2026-02-17 [Stash Override v1.70]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.69"
-desc: "v1.69 | 优化 Sniffer 配置: 预置 HTTP/3 (QUIC) 嗅探参数"
+name: "Stash Override v1.70"
+desc: "v1.70 | DNS 策略优化: Apple 全系域名强制走 System DNS"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -69,13 +69,8 @@ dns:
   # 🛡️ 策略分流 (解决 context deadline exceeded 报错)
   nameserver-policy:
     # Apple/iCloud 极其敏感，强制走 System (iOS系统原生DNS) 以消除报错
-    '+.apple.com': 'system'
-    '+.icloud.com': 'system'
-    '+.icloud-content.com': 'system'
-    '+.mzstatic.com': 'system'
-    '+.id.apple.com': 'system'
-    '+.itunes.apple.com': 'system'
-    '+.apps.apple.com': 'system'
+    # 优化: 使用 geosite:apple 统一接管所有 Apple 服务 DNS，确保 CDN 速度和推送稳定
+    'geosite:apple': 'system'
     '+.crashlytics.com': 'system'
     # Bambu Lab 也建议走 System 确保局域网发现
     '+.bambulab.cn': 'system'
