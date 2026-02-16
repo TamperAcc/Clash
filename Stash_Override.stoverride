@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-17 [Stash Override v1.71]
+﻿# Last Updated: 2026-02-17 [Stash Override v1.72]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.71"
-desc: "v1.71 | 规则优化: 增加 STUN 协议直连，优化 VoIP/游戏延迟"
+name: "Stash Override v1.72"
+desc: "v1.72 | 规则顺序修复: STUN 下沉至 AI 规则后，防止语音模式风控"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -185,17 +185,14 @@ rules: #!replace
   # 🛡️ 强制关闭 QUIC (v3.3.0+ 新语法: PROTOCOL 匹配更精准，覆盖所有端口)
   - PROTOCOL,QUIC,REJECT
   
-  # ⚡️ STUN 协议直连 (v1.71 新增)
-  # 作用: 优化 VoIP (WhatsApp/FaceTime) 和 在线游戏 P2P 连接，防止通过代理转发造成高延迟
-  - PROTOCOL,STUN,DIRECT
-
-  # Brave Wallet (允许香港)
-  - DOMAIN-SUFFIX,brave.com,自动选择
-
   # === 0. AI 核心规则 (Geosite 统一匹配) ===
   # 🚀 AI 规则优化: 使用 Geosite 替代 Rule Set (内存极省)
   - GEOSITE,openai,ChatGPT
   - GEOSITE,category-ai-chat-!cn,Gemini
+
+  # ⚡️ STUN 协议直连 (v1.71 新增 - 调整位置)
+  # 移至 AI 规则之后，防止 ChatGPT 语音模式因 STUN 直连泄漏国内 IP 导致连接失败
+  - PROTOCOL,STUN,DIRECT
   
   - GEOIP,PRIVATE,DIRECT,no-resolve
   - DOMAIN-SUFFIX,lan,DIRECT
