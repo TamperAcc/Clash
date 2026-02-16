@@ -184,8 +184,6 @@ proxy-groups: #!replace
 # 规则 (Rules)
 # ==========================================
 rules: #!replace
-  # � 阻断 IPv6 (解决 no route to host 报错)
-  - IP-CIDR6,::/0,REJECT,no-resolve
 
   # �🛡️ 强制关闭 QUIC (使用原生规则替代 Script，极大节省内存)
   - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
