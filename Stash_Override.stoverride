@@ -3,8 +3,8 @@
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.56"
-desc: "v1.56 | Gemini 规则微调: 仅剔除 Korea/KR 关键词，允许 Seoul 节点"
+name: "Stash Override v1.57"
+desc: "v1.57 | 新增 ChatGPT 专用策略组"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -149,6 +149,19 @@ proxy-groups: #!replace
     unified-delay: false
     lazy: true
 
+  - name: ChatGPT
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
+    include-all: true
+    # 逻辑: 严格风控，剔除 HK/CN/MO/RU/KP/CU/IR/SY
+    filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|MO|朝鲜|KP|古巴|Cuba|CU|伊朗|Iran|SY|叙利亚|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站)).*"
+    url: "https://chat.openai.com" 
+    expected-status: 200
+    interval: 600
+    tolerance: 100
+    unified-delay: false
+    lazy: true
+
   - name: 国内
     type: select
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
@@ -173,6 +186,7 @@ rules: #!replace
 
   # === 0. AI 核心规则 (Geosite 统一匹配) ===
   # 🚀 AI 规则优化: 使用 Geosite 替代 Rule Set (内存极省)
+  - GEOSITE,openai,ChatGPT
   - GEOSITE,category-ai-chat-!cn,Gemini
   
   - GEOIP,PRIVATE,DIRECT,no-resolve
