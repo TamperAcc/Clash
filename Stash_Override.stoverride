@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-17 [Stash Override v1.70]
+﻿# Last Updated: 2026-02-17 [Stash Override v1.71]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.70"
-desc: "v1.70 | DNS 策略优化: Apple 全系域名强制走 System DNS"
+name: "Stash Override v1.71"
+desc: "v1.71 | 规则优化: 增加 STUN 协议直连，优化 VoIP/游戏延迟"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -185,6 +185,10 @@ rules: #!replace
   # 🛡️ 强制关闭 QUIC (v3.3.0+ 新语法: PROTOCOL 匹配更精准，覆盖所有端口)
   - PROTOCOL,QUIC,REJECT
   
+  # ⚡️ STUN 协议直连 (v1.71 新增)
+  # 作用: 优化 VoIP (WhatsApp/FaceTime) 和 在线游戏 P2P 连接，防止通过代理转发造成高延迟
+  - PROTOCOL,STUN,DIRECT
+
   # Brave Wallet (允许香港)
   - DOMAIN-SUFFIX,brave.com,自动选择
 
