@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-12 [Stash Override v1.51]
-# 移植自 PC 端 Mihomo_Override.js v1.85
+﻿# Last Updated: 2026-02-16 [Stash Override v1.52]
+# 移植自 PC 端 Mihomo_Override.js v1.86
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.51"
-desc: "v1.51 | Gemini: 补全 澳门/MO 与 立陶宛/LT 过滤"
+name: "Stash Override v1.52"
+desc: "v1.52 | 新增 startspoint 分流"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -253,6 +253,7 @@ rules: #!replace
   # 测速服务
   - GEOSITE,ookla-speedtest,DIRECT
   - DOMAIN-SUFFIX,fast.com,国外通用
+  - DOMAIN-SUFFIX,startspoint.com,自动选择
   
   # 优化: 移除冗余 CDN 及国内域名列表, 使用 Geosite:cn 统一代理
   # - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT (已移除，防JSdelivr污染)
