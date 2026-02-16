@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-17 [Stash Override v1.58]
-# 移植自 PC 端 Mihomo_Override.js v1.88
+﻿# Last Updated: 2026-02-17 [Stash Override v1.59]
+# 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.58"
-desc: "v1.58 | 优化 url-test 测速错峰"
+name: "Stash Override v1.59"
+desc: "v1.59 | 优化 ChatGPT 测速错峰"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -157,7 +157,7 @@ proxy-groups: #!replace
     filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|MO|朝鲜|KP|古巴|Cuba|CU|伊朗|Iran|SY|叙利亚|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站)).*"
     url: "https://chat.openai.com" 
     expected-status: 200
-    interval: 600
+    interval: 660
     tolerance: 100
     unified-delay: false
     lazy: true
