@@ -1,9 +1,9 @@
 # Last Updated: 2026-02-17 [Stash Override v1.75]
 # 移植自 PC 端 Mihomo_Override.js v1.89
-# 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/StashSystem.yaml
-# 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/StashSystem.yaml
+# 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/StashSystem.stoverride
+# 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/StashSystem.stoverride
 # Stash 元数据
-name: "StashSystem.yaml v1.01"
+name: "StashSystem.stoverride v1.01"
 desc: "v1.01 
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
