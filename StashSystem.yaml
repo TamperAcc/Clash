@@ -1,10 +1,10 @@
 # Last Updated: 2026-02-17 [Stash Override v1.75]
 # 移植自 PC 端 Mihomo_Override.js v1.89
-# 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
-# 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
+# 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/StashSystem.yaml
+# 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/StashSystem.yaml
 # Stash 元数据
-name: "Stash Override v1.65"
-desc: "v1.76 | 强制刷新: 确保 STUN 规则顺序已生效 (Geosite:CN 之前)"
+name: "StashSystem.yaml v1.01"
+desc: "v1.01 
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
