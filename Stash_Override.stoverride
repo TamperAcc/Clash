@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-21 [Stash Override v1.82]
+﻿# Last Updated: 2026-02-21 [Stash Override v1.83]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.82"
-desc: "v1.82 | 修复: 移除 proxy-providers 的 #!replace 标签，防止清空本地节点并解决 Sub-Store 死循环"
+name: "Stash Override v1.83"
+desc: "v1.83 | 修复: 注释掉 proxy-providers 彻底解决 Sub-Store 循环下载问题"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -107,16 +107,16 @@ sniffer:
 # ==========================================
 # 远程代理集 (Proxy Providers)
 # ==========================================
-proxy-providers:
-  组合机场:
-    type: http
-    url: "https://sub.store/download/collection/%E7%BB%84%E5%90%88%E6%9C%BA%E5%9C%BA?target=ClashMeta"
-    interval: 86400
-    path: ./proxies/sub_store_collection.yaml
-    health-check:
-      enable: true
-      interval: 600
-      url: http://www.gstatic.com/generate_204
+# proxy-providers:
+#   组合机场:
+#     type: http
+#     url: "https://sub.store/download/collection/%E7%BB%84%E5%90%88%E6%9C%BA%E5%9C%BA?target=ClashMeta"
+#     interval: 86400
+#     path: ./proxies/sub_store_collection.yaml
+#     health-check:
+#       enable: true
+#       interval: 600
+#       url: http://www.gstatic.com/generate_204
 
 # ==========================================
 # 策略组 (Proxy Groups) - 核心逻辑移植
