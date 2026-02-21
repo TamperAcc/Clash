@@ -1,10 +1,10 @@
-# Last Updated: 2026-02-17 [Stash Override v1.76]
+﻿# Last Updated: 2026-02-21 [Stash Override v1.80]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.65"
-desc: "v1.76 | 强制刷新: 确保 STUN 规则顺序已生效 (Geosite:CN 之前)"
+name: "Stash Override v1.80"
+desc: "v1.80 | 纯 iOS 优化: 彻底移除无用的 MitM/HTTP/Rewrite 模块，极致精简"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -36,7 +36,7 @@ dns:
   # 🚀 Bootstrap DNS: 必须配置，否则无法解析 DoH 域名
   default-nameserver:
     - 223.5.5.5
-    - 1.12.12.12
+    - 114.114.114.114
   fake-ip-filter:
     - "*.lan"
     - "*.local"
@@ -45,8 +45,8 @@ dns:
     - "time1.cloud.tencent.com"
     - "*.bambulab.com"
     - "*.bambulab.cn"
-    - "+.stun.*.*"
-    - "+.stun.*"
+    - "*.stun.*.*"
+    - "*.stun.*"
     - "+.nintendo.net"
     - "+.playstation.net"
     - "+.xboxlive.com"
@@ -103,26 +103,7 @@ sniffer:
       ports: [443, 8443]
     QUIC: # v3.3.0+ 支持 HTTP/3 嗅探
       ports: [443, 8443]
-# 5. MitM (HTTPS 解密)
-mitm:
-  enable: true
-  append-system-trust: true
-  hostname:
-    - "*.google.cn"
-    - "*.google.com.cn"
-    - "www.google.com"
-# 6. HTTP 引擎
-http:
-  force-http-engine-hosts:
-    - "*.google.cn"
-    - "*.google.com.cn"
-rewrite:
-  - match: ^https?://(www\.)?google\.cn
-    replace: https://www.google.com
-    type: 302
-  - match: ^https?://(www\.)?google\.com\.cn
-    replace: https://www.google.com
-    type: 302
+
 # ==========================================
 # 策略组 (Proxy Groups) - 核心逻辑移植
 # ==========================================
@@ -185,6 +166,13 @@ rules: #!replace
   # 🛡️ 强制关闭 QUIC (v3.3.0+ 新语法: PROTOCOL 匹配更精准，覆盖所有端口)
   - PROTOCOL,QUIC,REJECT
   
+  # 🔋 [电量优化] 高频背景流量置顶：iOS 会在后台疯狂请求 Apple 服务和局域网
+  # 提前拦截这些流量，可避免遍历后续几十条规则，大幅降低 CPU 唤醒和匹配开销
+  - GEOSITE,apple,DIRECT
+  - DOMAIN-SUFFIX,lan,DIRECT
+  - DOMAIN-SUFFIX,local,DIRECT
+  - DOMAIN-SUFFIX,home.arpa,DIRECT
+  
   # === 0. AI 核心规则 (Geosite 统一匹配) ===
   # 🚀 AI 规则优化: 使用 Geosite 替代 Rule Set (内存极省)
   - GEOSITE,openai,ChatGPT
@@ -192,9 +180,6 @@ rules: #!replace
   # - GEOSITE,google,Gemini (STUN 修复后，无需在此处强制前提，恢复原位即可减少误伤) - [v1.74 回退]
 
   - GEOIP,PRIVATE,DIRECT,no-resolve
-  - DOMAIN-SUFFIX,lan,DIRECT
-  - DOMAIN-SUFFIX,local,DIRECT
-  - DOMAIN-SUFFIX,home.arpa,DIRECT
   
   # === 2. 广告拦截与隐私保护 (Geosite 内存优化) ===
   # ♻️ 替换 RULE-SET,reject 为 Geosite,category-ads-all
@@ -203,26 +188,14 @@ rules: #!replace
   
   # === 3. 进程匹配 (iOS/macOS) ===
   # 🧹 清理：移除了大量 Windows .exe 规则，减少 iOS 匹配开销
-  - PROCESS-NAME,BambuStudio,DIRECT
-  - PROCESS-NAME,bambu-studio,DIRECT
+  # ⚠️ 注意: 当前文件仅供 iOS 使用，已移除 macOS 专属的 PROCESS-NAME 规则
   - DOMAIN-SUFFIX,bambulab.com,DIRECT
   - DOMAIN-SUFFIX,bambulab.cn,DIRECT
   - DOMAIN-SUFFIX,bambulab.co,DIRECT
 
   # 基础连通性修正 (IPv6)
-  - DOMAIN,ipv6.msftconnecttest.com,REJECT
-  - DOMAIN,ipv6.msftncsi.com,REJECT
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
   - DOMAIN-SUFFIX,1huanlesap02.top,DIRECT
-  - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
-  - DOMAIN-SUFFIX,msftncsi.com,DIRECT
-  - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
-  - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
-  - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
-  
-  - DOMAIN-SUFFIX,apple.com,DIRECT
-  - DOMAIN-SUFFIX,icloud.com,DIRECT
-  - GEOSITE,apple,DIRECT
   
   # 测速服务
   - GEOSITE,ookla-speedtest,DIRECT
@@ -233,11 +206,11 @@ rules: #!replace
   # - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT (已移除，防JSdelivr污染)
   
   - DOMAIN-SUFFIX,stackoverflow.com,自动选择
+  - DOMAIN-SUFFIX,stackexchange.com,自动选择
   # 社交
   - GEOSITE,telegram,自动选择
   - GEOIP,telegram,自动选择
   
-  # DOMAIN-SUFFIX,stackexchange.com,自动选择
   - DOMAIN-SUFFIX,npmjs.com,自动选择
   - DOMAIN-SUFFIX,pypi.org,自动选择
   - DOMAIN-SUFFIX,docker.com,自动选择
@@ -250,24 +223,36 @@ rules: #!replace
   # 1. Copilot VScode 插件 -> 自动选择 (求快，允许 HK/SG)
   # 修复 Bing 重定向循环：国内版 Bing 强制直连
   - DOMAIN,cn.bing.com,DIRECT
-  - DOMAIN,copilot-proxy.githubusercontent.com,自动选择
-  - DOMAIN,api.github.com,自动选择
+  - DOMAIN-SUFFIX,bing.com,自动选择
+  - DOMAIN-SUFFIX,copilot.microsoft.com,自动选择
   
   # 3. Google -> Gemini (用户指定) - [v1.74 恢复原位]
+  # 强化 Gemini 匹配，防止被 GEOSITE,google 抢占
+  - DOMAIN-SUFFIX,gemini.google.com,Gemini
+  - DOMAIN-SUFFIX,bard.google.com,Gemini
+  - DOMAIN,generativelanguage.googleapis.com,Gemini
+  - DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,Gemini
+  - DOMAIN-SUFFIX,opa-pa.googleapis.com,Gemini
+  - DOMAIN-SUFFIX,waa-pa.googleapis.com,Gemini
+  - DOMAIN-SUFFIX,client-channel.google.com,Gemini
+  - DOMAIN-SUFFIX,assistant.google.com,Gemini
+  - DOMAIN-SUFFIX,ai.google.com,Gemini
+  - DOMAIN-SUFFIX,aistudio.google.com,Gemini
+  - DOMAIN-SUFFIX,makersuite.google.com,Gemini
+  - DOMAIN-SUFFIX,googleapis.cn,Gemini
+  - DOMAIN-SUFFIX,deepmind.com,Gemini
+  - DOMAIN-SUFFIX,deepmind.google,Gemini
+  
   # 其他 Google (搜索/地图/YouTube) 走快
   - GEOSITE,google,Gemini
   - GEOSITE,youtube,自动选择
   
   # 4. Microsoft/GitHub -> 自动选择 (求快)
   - GEOSITE,github,自动选择
-  - DOMAIN-SUFFIX,github.com,自动选择
-  - DOMAIN-SUFFIX,githubusercontent.com,自动选择
-  - DOMAIN,release-assets.githubusercontent.com,自动选择
-  - DOMAIN-SUFFIX,github.io,自动选择
   - GEOSITE,microsoft,自动选择
   
   # ♻️ 替换 RULE-SET,icloud/apple 为 Geosite,apple (内存优化)
-  - GEOSITE,apple,DIRECT
+  # (已在上方配置)
 
   # ⚡️ STUN 协议直连 (v1.74 最终位置)
   # 此时这里都是“未命中”上面任何代理规则的 STUN 流量。
@@ -277,7 +262,6 @@ rules: #!replace
   - GEOSITE,cn,国内
   - GEOSITE,geolocation-!cn,自动选择
   - GEOIP,cn,国内
-  - GEOIP,CN,国内
   
   - MATCH,自动选择
 
