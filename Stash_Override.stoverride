@@ -36,7 +36,7 @@ dns:
   # 🚀 Bootstrap DNS: 必须配置，否则无法解析 DoH 域名
   default-nameserver:
     - 223.5.5.5
-    - 114.114.114.114
+    - 1.12.12.12
   fake-ip-filter:
     - "*.lan"
     - "*.local"
