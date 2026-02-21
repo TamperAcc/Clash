@@ -4,7 +4,7 @@
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
 name: "Stash Override v1.80"
-desc: "v1.80 | 纯 iOS 优化: 彻底移除无用的 MitM/HTTP/Rewrite 模块，极致精简"
+desc: "v1.80 | 极致省电优化: 移除 MitM/HTTP，高频规则置顶，同步 AI 规则"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -36,7 +36,7 @@ dns:
   # 🚀 Bootstrap DNS: 必须配置，否则无法解析 DoH 域名
   default-nameserver:
     - 223.5.5.5
-    - 114.114.114.114
+    - 1.12.12.12
   fake-ip-filter:
     - "*.lan"
     - "*.local"
