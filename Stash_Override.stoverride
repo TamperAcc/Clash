@@ -103,20 +103,19 @@ sniffer:
       ports: [443, 8443]
     QUIC: # v3.3.0+ 支持 HTTP/3 嗅探
       ports: [443, 8443]
-
- # ==========================================
- # 远程代理集 (Proxy Providers)
- # ==========================================
- proxy-providers:
-   组合机场:
-     type: http
-     url: "https://sub.store/download/collection/%E7%BB%84%E5%90%88%E6%9C%BA%E5%9C%BA?target=ClashMeta"
-     interval: 86400
-     path: ./proxies/sub_store_collection.yaml
-     health-check:
-       enable: true
-       interval: 600
-       url: http://www.gstatic.com/generate_204
+# ==========================================
+# 远程代理集 (Proxy Providers)
+# ==========================================
+proxy-providers:
+  组合机场:
+    type: http
+    url: "https://sub.store/download/collection/%E7%BB%84%E5%90%88%E6%9C%BA%E5%9C%BA?target=ClashMeta"
+    interval: 86400
+    path: ./proxies/sub_store_collection.yaml
+    health-check:
+      enable: true
+      interval: 600
+      url: http://www.gstatic.com/generate_204
 
 # ==========================================
 # 策略组 (Proxy Groups) - 核心逻辑移植
