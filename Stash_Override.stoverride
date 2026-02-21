@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-21 [Stash Override v1.80]
+﻿# Last Updated: 2026-02-21 [Stash Override v1.81]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.80"
-desc: "v1.80 | 极致省电优化: 移除 MitM/HTTP，高频规则置顶，同步 AI 规则"
+name: "Stash Override v1.81"
+desc: "v1.81 | 极致省电优化: 代理集体检引入 lazy 模式并延长至 3600s"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
