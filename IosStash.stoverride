@@ -6,6 +6,7 @@
 name: "IosStash.stoverride v1.01"
 desc: "v1.01 "
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
+proxy-providers:
 # ==========================================
 # 策略组 (Proxy Groups) - 核心逻辑移植
 # ==========================================
