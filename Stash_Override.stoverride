@@ -105,20 +105,6 @@ sniffer:
       ports: [443, 8443]
 
 # ==========================================
-# 远程代理集 (Proxy Providers)
-# ==========================================
-proxy-providers: #!replace
-  组合机场:
-    type: http
-    url: "https://sub.store/download/collection/%E7%BB%84%E5%90%88%E6%9C%BA%E5%9C%BA?target=ClashMeta"
-    interval: 86400
-    path: ./proxies/sub_store_collection.yaml
-    health-check:
-      enable: true
-      interval: 600
-      url: http://www.gstatic.com/generate_204
-
-# ==========================================
 # 策略组 (Proxy Groups) - 核心逻辑移植
 # ==========================================
 proxy-groups: #!replace
@@ -127,7 +113,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
     use:
-      - 组合机场
+      - 远程代理集
     # 策略优化: 移除香港节点排除，大幅降低通用延迟; 排除 IEPL 以节省专线
     filter: "(?i)^(?!.*(IEPL|立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     url: "https://www.gstatic.com/generate_204"
@@ -141,7 +127,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
     include-all: true
     use:
-      - 组合机场
+      - 远程代理集
     # 逻辑: 剔除 HK/CN/JP/MO/LT/RU/KP/CU 用于 AI 防风控 (加上韩国/KR)
     filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|MO|日本|Japan|JP|韩国|Korea|KR|朝鲜|KP|古巴|Cuba|CU|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站)).*"
     url: "https://gemini.google.com" 
@@ -156,7 +142,7 @@ proxy-groups: #!replace
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
     use:
-      - 组合机场
+      - 远程代理集
     # 逻辑: 严格风控，剔除 HK/CN/MO/RU/KP/CU/IR/SY
     filter: "(?i)^(?!.*(立陶宛|Lithuania|LT|俄罗斯|俄国|Russia|RU|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|MO|朝鲜|KP|古巴|Cuba|CU|伊朗|Iran|SY|叙利亚|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站)).*"
     url: "https://chat.openai.com" 
