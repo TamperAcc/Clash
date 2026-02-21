@@ -4,7 +4,7 @@
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
 name: "Stash Override v1.84"
-desc: "v1.84 | 修复: 移除 proxy-groups 的 #!replace 标签，彻底防止清空本地 UI 节点"
+desc: "v1.84 | 修复:  proxy-groups 的 #!replace 标签，彻底防止清空本地 UI 节点"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
