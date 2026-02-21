@@ -1,4 +1,4 @@
-﻿# Last Updated: 2026-02-21 [Stash Override v1.84]
+# Last Updated: 2026-02-21 [Stash Override v1.84]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
@@ -104,19 +104,19 @@ sniffer:
     QUIC: # v3.3.0+ 支持 HTTP/3 嗅探
       ports: [443, 8443]
 
-# ==========================================
-# 远程代理集 (Proxy Providers)
-# ==========================================
-# proxy-providers:
-#   组合机场:
-#     type: http
-#     url: "https://sub.store/download/collection/%E7%BB%84%E5%90%88%E6%9C%BA%E5%9C%BA?target=ClashMeta"
-#     interval: 86400
-#     path: ./proxies/sub_store_collection.yaml
-#     health-check:
-#       enable: true
-#       interval: 600
-#       url: http://www.gstatic.com/generate_204
+ # ==========================================
+ # 远程代理集 (Proxy Providers)
+ # ==========================================
+ proxy-providers:
+   组合机场:
+     type: http
+     url: "https://sub.store/download/collection/%E7%BB%84%E5%90%88%E6%9C%BA%E5%9C%BA?target=ClashMeta"
+     interval: 86400
+     path: ./proxies/sub_store_collection.yaml
+     health-check:
+       enable: true
+       interval: 600
+       url: http://www.gstatic.com/generate_204
 
 # ==========================================
 # 策略组 (Proxy Groups) - 核心逻辑移植
