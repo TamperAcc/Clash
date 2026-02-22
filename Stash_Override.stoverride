@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-22 [Stash Override v1.90]
+﻿# Last Updated: 2026-02-22 [Stash Override v1.91]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.90"
-desc: "v1.90 | 修复: 将 nameserver 改为域名形式 DoH，打破与 default-nameserver 的底层路由死锁"
+name: "Stash Override v1.91"
+desc: "v1.91 | 修复: nameserver-policy 语法错误(system->223.5.5.5)及 DoH 域名直连防死锁"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -69,17 +69,17 @@ dns:
   # 🛡️ 策略分流 (解决 context deadline exceeded 报错)
   nameserver-policy:
     # 1. 保证规则库能下载（打破死锁源头）
-    '+.jsdelivr.net': 'system'
+    '+.jsdelivr.net': '223.5.5.5'
     # 2. 保证苹果核心服务不报错（即使 geosite 挂了）
-    '+.apple.com': 'system'
-    '+.icloud.com': 'system'
-    '+.mzstatic.com': 'system'
+    '+.apple.com': '223.5.5.5'
+    '+.icloud.com': '223.5.5.5'
+    '+.mzstatic.com': '223.5.5.5'
     # 3. 原有的 geosite 兜底（等规则库加载好后生效，覆盖更全面的苹果边缘域名）
-    'geosite:apple': 'system'
-    '+.crashlytics.com': 'system'
+    'geosite:apple': '223.5.5.5'
+    '+.crashlytics.com': '223.5.5.5'
     # Bambu Lab 也建议走 System 确保局域网发现
-    '+.bambulab.cn': 'system'
-    '+.bambulab.com': 'system'
+    '+.bambulab.cn': '223.5.5.5'
+    '+.bambulab.com': '223.5.5.5'
 
   fallback:
     # 移动网络下，Fallback 仅作为 nameserver 彻底挂掉的冷备，以及防污染备用
@@ -191,6 +191,11 @@ rules: #!replace
   - PROTOCOL,QUIC,REJECT
   
   # 🔋 [电量优化 & 防死锁] 核心基础服务硬编码直连
+  # 保证 DoH 域名直连，防止 DNS 解析请求被代理拦截导致死锁
+  - DOMAIN,dns.alidns.com,DIRECT
+  - DOMAIN,doh.pub,DIRECT
+  # 保证 Sub-Store 本地服务直连
+  - DOMAIN-SUFFIX,sub.store,DIRECT
   # 保证规则库下载直连，打破 geosite 下载失败导致的死锁
   - DOMAIN-SUFFIX,jsdelivr.net,DIRECT
   # 保证苹果核心服务直连，防止 geosite 未加载时走代理超时 (保下限)
