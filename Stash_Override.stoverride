@@ -4,7 +4,7 @@
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
 name: "Stash Override v1.85"
-desc: "v1.85 | 优化: 将垃圾节点过滤移至 proxy-providers，降低内存占用；更新国内 DNS 为阿里 223.5.5.5"
+desc: "v1.85 | 优化: 将垃圾节点过滤移至 proxy-providers, 降低内存占用; 更新国内 DNS 为阿里 223.5.5.5"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
