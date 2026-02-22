@@ -1,9 +1,9 @@
-﻿# Last Updated: 2026-02-22 [Stash Override v1.93]
+﻿# Last Updated: 2026-02-22 [Stash Override v1.94]
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.93"
-desc: "v1.93 | 修复: 解决 iOS 内存警告及 DNS 死锁 (context deadline exceeded) 问题"
+name: "Stash Override v1.94"
+desc: "v1.94 | 优化: 提升 iOS 内存稳定性，修复 DNS 死锁"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
