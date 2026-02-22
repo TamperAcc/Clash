@@ -63,8 +63,8 @@ function main(config) {
       "*.bambulab.com", "*.bambulab.cn"
     ],
     "nameserver": [
-      "223.5.5.5", "119.29.29.29"
-      // "quic://dns.alidns.com:853" // ❌ 移除 QUIC: 减少部分网络环境下的干扰
+      "https://doh.pub/dns-query", // 腾讯 DoH
+      "https://dns.alidns.com/dns-query" // 阿里 DoH
     ],
     // 🚀 极限优化 Fallback: 必须使用海外 DNS 解析海外域名，配合 respect-rules 走代理防污染
     "fallback": [
