@@ -22,7 +22,7 @@ The configuration logic flows from Reference YAMLs to Implementation Scripts.
 | **Stash_Override.stoverride**| **Stash Implement** | iOS/macOS Stash specific override. Ported from Mihomo/FlClash. |
 | **Stash.yaml** | **Secondary Base** | Standalone Stash profile for non-override users. |
 
-**Critical**: Logic MUST be mirrored: `ClashVerge.yaml` -> `Mihomo_Override.js` / `FlClash_Override.js` -> `Stash_Override.stoverride`.
+**Critical**: Logic should generally be mirrored across files (`ClashVerge.yaml` -> `Mihomo_Override.js` / `FlClash_Override.js` -> `Stash_Override.stoverride`), **BUT** you MUST ONLY modify the specific file the user requests. Do NOT automatically sync changes to other files unless explicitly instructed to do so.
 
 ## 3. Maintenance & Deployment
 - **Pushing Updates**: 
