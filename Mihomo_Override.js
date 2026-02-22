@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.94  | 更新日期: 2026-02-22
+// 版本: v1.95  | 更新日期: 2026-02-22
 //PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.94 (极限性能版: 开启 DNS ARC 缓存、TCP 并发、连接复用与 Lazy 测速)...");
+  console.log("✅ 加载脚本 v1.95 (极限性能版: 开启 DNS ARC 缓存、TCP 并发、连接复用与 Lazy 测速)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -130,6 +130,22 @@ function main(config) {
   // ❌ 移除所有外部规则源，消除网络依赖，大幅提升启动速度
   config["rule-providers"] = {}; 
 
+  // 6. Proxy Providers (代理集)
+  // 动态引入外部订阅链接，自动解析 base64 节点信息
+  config["proxy-providers"] = {
+    "组合机场": {
+      "type": "http",
+      "url": "http://127.0.0.1:38324/download/collection/%E7%BB%84%E5%90%88%E6%9C%BA%E5%9C%BA",
+      "path": "./proxy_providers/组合机场.yaml",
+      "interval": 3600,
+      "health-check": {
+        "enable": true,
+        "url": "http://www.gstatic.com/generate_204",
+        "interval": 300
+      }
+    }
+  };
+
   // ============================================================
   // proxy-groups 扁平化重构区
   // ============================================================
@@ -144,6 +160,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png",
       "include-all": true,
+      "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(" + baseExclude + "|IEPL|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除过期/流量/IEPL/RU/KP/CU
       "url": "http://www.gstatic.com/generate_204",
       "interval": 300,
@@ -155,6 +172,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
       "include-all": true,
+      "use": ["组合机场"], // 引入代理集
       // 🚫 严格排除: 香港/HK, 澳门/Macau/MO, 俄罗斯/RU, 立陶宛/Lithuania/LT, 日本/Japan/JP, 韩国/KR, 中国/CN/China
       "filter": "^(?!.*(" + baseExclude + "|俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*",
       "url": "https://gemini.google.com", // 🎯 靶向检测: 只有能打开 Gemini 的节点才会被选中
@@ -168,6 +186,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png",
       "include-all": true,
+      "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 RU/KP/CU
       "url": "https://www.bing.com",
       "interval": 340, // 错开 20s
@@ -180,6 +199,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/github.png",
       "include-all": true,
+      "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://api.github.com",
       "interval": 360, // 错开 20s
@@ -192,6 +212,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
       "include-all": true,
+      "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(" + baseExclude + "|香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://chatgpt.com",
       "interval": 380, // 错开 20s
@@ -204,6 +225,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png",
       "include-all": true,
+      "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU)).*",
       // 排除立陶宛防止假延迟？扁平化测速会自动剔除假延迟节点，故不再强制正则排除，靠测速说话
       "url": "https://api.telegram.org",
