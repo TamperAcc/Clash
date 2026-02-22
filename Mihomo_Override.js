@@ -32,10 +32,8 @@ function main(config) {
   config["skip-auth-prefixes"] = ["127.0.0.1/8", "::1/128"];
   
   // GeoData 优化
-  config["geodata-loader"] = "standard"; // 🚀 极限优化：PC 端内存充足，使用 standard 模式将规则全量加载到内存，大幅提升匹配速度
   config["geo-auto-update"] = true;
   config["geo-update-interval"] = 24;
-  config["geodata-mode"] = true;
   config["geox-url"] = {
     "geoip": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat",
     "geosite": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat",
