@@ -51,8 +51,8 @@ function main(config) {
     "enhanced-mode": "fake-ip",
     "fake-ip-range": "198.18.0.1/16",
     "respect-rules": true,
-    "default-nameserver": ["223.5.5.5", "119.29.29.29"], // 优化：显式指定默认 DNS 解析 DoH 域名
-    "proxy-server-nameserver": ["223.5.5.5", "119.29.29.29"],
+    "default-nameserver": ["223.5.5.5", "119.29.29.29", "system"], // 优化：增加 system 兜底，防止公共 DNS 故障导致无法解析节点域名
+    "proxy-server-nameserver": ["223.5.5.5", "119.29.29.29", "system"],
     "fake-ip-filter": [
       "*.lan", "*.local", // 优化：防止局域网域名被 Fake-IP 劫持，保障本地设备发现
       "+.msftconnecttest.com", "+.msftncsi.com",
@@ -66,12 +66,17 @@ function main(config) {
       "223.5.5.5", "119.29.29.29"
       // "quic://dns.alidns.com:853" // ❌ 移除 QUIC: 减少部分网络环境下的干扰
     ],
-    // ✅ 优化 Fallback: 移除连不上的国外 DNS，改用国内高可用 DoH (防劫持且能连通)
+    // 🚀 极限优化 Fallback: 必须使用海外 DNS 解析海外域名，配合 respect-rules 走代理防污染
     "fallback": [
-      "https://doh.pub/dns-query", // 腾讯 DoH
-      "https://dns.alidns.com/dns-query" // 阿里 DoH
+      "https://1.1.1.1/dns-query", // Cloudflare DoH
+      "https://8.8.8.8/dns-query"  // Google DoH
     ],
-    "fallback-filter": { "geoip": true, "geoip-code": "CN", "ipcidr": ["240.0.0.0/4"] },
+    "fallback-filter": { 
+      "geoip": true, 
+      "geoip-code": "CN", 
+      "geosite": ["gfw"], // 🚀 极限优化：匹配 GFW 列表的域名直接使用 fallback 结果，跳过 IP 验证，大幅降低解析延迟
+      "ipcidr": ["240.0.0.0/4"] 
+    },
     "nameserver-policy": {
       "geosite:cn": "223.5.5.5",
       "geosite:apple": "223.5.5.5",
