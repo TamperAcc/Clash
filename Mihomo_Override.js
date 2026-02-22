@@ -15,6 +15,7 @@ function main(config) {
   }
 
   // 1. 基础设置优化
+  config["log-level"] = "debug"; // 临时开启 debug 日志，用于查看 DNS 解析过程
   config["tcp-concurrent"] = true;
   config["unified-delay"] = true; // 开启统一延迟，更准确
   config["global-ua"] = "chrome"; // 优化：全局伪装 UA，防止订阅或规则下载被墙/被拦截
