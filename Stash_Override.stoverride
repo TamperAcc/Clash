@@ -77,9 +77,9 @@ dns:
     '+.bambulab.com': 'system'
 
   fallback:
-    # 移动网络下，Fallback 仅作为 nameserver 彻底挂掉的冷备
-    - https://1.12.12.12/dns-query
-    - https://223.5.5.5/dns-query
+    # 移动网络下，Fallback 仅作为 nameserver 彻底挂掉的冷备，以及防污染备用
+    - https://8.8.8.8/dns-query
+    - https://1.1.1.1/dns-query
   
   fallback-filter:
     geoip: true
