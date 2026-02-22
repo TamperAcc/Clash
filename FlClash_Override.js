@@ -1,41 +1,42 @@
-// FLClash / Mihomo Party �����ļ���д�ű�
-// ��������: https://raw.githubusercontent.com/TamperAcc/Clash/main/FlClash_Override.js
-// ��������: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/FlClash_Override.js
-// �汾: v1.22 (�Զ����°�) | ��������: 2026-02-17
-// ��ֲ�� ClashVerge.yaml "PC ���ռ��Ż���"
+﻿// FLClash / Mihomo Party 配置文件覆写脚本
+// 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/FlClash_Override.js
+// 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/FlClash_Override.js
+// 版本: v1.21 (自动更新版) | 更新日期: 2026-02-10
+// 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
-  // ��ӡ��־������� (��������־�пɼ�)
-  console.log("?? [Script] ����Ӧ�� FlClash ��д�ű� v1.22 (���� Mihomo v1.9.1)...");
+  // 打印日志方便调试 (在软件日志中可见)
+  console.log("🔵 [Script] 正在应用 FlClash 覆写脚本 v1.21...");
 
 
 
-  // 1. ���������Ż�
+  // 1. 基础设置优化
   config["tcp-concurrent"] = true;
-  config["client-fingerprint"] = "edge";
-  config["unified-delay"] = true; // 开启统一延迟，更准确
-  config["keep-alive-idle"] = 15;
-  config["keep-alive-interval"] = 15;
+  config["global-client-fingerprint"] = "edge";
+  config["keep-alive-interval"] = 30;
   config["allow-lan"] = true;
   config["bind-address"] = "*";
-  config["find-process-mode"] = "strict"; // �Ż���Windows �¸���׼�Ľ���ƥ��
+  config["find-process-mode"] = "strict"; // 优化：Windows 下更精准的进程匹配
   config["profile"] = {
-    "store-selected": true // �Ż�����ס�ֶ�ѡ��Ľڵ�
+    "store-selected": true, // 优化：记住手动选择的节点
+    "auto-update": true
   };
   
-  // �޸����ػػ�����
+  // 修复本地回环问题
   config["skip-auth-prefixes"] = ["127.0.0.1/8", "::1/128"];
   
-  // GeoData �Ż�
+  // GeoData 优化
+  config["geodata-loader"] = "memconservative";
   config["geo-auto-update"] = true;
   config["geo-update-interval"] = 24;
+  config["geodata-mode"] = true;
   config["geox-url"] = {
     "geoip": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb",
     "geosite": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat",
     "mmdb": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
   };
 
-  // 2. DNS ����
+  // 2. DNS 设置
   config["dns"] = {
     "enable": true,
     "ipv6": false,
@@ -71,7 +72,7 @@ function main(config) {
       "geoip-code": "CN",
       "ipcidr": ["240.0.0.0/4"]
     },
-    // DNS ��������
+    // DNS 分流策略
     "nameserver-policy": {
       "+.apple.com": "system",
       "+.icloud.com": "system",
@@ -91,7 +92,7 @@ function main(config) {
     }
   };
 
-  // 3. Tun ģʽ
+  // 3. Tun 模式
   config["tun"] = {
     "enable": true,
     "stack": "mixed",
@@ -101,7 +102,7 @@ function main(config) {
     "dns-hijack": ["any:53"]
   };
 
-  // 4. Sniffer ���� (�ر� QUIC ��̽)
+  // 4. Sniffer 设置 (关闭 QUIC 嗅探)
   config["sniffer"] = {
     "enable": true,
     "parse-pure-ip": true,
@@ -112,7 +113,7 @@ function main(config) {
     }
   };
 
-  // 5. Rule Providers ����
+  // 5. Rule Providers 定义
   const providers = {
     "reject": { "url": "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/reject.txt", "format": "text", "behavior": "domain" },
     "icloud": { "url": "https://cdn.jsdelivr.net/gh/Loyalsoldier/clash-rules@release/icloud.txt", "format": "text", "behavior": "domain" },
@@ -141,28 +142,28 @@ function main(config) {
     };
   }
 
-  // 6. Proxy Groups ����
-  // ע�⣺����ʹ�� overwrite �߼����Ḳ�Ƕ����Դ�������
+  // 6. Proxy Groups 定义
+  // 注意：这里使用 overwrite 逻辑，会覆盖订阅自带策略组
   config["proxy-groups"] = [
     {
-      "name": "�Զ�ѡ��",
+      "name": "自动选择",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png",
       "include-all": true,
-      "exclude-filter": "(?i)IEPL|������|Lithuania|LT|����˹|Russia|RU|����|����|����|����|ʣ��|�ײ�|expire|traffic|reset|Ⱥ��|Ƶ��|@|��ϵ|��վ|��Ⱥ|��ע|����|����",
+      "exclude-filter": "(?i)IEPL|立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
       "url": "https://www.gstatic.com/generate_204",
       "interval": 300,
       "tolerance": 100,
-      
+      "unified-delay": true,
       "lazy": true
     },
     {
-      "name": "AI�Զ���ѡ",
+      "name": "AI自动优选",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
       "include-all": true,
-      "exclude-filter": "(?i)������|Lithuania|LT|����˹|Russia|RU|���|hongkong|hk|HK|Hong|Kong|����|Macau|����|Korea|KP|�Ű�|Cuba|CU|ʥ����|����|����|����|����|ʣ��|�ײ�|expire|traffic|reset|Ⱥ��|Ƶ��|@|��ϵ|��վ|��Ⱥ|��ע|����|����",
-      "url": "https://www.youtube.com", // �������/Captcha IP
+      "exclude-filter": "(?i)立陶宛|Lithuania|LT|俄罗斯|Russia|RU|香港|hongkong|hk|HK|Hong|Kong|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU|圣何塞|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
+      "url": "https://www.youtube.com", // 检测送中/Captcha IP
       "interval": 300,
       "tolerance": 50,
       "expected-status": 200,
@@ -173,7 +174,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png",
       "include-all": true,
-      "exclude-filter": "(?i)����˹|Russia|RU|������|Lithuania|LT|����|����|����|����|ʣ��|�ײ�|expire|traffic|reset|Ⱥ��|Ƶ��|@|��ϵ|��վ|��Ⱥ|��ע|����|����",
+      "exclude-filter": "(?i)俄罗斯|Russia|RU|立陶宛|Lithuania|LT|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
       "url": "https://api.telegram.org",
       "interval": 300,
       "tolerance": 100,
@@ -181,23 +182,23 @@ function main(config) {
     },
     
     {
-      "name": "����",
+      "name": "国内",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png",
-      "proxies": ["DIRECT", "�Զ�ѡ��"]
+      "proxies": ["DIRECT", "自动选择"]
     },
     {
       "name": "Google",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
-      "proxies": ["AI�Զ���ѡ", "�Զ�ѡ��"] 
+      "proxies": ["AI自动优选", "自动选择"] 
     },
     {
-      "name": "��Ϸ����",
+      "name": "游戏服务",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/GAME.png",
       "include-all": true,
-      "filter": "(?i)���|̨��|�¼���|�ձ�|����",
+      "filter": "(?i)香港|台湾|新加坡|日本|韩国",
       "url": "https://www.gstatic.com/generate_204",
       "interval": 180,
       "tolerance": 100
@@ -206,19 +207,19 @@ function main(config) {
       "name": "YouTube",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png",
-      "proxies": ["AI�Զ���ѡ", "�Զ�ѡ��"]
+      "proxies": ["AI自动优选", "自动选择"]
     },
     {
-      "name": "����ͨ��",
+      "name": "国外通用",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png",
-      "proxies": ["AI�Զ���ѡ", "�Զ�ѡ��"]
+      "proxies": ["AI自动优选", "自动选择"]
     }
   ];
 
-  // 7. Rules ����
+  // 7. Rules 规则
   config["rules"] = [
-    // ����
+    // 基础
     "GEOIP,PRIVATE,DIRECT,no-resolve",
     "DOMAIN-SUFFIX,lan,DIRECT",
     "DOMAIN-SUFFIX,local,DIRECT",
@@ -230,64 +231,64 @@ function main(config) {
     "DOMAIN-SUFFIX,msftncsi.com,DIRECT",
     "RULE-SET,reject,REJECT",
     
-    // Brave (�������)
-    "DOMAIN-SUFFIX,brave.com,�Զ�ѡ��",
+    // Brave (允许香港)
+    "DOMAIN-SUFFIX,brave.com,自动选择",
 
-    // AI ���� - ����������©
-    "DOMAIN-SUFFIX,openai.com,AI�Զ���ѡ",
-    "DOMAIN-SUFFIX,chatgpt.com,AI�Զ���ѡ",
-    "DOMAIN-SUFFIX,gemini.google.com,AI�Զ���ѡ",
-    "DOMAIN-SUFFIX,bard.google.com,AI�Զ���ѡ",
-    "DOMAIN,generativelanguage.googleapis.com,AI�Զ���ѡ",
-    "DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,AI�Զ���ѡ",
-    "DOMAIN-SUFFIX,opa-pa.googleapis.com,AI�Զ���ѡ",
+    // AI 服务 - 核心域名防漏
+    "DOMAIN-SUFFIX,openai.com,AI自动优选",
+    "DOMAIN-SUFFIX,chatgpt.com,AI自动优选",
+    "DOMAIN-SUFFIX,gemini.google.com,AI自动优选",
+    "DOMAIN-SUFFIX,bard.google.com,AI自动优选",
+    "DOMAIN,generativelanguage.googleapis.com,AI自动优选",
+    "DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,AI自动优选",
+    "DOMAIN-SUFFIX,opa-pa.googleapis.com,AI自动优选",
     
-    // AI ���� - ԭ�й���
-    "DOMAIN,copilot-proxy.githubusercontent.com,AI�Զ���ѡ",
-    "DOMAIN,api.github.com,AI�Զ���ѡ",
-    "DOMAIN-SUFFIX,githubcopilot.com,AI�Զ���ѡ",
-    "DOMAIN-SUFFIX,github.com,AI�Զ���ѡ",
-    "DOMAIN-SUFFIX,githubusercontent.com,AI�Զ���ѡ",
-    "DOMAIN-SUFFIX,github.io,AI�Զ���ѡ",
-    "DOMAIN-SUFFIX,visualstudio.com,AI�Զ���ѡ",
-    "DOMAIN,sydney.bing.com,AI�Զ���ѡ",
-    "DOMAIN,edgeservices.bing.com,AI�Զ���ѡ",
-    "DOMAIN-SUFFIX,claude.ai,AI�Զ���ѡ",
-    "DOMAIN-SUFFIX,anthropic.com,AI�Զ���ѡ",
-    "RULE-SET,ai_services,AI�Զ���ѡ",
-    "RULE-SET,huggingface,AI�Զ���ѡ",
+    // AI 服务 - 原有规则
+    "DOMAIN,copilot-proxy.githubusercontent.com,AI自动优选",
+    "DOMAIN,api.github.com,AI自动优选",
+    "DOMAIN-SUFFIX,githubcopilot.com,AI自动优选",
+    "DOMAIN-SUFFIX,github.com,AI自动优选",
+    "DOMAIN-SUFFIX,githubusercontent.com,AI自动优选",
+    "DOMAIN-SUFFIX,github.io,AI自动优选",
+    "DOMAIN-SUFFIX,visualstudio.com,AI自动优选",
+    "DOMAIN,sydney.bing.com,AI自动优选",
+    "DOMAIN,edgeservices.bing.com,AI自动优选",
+    "DOMAIN-SUFFIX,claude.ai,AI自动优选",
+    "DOMAIN-SUFFIX,anthropic.com,AI自动优选",
+    "RULE-SET,ai_services,AI自动优选",
+    "RULE-SET,huggingface,AI自动优选",
 
-    // ���� (Windows)
+    // 进程 (Windows)
     "PROCESS-NAME,WeChat.exe,DIRECT",
     "PROCESS-NAME,WeChatAppEx.exe,DIRECT",
     "PROCESS-NAME,QQ.exe,DIRECT",
     "PROCESS-NAME,Telegram.exe,Telegram",
-    "PROCESS-NAME,Discord.exe,����ͨ��",
-    "PROCESS-NAME,Slack.exe,����ͨ��",
-    "PROCESS-NAME,Zoom.exe,����ͨ��",
-    "PROCESS-NAME,BambuStudio.exe,����",
-    "PROCESS-NAME,bambu-studio.exe,����",
+    "PROCESS-NAME,Discord.exe,国外通用",
+    "PROCESS-NAME,Slack.exe,国外通用",
+    "PROCESS-NAME,Zoom.exe,国外通用",
+    "PROCESS-NAME,BambuStudio.exe,国内",
+    "PROCESS-NAME,bambu-studio.exe,国内",
     "PROCESS-NAME,Thunder.exe,DIRECT",
     "PROCESS-NAME,DownloadSdk.exe,DIRECT",
     "PROCESS-NAME,baidunetdisk.exe,DIRECT",
     "PROCESS-NAME,BitComet.exe,DIRECT",
     "PROCESS-NAME,uTorrent.exe,DIRECT",
     "PROCESS-NAME,IDMan.exe,DIRECT",
-    "PROCESS-NAME,git.exe,����ͨ��",
-    "PROCESS-NAME,Code.exe,�Զ�ѡ��",
-    "PROCESS-NAME,cursor.exe,�Զ�ѡ��",
-    "PROCESS-NAME,idea64.exe,�Զ�ѡ��",
-    "PROCESS-NAME,pycharm64.exe,�Զ�ѡ��",
-    "PROCESS-NAME,Steam.exe,��Ϸ����",
-    "PROCESS-NAME,steamwebhelper.exe,��Ϸ����",
-    "PROCESS-NAME,EpicGamesLauncher.exe,��Ϸ����",
-    "PROCESS-NAME,Origin.exe,��Ϸ����",
-    "PROCESS-NAME,Uplay.exe,��Ϸ����",
+    "PROCESS-NAME,git.exe,国外通用",
+    "PROCESS-NAME,Code.exe,自动选择",
+    "PROCESS-NAME,cursor.exe,自动选择",
+    "PROCESS-NAME,idea64.exe,自动选择",
+    "PROCESS-NAME,pycharm64.exe,自动选择",
+    "PROCESS-NAME,Steam.exe,游戏服务",
+    "PROCESS-NAME,steamwebhelper.exe,游戏服务",
+    "PROCESS-NAME,EpicGamesLauncher.exe,游戏服务",
+    "PROCESS-NAME,Origin.exe,游戏服务",
+    "PROCESS-NAME,Uplay.exe,游戏服务",
     "PROCESS-NAME,cloudmusic.exe,DIRECT",
     "PROCESS-NAME,QQMusic.exe,DIRECT",
     "PROCESS-NAME,DouYinLive.exe,DIRECT",
 
-    // ����ֱ���Ż�
+    // 国内直连优化
     "DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT",
     "DOMAIN-SUFFIX,unpkg.com,DIRECT",
     "DOMAIN-SUFFIX,staticfile.org,DIRECT",
@@ -304,39 +305,39 @@ function main(config) {
     "DOMAIN-SUFFIX,taobao.com,DIRECT",
     "DOMAIN-SUFFIX,tmall.com,DIRECT",
 
-    // ������/΢��
-    "DOMAIN-SUFFIX,stackoverflow.com,����ͨ��",
-    "DOMAIN-SUFFIX,stackexchange.com,����ͨ��",
-    "DOMAIN-SUFFIX,npmjs.com,����ͨ��",
-    "DOMAIN-SUFFIX,pypi.org,����ͨ��",
-    "DOMAIN-SUFFIX,docker.com,����ͨ��",
-    "DOMAIN-SUFFIX,docker.io,����ͨ��",
+    // 开发者/微软
+    "DOMAIN-SUFFIX,stackoverflow.com,国外通用",
+    "DOMAIN-SUFFIX,stackexchange.com,国外通用",
+    "DOMAIN-SUFFIX,npmjs.com,国外通用",
+    "DOMAIN-SUFFIX,pypi.org,国外通用",
+    "DOMAIN-SUFFIX,docker.com,国外通用",
+    "DOMAIN-SUFFIX,docker.io,国外通用",
     "DOMAIN-SUFFIX,windowsupdate.com,DIRECT",
     "DOMAIN-SUFFIX,update.microsoft.com,DIRECT",
     "DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT",
     "DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT",
     "DOMAIN-SUFFIX,tlu.dl.delivery.mp.microsoft.com,DIRECT",
-    "RULE-SET,microsoft,�Զ�ѡ��",
+    "RULE-SET,microsoft,自动选择",
     "RULE-SET,icloud,DIRECT",
     "RULE-SET,apple,DIRECT",
 
-    // ��Ϸ�� Bambu
+    // 游戏与 Bambu
     "DOMAIN-SUFFIX,steamserver.net,DIRECT",
     "DOMAIN-SUFFIX,steamcontent.com,DIRECT",
     "DOMAIN-SUFFIX,steamstatic.com,DIRECT",
     "DOMAIN-SUFFIX,epicgames.com,DIRECT",
-    "RULE-SET,games,��Ϸ����",
-    "DOMAIN-SUFFIX,bambulab.com,����",
-    "DOMAIN-SUFFIX,bambulab.cn,����",
-    "DOMAIN-SUFFIX,bambulab.co,����",
+    "RULE-SET,games,游戏服务",
+    "DOMAIN-SUFFIX,bambulab.com,国内",
+    "DOMAIN-SUFFIX,bambulab.cn,国内",
+    "DOMAIN-SUFFIX,bambulab.co,国内",
 
-    // �罻
-    "RULE-SET,social_media,����ͨ��",
+    // 社交
+    "RULE-SET,social_media,国外通用",
     "RULE-SET,telegram_domain,Telegram",
     "RULE-SET,telegram,Telegram",
     "RULE-SET,youtube_domain,YouTube",
 
-    // ��˽�붵��
+    // 隐私与兜底
     "DOMAIN-SUFFIX,doubleclick.net,REJECT",
     "DOMAIN-SUFFIX,googleadservices.com,REJECT",
     "DOMAIN-SUFFIX,googlesyndication.com,REJECT",
@@ -352,18 +353,18 @@ function main(config) {
     "DOMAIN-KEYWORD,adview,REJECT",
     "DOMAIN-SUFFIX,speedtest.net,DIRECT",
     "DOMAIN-SUFFIX,ookla.com,DIRECT",
-    "DOMAIN-SUFFIX,fast.com,����ͨ��",
+    "DOMAIN-SUFFIX,fast.com,国外通用",
     "DST-PORT,123,DIRECT",
     "DST-PORT,3478,DIRECT",
     "DST-PORT,51413,DIRECT",
     
-    // ����ƥ��
+    // 最终匹配
     "RULE-SET,google_domain,Google",
-    "RULE-SET,cn_domain,����",
-    "RULE-SET,cn_ip,����",
-    "RULE-SET,geolocation_no_cn,����ͨ��",
-    "GEOIP,CN,����",
-    "MATCH,����ͨ��"
+    "RULE-SET,cn_domain,国内",
+    "RULE-SET,cn_ip,国内",
+    "RULE-SET,geolocation_no_cn,国外通用",
+    "GEOIP,CN,国内",
+    "MATCH,国外通用"
   ];
 
   return config;
