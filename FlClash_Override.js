@@ -12,7 +12,8 @@ function main(config) {
 
   // 1. 基础设置优化
   config["tcp-concurrent"] = true;
-  config["global-client-fingerprint"] = "edge";
+  config["unified-delay"] = true;
+  config["global-ua"] = "chrome";
   config["keep-alive-interval"] = 30;
   config["allow-lan"] = true;
   config["bind-address"] = "*";
@@ -40,6 +41,7 @@ function main(config) {
   config["dns"] = {
     "enable": true,
     "ipv6": false,
+    "cache-algorithm": "arc", // 🚀 极限优化：启用 ARC 缓存算法
     "listen": "0.0.0.0:1053",
     "enhanced-mode": "fake-ip",
     "fake-ip-range": "198.18.0.1/16",
@@ -70,10 +72,13 @@ function main(config) {
     "fallback-filter": {
       "geoip": true,
       "geoip-code": "CN",
+      "geosite": ["geolocation-!cn"], // 🚀 极限优化：匹配非大陆域名的直接使用 fallback 结果
       "ipcidr": ["240.0.0.0/4"]
     },
     // DNS 分流策略
     "nameserver-policy": {
+      "geosite:category-ads-all": "rcode://success", // 🚀 极限优化：DNS 级别直接屏蔽广告
+      "geosite:geolocation-!cn": ["https://1.1.1.1/dns-query", "https://8.8.8.8/dns-query"], // 🚀 极限优化：海外域名直接走海外 DNS
       "+.apple.com": "system",
       "+.icloud.com": "system",
       "geosite:cn": "119.29.29.29",
@@ -96,6 +101,7 @@ function main(config) {
   config["tun"] = {
     "enable": true,
     "stack": "mixed",
+    "mtu": 9000, // 🚀 极限优化：开启巨型帧
     "auto-route": true,
     "auto-detect-interface": true,
     "strict-route": true,
@@ -110,7 +116,10 @@ function main(config) {
     "sniff": {
       "HTTP": { "ports": [80, 8080, 8880], "override-destination": true },
       "TLS": { "ports": [443, 8443] }
-    }
+    },
+    "skip-domain": [
+      "+.apple.com" // 优化：防止苹果推送服务断连
+    ]
   };
 
   // 5. Rule Providers 定义
@@ -366,6 +375,19 @@ function main(config) {
     "GEOIP,CN,国内",
     "MATCH,国外通用"
   ];
+
+  // 遍历所有节点，为没有设置指纹的节点添加默认指纹 (Mihomo 1.18+ 弃用了全局 client-fingerprint)
+  // 同时强制开启 UDP，防止部分机场节点配置遗漏导致游戏/语音不通
+  if (config.proxies && Array.isArray(config.proxies)) {
+    config.proxies.forEach(function(proxy) {
+      if (proxy.type !== 'direct' && proxy.type !== 'reject') {
+        proxy["client-fingerprint"] = proxy["client-fingerprint"] || "edge";
+        if (proxy["udp"] === undefined) {
+          proxy["udp"] = true;
+        }
+      }
+    });
+  }
 
   return config;
 }
