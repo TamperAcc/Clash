@@ -1,9 +1,9 @@
-﻿# Last Updated: 2026-02-22 [Stash Override v1.94]
+﻿# Last Updated: 2026-02-22 [Stash Override v1.97]
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.94"
-desc: "v1.94 | 优化: 提升 iOS 内存稳定性，修复 DNS 死锁"
+name: "Stash Override v1.97"
+desc: "v1.97 | 优化: 极致省电，精简 DNS 过滤，加速 TG 路由"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -11,7 +11,6 @@ icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # 1. TCP 并发 & 基础优化
 # 🔋 内存优化: iOS 下关闭 tcp-concurrent，减少并发握手带来的内存压力
 tcp-concurrent: false
-keep-alive-interval: 30
 ipv6: false        # 🚫 强制关闭 IPv6 协议栈 (解决 no route to host 报错)
 prefer-ipv6: false # 📱 iOS 5G 优化: 强制关闭 IPv6 防止 Google/YouTube 延迟过高
 allow-lan: false   # 🛡️ 安全加固: 手机端默认关闭局域网共享，防止被扫描
@@ -38,11 +37,6 @@ dns:
     - "*.bambulab.cn"
     - "*.stun.*.*"
     - "*.stun.*"
-    - "+.nintendo.net"
-    - "+.playstation.net"
-    - "+.xboxlive.com"
-    - "+.msftconnecttest.com"
-    - "+.msftncsi.com"
     # ⬇️ 同步 Mihomo: 补充 NTP 和 协议相关过滤
     - "+.ntp.org"
     - "+.pool.ntp.org"
@@ -113,7 +107,7 @@ proxy-providers:
     # 🚀 内存优化: 在源头直接过滤掉垃圾节点，防止它们进入内存和 UI
     filter: "(?i)^(?!.*(流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*"
     health-check:
-      enable: true
+      enable: false
       interval: 600
       url: http://www.gstatic.com/generate_204
 
@@ -237,7 +231,7 @@ rules: #!replace
   - DOMAIN-SUFFIX,stackexchange.com,自动选择
   # 社交
   - GEOSITE,telegram,自动选择
-  - GEOIP,telegram,自动选择
+  - GEOIP,telegram,自动选择,no-resolve
   
   - DOMAIN-SUFFIX,npmjs.com,自动选择
   - DOMAIN-SUFFIX,pypi.org,自动选择
