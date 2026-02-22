@@ -1,9 +1,9 @@
-﻿# Last Updated: 2026-02-22 [Stash Override v1.91]
+﻿# Last Updated: 2026-02-22 [Stash Override v1.92]
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.91"
-desc: "v1.91 | 修复: nameserver-policy 语法错误(system->223.5.5.5)及 DoH 域名直连防死锁"
+name: "Stash Override v1.92"
+desc: "v1.92 | 优化: 移除不支持的 Mihomo 专属特性，适配 Stash 最新语法"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
