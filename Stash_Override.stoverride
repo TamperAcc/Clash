@@ -1,13 +1,15 @@
-﻿# Last Updated: 2026-02-22 [Stash Override v1.97]
+﻿# Last Updated: 2026-02-22 [Stash Override v1.98]
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.97"
-desc: "v1.97 | 优化: 极致省电，精简 DNS 过滤，加速 TG 路由"
+name: "Stash Override v1.98"
+desc: "v1.98 | 优化: 降低日志等级至 error，减少磁盘 I/O"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
 # ==========================================
+log-level: error   # 🔋 性能优化: 仅记录错误日志，减少磁盘 I/O 和 CPU 唤醒
+
 # 1. TCP 并发 & 基础优化
 # 🔋 内存优化: iOS 下关闭 tcp-concurrent，减少并发握手带来的内存压力
 tcp-concurrent: false
