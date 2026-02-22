@@ -32,7 +32,7 @@ function main(config) {
   config["skip-auth-prefixes"] = ["127.0.0.1/8", "::1/128"];
   
   // GeoData 优化
-  config["geodata-loader"] = "memconservative";
+  config["geodata-loader"] = "standard"; // 🚀 极限优化：PC 端内存充足，使用 standard 模式将规则全量加载到内存，大幅提升匹配速度
   config["geo-auto-update"] = true;
   config["geo-update-interval"] = 24;
   config["geodata-mode"] = true;
@@ -78,18 +78,18 @@ function main(config) {
       "ipcidr": ["240.0.0.0/4"] 
     },
     "nameserver-policy": {
-      "geosite:cn": "223.5.5.5",
-      "geosite:apple": "223.5.5.5",
-      "+.icloud.com": "223.5.5.5",
-      "+.icloud-content.com": "223.5.5.5",
-      "+.mzstatic.com": "223.5.5.5",
-      "+.apple.com": "223.5.5.5",
-      "+.bambulab.cn": "119.29.29.29",
-      "+.bambulab.com": "119.29.29.29",
-      "+.bilibili.com": "119.29.29.29", // 优化：B站走腾讯 DNS 解析更准
-      "+.qq.com": "119.29.29.29", // 优化：腾讯系走腾讯 DNS
-      "+.taobao.com": "223.5.5.5", // 优化：阿里系走阿里 DNS
-      "+.aliyun.com": "223.5.5.5"
+      "geosite:cn": "https://dns.alidns.com/dns-query",
+      "geosite:apple": "https://dns.alidns.com/dns-query",
+      "+.icloud.com": "https://dns.alidns.com/dns-query",
+      "+.icloud-content.com": "https://dns.alidns.com/dns-query",
+      "+.mzstatic.com": "https://dns.alidns.com/dns-query",
+      "+.apple.com": "https://dns.alidns.com/dns-query",
+      "+.bambulab.cn": "https://doh.pub/dns-query",
+      "+.bambulab.com": "https://doh.pub/dns-query",
+      "+.bilibili.com": "https://doh.pub/dns-query", // 优化：B站走腾讯 DNS 解析更准
+      "+.qq.com": "https://doh.pub/dns-query", // 优化：腾讯系走腾讯 DNS
+      "+.taobao.com": "https://dns.alidns.com/dns-query", // 优化：阿里系走阿里 DNS
+      "+.aliyun.com": "https://dns.alidns.com/dns-query"
     }
   };
 
@@ -115,12 +115,6 @@ function main(config) {
       "TLS": { "ports": [443, 8443] },
       "QUIC": { "ports": [443, 8443] } // 优化：开启 QUIC 嗅探，配合规则中的 QUIC REJECT 效果更好
     }
-  };
-
-  // 🚀 极限优化：开启实验性功能，提升连接复用率
-  config["experimental"] = {
-    "quic-go-disable-gso": false, // 允许 GSO，提升 QUIC 性能
-    "dialer-keep-alive": true // 开启拨号器 keep-alive
   };
 
   // 5. Rule Providers (已废弃 - 全面转向 Geosite)
