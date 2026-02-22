@@ -75,8 +75,6 @@ dns:
     # Bambu Lab 也建议走 System 确保局域网发现
     '+.bambulab.cn': 'system'
     '+.bambulab.com': 'system'
-    # 国内 Geosite 走阿里 UDP (快)
-    'geosite:cn': '223.5.5.5'
 
   fallback:
     # 移动网络下，Fallback 仅作为 nameserver 彻底挂掉的冷备
