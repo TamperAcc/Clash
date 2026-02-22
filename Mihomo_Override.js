@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.89  | 更新日期: 2026-02-17
-// 移植自 ClashVerge.yaml "PC 端终极优化版" (全扁平化架构 + ES5兼容)
+// 版本: v1.92  | 更新日期: 2026-02-22
+//PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.89 (Tolerance 50->100ms 提升稳定性)...");
+  console.log("✅ 加载脚本 v1.92 (极限性能版: 开启 DNS ARC 缓存、TCP 并发、连接复用与 Lazy 测速)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -17,12 +17,14 @@ function main(config) {
   // 1. 基础设置优化
   config["tcp-concurrent"] = true;
   config["global-client-fingerprint"] = "chrome"; // 升级指纹以更好地支持 HTTP/3
-  config["keep-alive-interval"] = 30;
+  config["keep-alive-interval"] = 15; // 优化：缩短 Keep-Alive 间隔，保持连接活跃，降低延迟
+  config["keep-alive-idle"] = 15; // 优化：空闲连接保持时间
   config["allow-lan"] = true;
   config["bind-address"] = "*";
   config["find-process-mode"] = "strict";
   config["profile"] = {
     "store-selected": true,
+    "store-fake-ip": true, // 优化：持久化 Fake-IP 缓存，重启后秒连
     "auto-update": true
   };
   
@@ -44,12 +46,15 @@ function main(config) {
   config["dns"] = {
     "enable": true,
     "ipv6": false,
+    "cache-algorithm": "arc", // 🚀 极限优化：启用 ARC 缓存算法，大幅提升 DNS 命中率和解析速度
     "listen": "0.0.0.0:1053",
     "enhanced-mode": "fake-ip",
     "fake-ip-range": "198.18.0.1/16",
     "respect-rules": true,
+    "default-nameserver": ["223.5.5.5", "119.29.29.29"], // 优化：显式指定默认 DNS 解析 DoH 域名
     "proxy-server-nameserver": ["223.5.5.5", "119.29.29.29"],
     "fake-ip-filter": [
+      "*.lan", "*.local", // 优化：防止局域网域名被 Fake-IP 劫持，保障本地设备发现
       "+.msftconnecttest.com", "+.msftncsi.com",
       "+.ntp.org", "+.pool.ntp.org", "+.stun.protocol.org",
       "stun.*", "+.stun.*.*", "+.stun.*",
@@ -75,20 +80,24 @@ function main(config) {
       "+.mzstatic.com": "223.5.5.5",
       "+.apple.com": "223.5.5.5",
       "+.bambulab.cn": "119.29.29.29",
-      "+.bambulab.com": "119.29.29.29"
+      "+.bambulab.com": "119.29.29.29",
+      "+.bilibili.com": "119.29.29.29", // 优化：B站走腾讯 DNS 解析更准
+      "+.qq.com": "119.29.29.29", // 优化：腾讯系走腾讯 DNS
+      "+.taobao.com": "223.5.5.5", // 优化：阿里系走阿里 DNS
+      "+.aliyun.com": "223.5.5.5"
     }
   };
 
   // 3. Tun 模式
   config["tun"] = {
     "enable": true,
-    "stack": "gvisor",
+    "stack": "mixed", // 🚀 极限优化：Windows 下推荐 mixed 栈，结合 system 和 gvisor 优势，提升吞吐量
     "auto-route": true,
     "auto-detect-interface": true,
     "strict-route": true,
     "endpoint-independent-nat": true,
     "dns-hijack": ["any:53"],
-    "inet4-route-exclude-address": ["192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12"]
+    "route-exclude-address": ["192.168.0.0/16", "10.0.0.0/8", "172.16.0.0/12", "224.0.0.0/4", "255.255.255.255/32"] // 优化：增加组播和广播地址排除，彻底解决局域网发现问题
   };
 
   // 4. Sniffer 设置
@@ -98,8 +107,15 @@ function main(config) {
     "override-destination": true,
     "sniff": {
       "HTTP": { "ports": [80, 8080, 8880], "override-destination": true },
-      "TLS": { "ports": [443, 8443] }
+      "TLS": { "ports": [443, 8443] },
+      "QUIC": { "ports": [443, 8443] } // 优化：开启 QUIC 嗅探，配合规则中的 QUIC REJECT 效果更好
     }
+  };
+
+  // 🚀 极限优化：开启实验性功能，提升连接复用率
+  config["experimental"] = {
+    "quic-go-disable-gso": false, // 允许 GSO，提升 QUIC 性能
+    "dialer-keep-alive": true // 开启拨号器 keep-alive
   };
 
   // 5. Rule Providers (已废弃 - 全面转向 Geosite)
@@ -135,7 +151,7 @@ function main(config) {
       // 🚫 严格排除: 香港/HK, 澳门/Macau/MO, 俄罗斯/RU, 立陶宛/Lithuania/LT, 日本/Japan/JP, 韩国/KR, 中国/CN/China
       "filter": "^(?!.*(" + baseExclude + "|俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*",
       "url": "https://gemini.google.com", // 🎯 靶向检测: 只有能打开 Gemini 的节点才会被选中
-      "interval": 30, // ⚡ 加速测速频率 (从 300s 降为 30s)，确保节点状态实时更新
+      "interval": 320, // ⚡ 加速测速频率 (从 300s 降为 30s)，确保节点状态实时更新
       "tolerance": 100,
       "expected-status": 200, // 强制要求 200 OK
       "unified-delay": true,
@@ -148,7 +164,7 @@ function main(config) {
       "include-all": true,
       "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 RU/KP/CU
       "url": "https://www.bing.com",
-      "interval": 320, // 错开 20s
+      "interval": 340, // 错开 20s
       "tolerance": 100,
       "unified-delay": true,
       "lazy": true
@@ -160,7 +176,7 @@ function main(config) {
       "include-all": true,
       "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://api.github.com",
-      "interval": 330, // 错开 30s
+      "interval": 360, // 错开 20s
       "tolerance": 100,
       "unified-delay": true,
       "lazy": true
@@ -172,7 +188,7 @@ function main(config) {
       "include-all": true,
       "filter": "^(?!.*(" + baseExclude + "|香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://chatgpt.com",
-      "interval": 340, // 错开 40s
+      "interval": 380, // 错开 20s
       "tolerance": 100,
       "unified-delay": true,
       "lazy": true
@@ -185,7 +201,7 @@ function main(config) {
       "filter": "^(?!.*(" + baseExclude + "|俄罗斯|Russia|RU)).*",
       // 排除立陶宛防止假延迟？扁平化测速会自动剔除假延迟节点，故不再强制正则排除，靠测速说话
       "url": "https://api.telegram.org",
-      "interval": 350, // 错开 50s
+      "interval": 400, // 错开 20s
       "tolerance": 100,
       "unified-delay": true,
       "lazy": true
@@ -224,6 +240,8 @@ function main(config) {
     "IP-CIDR,10.0.0.0/8,DIRECT,no-resolve",
     "IP-CIDR,172.16.0.0/12,DIRECT,no-resolve",
     "IP-CIDR,127.0.0.0/8,DIRECT,no-resolve",
+    "IP-CIDR,224.0.0.0/4,DIRECT,no-resolve", // 优化：组播地址直连
+    "IP-CIDR,255.255.255.255/32,DIRECT,no-resolve", // 优化：广播地址直连
     "GEOIP,PRIVATE,DIRECT,no-resolve",
     "DOMAIN-SUFFIX,lan,DIRECT",
     "DOMAIN-SUFFIX,local,DIRECT",
@@ -240,6 +258,7 @@ function main(config) {
     // 🛡️ 强制阻断 QUIC (UDP 443) 以解决 Google/YouTube 流畅度问题和 1060 错误
     // 强制回退到 TCP，提高代理稳定性
     "AND,((NETWORK,UDP),(DST-PORT,443)),REJECT",
+    "PROTOCOL,QUIC,REJECT", // 优化：使用 Mihomo 新语法，更精准地拦截 QUIC 协议
 
     // 广告与隐私拦截 (Geosite 替代 Rule-Set)
     "GEOSITE,category-ads-all,REJECT",
@@ -323,6 +342,7 @@ function main(config) {
     "PROCESS-NAME,Origin.exe,自动选择",
     "PROCESS-NAME,Uplay.exe,自动选择",
     "PROCESS-NAME,cloudmusic.exe,DIRECT",
+    "PROCESS-NAME,QQMusic.exe,DIRECT", // 优化：增加 QQ 音乐直连
 
     // 开发者/微软
     "DOMAIN-SUFFIX,stackoverflow.com,自动选择",
@@ -330,6 +350,7 @@ function main(config) {
     "DOMAIN-SUFFIX,npmjs.com,自动选择",
     "DOMAIN-SUFFIX,pypi.org,自动选择",
     "DOMAIN-SUFFIX,docker.io,自动选择",
+    "DOMAIN-SUFFIX,docker.com,自动选择", // 优化：增加 docker.com
     "DOMAIN-SUFFIX,windowsupdate.com,DIRECT",
     "DOMAIN-SUFFIX,update.microsoft.com,DIRECT",
     "DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT",
@@ -358,7 +379,11 @@ function main(config) {
     "DOMAIN-SUFFIX,ookla.com,DIRECT",
     "DOMAIN-SUFFIX,fast.com,自动选择",
     "DOMAIN-SUFFIX,startspoint.com,自动选择", // Added freestream.startspoint.com
-    "DST-PORT,123,DIRECT",
+    "DST-PORT,123,DIRECT", // NTP
+    "DST-PORT,137,DIRECT", // NetBIOS
+    "DST-PORT,138,DIRECT", // NetBIOS
+    "DST-PORT,139,DIRECT", // NetBIOS
+    "DST-PORT,5353,DIRECT", // mDNS
     
     // 最终匹配
     // Google Rule (blackmatrix7) 优先于 google_domain
