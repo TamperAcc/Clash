@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-22 [Stash Override v1.89]
+﻿# Last Updated: 2026-02-22 [Stash Override v1.90]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.89"
-desc: "v1.89 | 测试: 移除 githubusercontent.com 的硬编码直连，测试纯 jsdelivr 环境"
+name: "Stash Override v1.90"
+desc: "v1.90 | 修复: 将 nameserver 改为域名形式 DoH，打破与 default-nameserver 的底层路由死锁"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -62,9 +62,9 @@ dns:
 
   # 🚀 Main Nameservers (DoH 防劫持)
   nameserver:
-    # 默认走阿里/腾讯 DoH (IP 直连，极速且加密)
-    - https://223.5.5.5/dns-query
-    - https://1.12.12.12/dns-query
+    # 默认走阿里/腾讯 DoH (域名形式，打破与 default-nameserver 的路由死锁)
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
     
   # 🛡️ 策略分流 (解决 context deadline exceeded 报错)
   nameserver-policy:
