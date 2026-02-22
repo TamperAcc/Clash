@@ -37,9 +37,9 @@ function main(config) {
   config["geo-update-interval"] = 24;
   config["geodata-mode"] = true;
   config["geox-url"] = {
-    "geoip": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb",
+    "geoip": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat",
     "geosite": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat",
-    "mmdb": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
+    "mmdb": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb"
   };
 
   // 2. DNS 设置 (保持不变_optimized)
@@ -52,7 +52,7 @@ function main(config) {
     "fake-ip-range": "198.18.0.1/16",
     "respect-rules": true,
     "default-nameserver": ["223.5.5.5", "119.29.29.29", "system"], // 优化：增加 system 兜底，防止公共 DNS 故障导致无法解析节点域名
-    "proxy-server-nameserver": ["223.5.5.5", "119.29.29.29", "system"],
+    "proxy-server-nameserver": ["223.5.5.5", "119.29.29.29"], // 优化：节点域名解析专用 DNS，使用高可用 IP
     "fake-ip-filter": [
       "*.lan", "*.local", // 优化：防止局域网域名被 Fake-IP 劫持，保障本地设备发现
       "+.msftconnecttest.com", "+.msftncsi.com",
@@ -150,9 +150,8 @@ function main(config) {
       // 🚫 严格排除: 香港/HK, 澳门/Macau/MO, 俄罗斯/RU, 立陶宛/Lithuania/LT, 日本/Japan/JP, 韩国/KR, 中国/CN/China
       "filter": "^(?!.*(" + baseExclude + "|俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*",
       "url": "https://gemini.google.com", // 🎯 靶向检测: 只有能打开 Gemini 的节点才会被选中
-      "interval": 320, // ⚡ 加速测速频率 (从 300s 降为 30s)，确保节点状态实时更新
+      "interval": 320, // 错开 20s
       "tolerance": 100,
-      "expected-status": 200, // 强制要求 200 OK
       "unified-delay": true,
       "lazy": true
     },
@@ -257,7 +256,6 @@ function main(config) {
     // 🛡️ 强制阻断 QUIC (UDP 443) 以解决 Google/YouTube 流畅度问题和 1060 错误
     // 强制回退到 TCP，提高代理稳定性
     "AND,((NETWORK,UDP),(DST-PORT,443)),REJECT",
-    "PROTOCOL,QUIC,REJECT", // 优化：使用 Mihomo 新语法，更精准地拦截 QUIC 协议
 
     // 广告与隐私拦截 (Geosite 替代 Rule-Set)
     "GEOSITE,category-ads-all,REJECT",
