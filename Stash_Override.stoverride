@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-22 [Stash Override v1.87]
+﻿# Last Updated: 2026-02-22 [Stash Override v1.88]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.87"
-desc: "v1.87 | 优化: 硬编码 Apple 核心域名与规则库下载域名直连，彻底解决 geosite 下载失败导致的死锁问题"
+name: "Stash Override v1.88"
+desc: "v1.88 | 优化: 完善 Apple 核心域名与规则库下载域名的硬编码直连注释，明确保下限与保上限的互补关系"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
