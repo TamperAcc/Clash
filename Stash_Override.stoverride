@@ -75,7 +75,7 @@ dns:
     '+.apple.com': 'system'
     '+.icloud.com': 'system'
     '+.mzstatic.com': 'system'
-    # 3. 原有的 geosite 兜底（等规则库加载好后生效）
+    # 3. 原有的 geosite 兜底（等规则库加载好后生效，覆盖更全面的苹果边缘域名）
     'geosite:apple': 'system'
     '+.crashlytics.com': 'system'
     # Bambu Lab 也建议走 System 确保局域网发现
