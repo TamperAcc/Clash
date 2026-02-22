@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.92  | 更新日期: 2026-02-22
+// 版本: v1.93  | 更新日期: 2026-02-22
 //PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.92 (极限性能版: 开启 DNS ARC 缓存、TCP 并发、连接复用与 Lazy 测速)...");
+  console.log("✅ 加载脚本 v1.93 (极限性能版: 开启 DNS ARC 缓存、TCP 并发、连接复用与 Lazy 测速)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -16,8 +16,8 @@ function main(config) {
 
   // 1. 基础设置优化
   config["tcp-concurrent"] = true;
-  config["client-fingerprint"] = "chrome"; // 升级指纹以更好地支持 HTTP/3
   config["unified-delay"] = true; // 开启统一延迟，更准确
+  config["global-ua"] = "chrome"; // 优化：全局伪装 UA，防止订阅或规则下载被墙/被拦截
   config["keep-alive-idle"] = 15; // 优化：空闲连接保持时间
   config["keep-alive-interval"] = 15; // 优化：空闲连接探测间隔
   config["allow-lan"] = true;
@@ -72,10 +72,12 @@ function main(config) {
     "fallback-filter": { 
       "geoip": true, 
       "geoip-code": "CN", 
-      "geosite": ["gfw"], // 🚀 极限优化：匹配 GFW 列表的域名直接使用 fallback 结果，跳过 IP 验证，大幅降低解析延迟
+      "geosite": ["geolocation-!cn"], // 🚀 极限优化：匹配非大陆域名的直接使用 fallback 结果，跳过 IP 验证，大幅降低解析延迟 (比 gfw 列表更全)
       "ipcidr": ["240.0.0.0/4"] 
     },
     "nameserver-policy": {
+      "geosite:category-ads-all": "rcode://success", // 🚀 极限优化：DNS 级别直接屏蔽广告，节省 CPU 和内存
+      "geosite:geolocation-!cn": ["https://1.1.1.1/dns-query", "https://8.8.8.8/dns-query"], // 🚀 极限优化：海外域名直接走海外 DNS，跳过国内 DNS 并发查询
       "geosite:cn": "https://dns.alidns.com/dns-query",
       "geosite:apple": "https://dns.alidns.com/dns-query",
       "+.icloud.com": "https://dns.alidns.com/dns-query",
@@ -95,6 +97,7 @@ function main(config) {
   config["tun"] = {
     "enable": true,
     "stack": "mixed", // 🚀 极限优化：Windows 下推荐 mixed 栈，结合 system 和 gvisor 优势，提升吞吐量
+    "mtu": 9000, // 🚀 极限优化：开启巨型帧，大幅提升大文件下载和流媒体吞吐量
     "auto-route": true,
     "auto-detect-interface": true,
     "strict-route": true,
@@ -111,7 +114,15 @@ function main(config) {
       "HTTP": { "ports": [80, 8080, 8880], "override-destination": true },
       "TLS": { "ports": [443, 8443] },
       "QUIC": { "ports": [443, 8443] } // 优化：开启 QUIC 嗅探，配合规则中的 QUIC REJECT 效果更好
-    }
+    },
+    "skip-domain": [
+      "+.apple.com", // 优化：防止苹果推送服务断连
+      "Mijia Cloud", // 优化：防止米家设备掉线
+      "+.qq.com", // 优化：防止腾讯系游戏/语音因严格校验断连
+      "+.music.tc.qq.com", // 优化：防止 QQ 音乐无损音质播放失败
+      "+.aliyuncs.com", // 优化：防止阿里云盘等服务报错
+      "*.lan", "*.local" // 优化：防止局域网特殊协议被误伤
+    ]
   };
 
   // 5. Rule Providers (已废弃 - 全面转向 Geosite)
@@ -381,11 +392,24 @@ function main(config) {
     // 最终匹配
     // Google Rule (blackmatrix7) 优先于 google_domain
     "GEOSITE,cn,国内",
-    "GEOIP,cn,国内",
+    "GEOIP,cn,国内,no-resolve", // 🚀 极限优化：GEOIP 匹配时禁止解析域名，防止 DNS 泄漏和延迟
     "GEOSITE,geolocation-!cn,自动选择",
-    "GEOIP,CN,国内",
+    "GEOIP,CN,国内,no-resolve", // 🚀 极限优化：GEOIP 匹配时禁止解析域名，防止 DNS 泄漏和延迟
     "MATCH,自动选择"
   ];
+
+  // 遍历所有节点，为没有设置指纹的节点添加默认指纹 (Mihomo 1.18+ 弃用了全局 client-fingerprint)
+  // 同时强制开启 UDP，防止部分机场节点配置遗漏导致游戏/语音不通
+  if (config.proxies && Array.isArray(config.proxies)) {
+    config.proxies.forEach(function(proxy) {
+      if (proxy.type !== 'direct' && proxy.type !== 'reject') {
+        proxy["client-fingerprint"] = proxy["client-fingerprint"] || "chrome";
+        if (proxy["udp"] === undefined) {
+          proxy["udp"] = true;
+        }
+      }
+    });
+  }
 
   return config;
 }
