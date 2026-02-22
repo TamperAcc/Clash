@@ -195,13 +195,14 @@ rules: #!replace
   # 保证规则库下载直连，打破 geosite 下载失败导致的死锁
   - DOMAIN-SUFFIX,jsdelivr.net,DIRECT
   - DOMAIN-SUFFIX,githubusercontent.com,DIRECT
-  # 保证苹果核心服务直连，防止 geosite 未加载时走代理超时
+  # 保证苹果核心服务直连，防止 geosite 未加载时走代理超时 (保下限)
   - DOMAIN-SUFFIX,apple.com,DIRECT
   - DOMAIN-SUFFIX,icloud.com,DIRECT
   - DOMAIN-SUFFIX,mzstatic.com,DIRECT
   
   # 🔋 [电量优化] 高频背景流量置顶：iOS 会在后台疯狂请求 Apple 服务和局域网
   # 提前拦截这些流量，可避免遍历后续几十条规则，大幅降低 CPU 唤醒和匹配开销
+  # geosite:apple 作为兜底，覆盖数百个苹果边缘域名 (保上限)
   - GEOSITE,apple,DIRECT
   - DOMAIN-SUFFIX,lan,DIRECT
   - DOMAIN-SUFFIX,local,DIRECT
