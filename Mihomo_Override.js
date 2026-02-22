@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
-// 版本: v1.93  | 更新日期: 2026-02-22
+// 版本: v1.94  | 更新日期: 2026-02-22
 //PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v1.93 (极限性能版: 开启 DNS ARC 缓存、TCP 并发、连接复用与 Lazy 测速)...");
+  console.log("✅ 加载脚本 v1.94 (极限性能版: 开启 DNS ARC 缓存、TCP 并发、连接复用与 Lazy 测速)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -49,7 +49,7 @@ function main(config) {
     "enhanced-mode": "fake-ip",
     "fake-ip-range": "198.18.0.1/16",
     "respect-rules": true,
-    "default-nameserver": ["223.5.5.5", "119.29.29.29", "system"], // 优化：增加 system 兜底，防止公共 DNS 故障导致无法解析节点域名
+    "default-nameserver": ["223.5.5.5", "119.29.29.29"], // 优化：仅支持纯 IP，用于解析 DoH/DoT 域名
     "proxy-server-nameserver": ["223.5.5.5", "119.29.29.29"], // 优化：节点域名解析专用 DNS，使用高可用 IP
     "fake-ip-filter": [
       "*.lan", "*.local", // 优化：防止局域网域名被 Fake-IP 劫持，保障本地设备发现
