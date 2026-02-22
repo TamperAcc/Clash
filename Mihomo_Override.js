@@ -17,7 +17,6 @@ function main(config) {
   // 1. 基础设置优化
   config["tcp-concurrent"] = true;
   config["client-fingerprint"] = "chrome"; // 升级指纹以更好地支持 HTTP/3
-  config["keep-alive-interval"] = 15; // 优化：缩短 Keep-Alive 间隔，保持连接活跃，降低延迟
   config["keep-alive-idle"] = 15; // 优化：空闲连接保持时间
   config["allow-lan"] = true;
   config["bind-address"] = "*";
