@@ -1,15 +1,16 @@
-﻿# Last Updated: 2026-02-22 [Stash Override v1.92]
+﻿# Last Updated: 2026-02-22 [Stash Override v1.93]
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.92"
-desc: "v1.92 | 优化: 移除不支持的 Mihomo 专属特性，适配 Stash 最新语法"
+name: "Stash Override v1.93"
+desc: "v1.93 | 修复: 解决 iOS 内存警告及 DNS 死锁 (context deadline exceeded) 问题"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
 # ==========================================
 # 1. TCP 并发 & 基础优化
-tcp-concurrent: true
+# 🔋 内存优化: iOS 下关闭 tcp-concurrent，减少并发握手带来的内存压力
+tcp-concurrent: false
 keep-alive-interval: 30
 ipv6: false        # 🚫 强制关闭 IPv6 协议栈 (解决 no route to host 报错)
 prefer-ipv6: false # 📱 iOS 5G 优化: 强制关闭 IPv6 防止 Google/YouTube 延迟过高
@@ -52,9 +53,10 @@ dns:
 
   # 🚀 Main Nameservers (DoH 防劫持)
   nameserver:
-    # 默认走阿里/腾讯 DoH (域名形式，打破与 default-nameserver 的路由死锁)
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
+    # 默认走阿里/腾讯 DoT (域名形式，打破与 default-nameserver 的路由死锁)
+    # 🔋 内存优化: iOS 下 DoH (https) 占用内存过高，改为 DoT (tls)
+    - tls://dns.alidns.com
+    - tls://dot.pub
     
   # 🛡️ 策略分流 (解决 context deadline exceeded 报错)
   nameserver-policy:
@@ -63,6 +65,9 @@ dns:
     # 2. 保证苹果核心服务不报错（即使 geosite 挂了）
     '+.apple.com': '223.5.5.5'
     '+.icloud.com': '223.5.5.5'
+    '+.icloud-content.com': '223.5.5.5'
+    '+.me.com': '223.5.5.5'
+    '+.aaplimg.com': '223.5.5.5'
     '+.mzstatic.com': '223.5.5.5'
     '+.crashlytics.com': '223.5.5.5'
     # Bambu Lab 也建议走 System 确保局域网发现
@@ -71,8 +76,10 @@ dns:
 
   fallback:
     # 移动网络下，Fallback 仅作为 nameserver 彻底挂掉的冷备，以及防污染备用
-    - https://8.8.8.8/dns-query
-    - https://1.1.1.1/dns-query
+    # 🔋 内存优化: iOS 下 DoH (https) 占用内存过高，在弱网下易导致 OOM 和 context deadline exceeded
+    # 改为 DoT (tls) 或纯 UDP，大幅降低 TLS/HTTP 握手带来的内存压力
+    - tls://8.8.8.8
+    - tls://1.1.1.1
   
   fallback-filter:
     geoip: true
@@ -282,7 +289,7 @@ rules: #!replace
   
   - GEOSITE,cn,国内
   - GEOSITE,geolocation-!cn,自动选择
-  - GEOIP,cn,国内
+  - GEOIP,cn,国内,no-resolve
   
   - MATCH,自动选择
 
