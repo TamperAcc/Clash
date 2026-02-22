@@ -1,10 +1,10 @@
-﻿# Last Updated: 2026-02-22 [Stash Override v1.88]
+﻿# Last Updated: 2026-02-22 [Stash Override v1.89]
 # 移植自 PC 端 Mihomo_Override.js v1.89
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Stash_Override.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Stash_Override.stoverride
 # Stash 元数据
-name: "Stash Override v1.88"
-desc: "v1.88 | 优化: 完善 Apple 核心域名与规则库下载域名的硬编码直连注释，明确保下限与保上限的互补关系"
+name: "Stash Override v1.89"
+desc: "v1.89 | 测试: 移除 githubusercontent.com 的硬编码直连，测试纯 jsdelivr 环境"
 icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
@@ -70,7 +70,6 @@ dns:
   nameserver-policy:
     # 1. 保证规则库能下载（打破死锁源头）
     '+.jsdelivr.net': 'system'
-    '+.githubusercontent.com': 'system'
     # 2. 保证苹果核心服务不报错（即使 geosite 挂了）
     '+.apple.com': 'system'
     '+.icloud.com': 'system'
@@ -194,7 +193,6 @@ rules: #!replace
   # 🔋 [电量优化 & 防死锁] 核心基础服务硬编码直连
   # 保证规则库下载直连，打破 geosite 下载失败导致的死锁
   - DOMAIN-SUFFIX,jsdelivr.net,DIRECT
-  - DOMAIN-SUFFIX,githubusercontent.com,DIRECT
   # 保证苹果核心服务直连，防止 geosite 未加载时走代理超时 (保下限)
   - DOMAIN-SUFFIX,apple.com,DIRECT
   - DOMAIN-SUFFIX,icloud.com,DIRECT
