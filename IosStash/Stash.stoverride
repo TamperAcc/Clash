@@ -1,10 +1,9 @@
 ﻿# Last Updated: 2026-02-22 [Stash v1.99]
+#!name=Stash v1.99
+#!desc=v1.99 | 优化: 强制锁定默认运行模式为 Rule
+#!icon=https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/IosStash/Stash.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/IosStash/Stash.stoverride
-# Stash 元数据
-name: "Stash v1.99"
-desc: "v1.99 | 优化: 强制锁定默认运行模式为 Rule"
-icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
 # ==========================================
 # 核心网络设置 (TCP/DNS/MitM/HTTP)
 # ==========================================
