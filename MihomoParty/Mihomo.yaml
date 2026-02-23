@@ -5,7 +5,7 @@
 # 2. 相比 JS 覆写脚本，YAML 格式解析更快，且原生支持。
 # 3. 节点指纹 (client-fingerprint) 和 UDP 开启已通过 proxy-providers 的 override 字段实现。
 
-log-level: debug
+log-level: info
 tcp-concurrent: true
 unified-delay: true
 global-ua: chrome
