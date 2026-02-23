@@ -1,4 +1,6 @@
 # Mihomo Party 专用配置文件 (由 Mihomo.js 转换而来)
+# 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.yaml
+# 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.yaml
 # 版本: v1.96 | 更新日期: 2026-02-23
 # 说明: 
 # 1. 本文件为完整的 YAML 配置，可直接作为 Mihomo Party 的【配置(Profile)】导入使用。
