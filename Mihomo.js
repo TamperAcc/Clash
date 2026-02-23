@@ -1,6 +1,6 @@
 // Mihomo Party 专用配置文件覆写脚本
-// 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo_Override.js
-// 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo_Override.js
+// 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/Mihomo.js
+// 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/Mihomo.js
 // 版本: v1.96  | 更新日期: 2026-02-22
 //PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
