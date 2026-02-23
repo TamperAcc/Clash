@@ -1,0 +1,348 @@
+# Mihomo Party 专用配置文件 (由 Mihomo_Override.js 转换而来)
+# 版本: v1.96 | 更新日期: 2026-02-23
+# 说明: 
+# 1. 本文件为完整的 YAML 配置，可直接作为 Mihomo Party 的【配置(Profile)】导入使用。
+# 2. 相比 JS 覆写脚本，YAML 格式解析更快，且原生支持。
+# 3. 节点指纹 (client-fingerprint) 和 UDP 开启已通过 proxy-providers 的 override 字段实现。
+
+log-level: debug
+tcp-concurrent: true
+unified-delay: true
+global-ua: chrome
+keep-alive-idle: 15
+keep-alive-interval: 15
+allow-lan: true
+bind-address: '*'
+find-process-mode: strict
+profile:
+  store-selected: true
+  store-fake-ip: true
+skip-auth-prefixes:
+  - 127.0.0.1/8
+  - '::1/128'
+geo-auto-update: true
+geo-update-interval: 24
+geox-url:
+  geoip: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat
+  geosite: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat
+  mmdb: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb
+dns:
+  enable: true
+  ipv6: false
+  cache-algorithm: arc
+  listen: 0.0.0.0:1053
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  respect-rules: true
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  proxy-server-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  fake-ip-filter:
+    - '*.lan'
+    - '*.local'
+    - +.msftconnecttest.com
+    - +.msftncsi.com
+    - +.ntp.org
+    - +.pool.ntp.org
+    - +.stun.protocol.org
+    - stun.*
+    - +.stun.*.*
+    - +.stun.*
+    - +.nintendo.net
+    - +.playstation.net
+    - +.xboxlive.com
+    - time.*.com
+    - time.*.gov
+    - time.*.edu.cn
+    - time.*.apple.com
+    - time1.cloud.tencent.com
+    - '*.bambulab.com'
+    - '*.bambulab.cn'
+  nameserver:
+    - https://doh.pub/dns-query
+    - https://dns.alidns.com/dns-query
+  fallback:
+    - https://1.1.1.1/dns-query
+    - https://8.8.8.8/dns-query
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+    geosite:
+      - geolocation-!cn
+    ipcidr:
+      - 240.0.0.0/4
+  nameserver-policy:
+    geosite:category-ads-all: rcode://success
+    geosite:geolocation-!cn:
+      - https://1.1.1.1/dns-query
+      - https://8.8.8.8/dns-query
+    geosite:cn: https://dns.alidns.com/dns-query
+    geosite:apple: https://dns.alidns.com/dns-query
+    +.icloud.com: https://dns.alidns.com/dns-query
+    +.icloud-content.com: https://dns.alidns.com/dns-query
+    +.mzstatic.com: https://dns.alidns.com/dns-query
+    +.apple.com: https://dns.alidns.com/dns-query
+    +.bambulab.cn: https://doh.pub/dns-query
+    +.bambulab.com: https://doh.pub/dns-query
+    +.bilibili.com: https://doh.pub/dns-query
+    +.qq.com: https://doh.pub/dns-query
+    +.taobao.com: https://dns.alidns.com/dns-query
+    +.aliyun.com: https://dns.alidns.com/dns-query
+tun:
+  enable: true
+  stack: mixed
+  mtu: 9000
+  auto-route: true
+  auto-detect-interface: true
+  strict-route: true
+  endpoint-independent-nat: true
+  dns-hijack:
+    - any:53
+sniffer:
+  enable: true
+  parse-pure-ip: true
+  override-destination: true
+  sniff:
+    HTTP:
+      ports:
+        - 80
+        - 8080
+        - 8880
+      override-destination: true
+    TLS:
+      ports:
+        - 443
+        - 8443
+    QUIC:
+      ports:
+        - 443
+        - 8443
+  skip-domain:
+    - +.apple.com
+    - Mijia Cloud
+    - +.qq.com
+    - +.music.tc.qq.com
+    - +.aliyuncs.com
+    - '*.lan'
+    - '*.local'
+rule-providers: {}
+proxy-providers:
+  组合机场:
+    type: http
+    url: http://127.0.0.1:38324/download/collection/%E7%BB%84%E5%90%88%E6%9C%BA%E5%9C%BA
+    path: ./proxy_providers/组合机场.yaml
+    interval: 3600
+    filter: (?i)^(?!.*(流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 300
+    override:
+      client-fingerprint: chrome
+      udp: true
+proxy-groups:
+  - name: 自动选择
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
+    include-all: true
+    use:
+      - 组合机场
+    filter: ^(?!.*(IEPL|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 100
+    lazy: true
+  - name: Gemini
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
+    include-all: true
+    use:
+      - 组合机场
+    filter: ^(?!.*(俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*
+    url: https://gemini.google.com
+    interval: 320
+    tolerance: 100
+    lazy: true
+  - name: Copilot
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png
+    include-all: true
+    use:
+      - 组合机场
+    filter: ^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*
+    url: https://www.bing.com
+    interval: 340
+    tolerance: 100
+    lazy: true
+  - name: GitHub Copilot
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/github.png
+    include-all: true
+    use:
+      - 组合机场
+    filter: ^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*
+    url: https://api.github.com
+    interval: 360
+    tolerance: 100
+    lazy: true
+  - name: ChatGPT
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
+    include-all: true
+    use:
+      - 组合机场
+    filter: ^(?!.*(香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*
+    url: https://chatgpt.com
+    interval: 380
+    tolerance: 100
+    lazy: true
+  - name: Telegram
+    type: url-test
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png
+    include-all: true
+    use:
+      - 组合机场
+    filter: ^(?!.*(俄罗斯|Russia|RU)).*
+    url: https://api.telegram.org
+    interval: 400
+    tolerance: 100
+    lazy: true
+  - name: 国内
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/CN.png
+    proxies:
+      - DIRECT
+      - 自动选择
+  - name: Google
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
+    proxies:
+      - Gemini
+      - 自动选择
+  - name: YouTube
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png
+    proxies:
+      - 自动选择
+      - Gemini
+  - name: 国外通用
+    type: select
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
+    proxies:
+      - 自动选择
+      - Gemini
+rules:
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,224.0.0.0/4,DIRECT,no-resolve
+  - IP-CIDR,255.255.255.255/32,DIRECT,no-resolve
+  - GEOIP,PRIVATE,DIRECT,no-resolve
+  - DOMAIN-SUFFIX,lan,DIRECT
+  - DOMAIN-SUFFIX,local,DIRECT
+  - DOMAIN-SUFFIX,home.arpa,DIRECT
+  - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
+  - DOMAIN-SUFFIX,1huanlesap02.top,DIRECT
+  - DOMAIN,ipv6.msftconnecttest.com,REJECT
+  - DOMAIN,ipv6.msftncsi.com,REJECT
+  - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
+  - DOMAIN-SUFFIX,msftncsi.com,DIRECT
+  - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
+  - GEOSITE,category-ads-all,REJECT
+  - DOMAIN-SUFFIX,tracking.miui.com,REJECT
+  - DOMAIN-SUFFIX,gemini.google.com,Gemini
+  - DOMAIN-SUFFIX,bard.google.com,Gemini
+  - DOMAIN,gemini.google.com,Gemini
+  - DOMAIN,bard.google.com,Gemini
+  - DOMAIN,generativelanguage.googleapis.com,Gemini
+  - DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,Gemini
+  - DOMAIN-SUFFIX,opa-pa.googleapis.com,Gemini
+  - DOMAIN-SUFFIX,waa-pa.googleapis.com,Gemini
+  - DOMAIN-SUFFIX,client-channel.google.com,Gemini
+  - DOMAIN-SUFFIX,assistant.google.com,Gemini
+  - DOMAIN-SUFFIX,ai.google.com,Gemini
+  - DOMAIN-SUFFIX,aistudio.google.com,Gemini
+  - DOMAIN-SUFFIX,makersuite.google.com,Gemini
+  - DOMAIN-SUFFIX,googleapis.cn,Gemini
+  - DOMAIN-SUFFIX,deepmind.com,Gemini
+  - DOMAIN-SUFFIX,deepmind.google,Gemini
+  - DOMAIN-SUFFIX,openai.com,ChatGPT
+  - DOMAIN-SUFFIX,chatgpt.com,ChatGPT
+  - DOMAIN-SUFFIX,oaistatic.com,ChatGPT
+  - DOMAIN-SUFFIX,oaiusercontent.com,ChatGPT
+  - GEOSITE,openai,ChatGPT
+  - DOMAIN,cn.bing.com,DIRECT
+  - DOMAIN-SUFFIX,bing.com,Copilot
+  - DOMAIN-SUFFIX,copilot.microsoft.com,Copilot
+  - GEOSITE,github,GitHub Copilot
+  - GEOSITE,google,Google
+  - GEOSITE,category-scholar-!cn,国外通用
+  - PROCESS-NAME,WeChat.exe,DIRECT
+  - PROCESS-NAME,WeChatAppEx.exe,DIRECT
+  - PROCESS-NAME,QQ.exe,DIRECT
+  - PROCESS-NAME,Telegram.exe,Telegram
+  - PROCESS-NAME,Discord.exe,自动选择
+  - PROCESS-NAME,Slack.exe,自动选择
+  - PROCESS-NAME,Zoom.exe,自动选择
+  - PROCESS-NAME,BambuStudio.exe,DIRECT
+  - PROCESS-NAME,bambu-studio.exe,DIRECT
+  - PROCESS-NAME,Thunder.exe,DIRECT
+  - PROCESS-NAME,DownloadSdk.exe,DIRECT
+  - PROCESS-NAME,baidunetdisk.exe,DIRECT
+  - PROCESS-NAME,BitComet.exe,DIRECT
+  - PROCESS-NAME,uTorrent.exe,DIRECT
+  - PROCESS-NAME,IDMan.exe,DIRECT
+  - PROCESS-NAME,git.exe,国外通用
+  - PROCESS-NAME,Code.exe,自动选择
+  - PROCESS-NAME,cursor.exe,自动选择
+  - PROCESS-NAME,idea64.exe,自动选择
+  - PROCESS-NAME,pycharm64.exe,自动选择
+  - PROCESS-NAME,Steam.exe,自动选择
+  - PROCESS-NAME,steamwebhelper.exe,自动选择
+  - PROCESS-NAME,EpicGamesLauncher.exe,自动选择
+  - PROCESS-NAME,Origin.exe,自动选择
+  - PROCESS-NAME,Uplay.exe,自动选择
+  - PROCESS-NAME,cloudmusic.exe,DIRECT
+  - PROCESS-NAME,QQMusic.exe,DIRECT
+  - DOMAIN-SUFFIX,stackoverflow.com,自动选择
+  - DOMAIN-SUFFIX,stackexchange.com,自动选择
+  - DOMAIN-SUFFIX,npmjs.com,自动选择
+  - DOMAIN-SUFFIX,pypi.org,自动选择
+  - DOMAIN-SUFFIX,docker.io,自动选择
+  - DOMAIN-SUFFIX,docker.com,自动选择
+  - DOMAIN-SUFFIX,windowsupdate.com,DIRECT
+  - DOMAIN-SUFFIX,update.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,delivery.mp.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,dl.delivery.mp.microsoft.com,DIRECT
+  - DOMAIN-SUFFIX,tlu.dl.delivery.mp.microsoft.com,DIRECT
+  - GEOSITE,microsoft,自动选择
+  - GEOSITE,apple,DIRECT
+  - DOMAIN-SUFFIX,steamserver.net,DIRECT
+  - DOMAIN-SUFFIX,steamcontent.com,DIRECT
+  - DOMAIN-SUFFIX,steamstatic.com,DIRECT
+  - DOMAIN-SUFFIX,epicgames.com,DIRECT
+  - DOMAIN-SUFFIX,bambulab.com,DIRECT
+  - DOMAIN-SUFFIX,bambulab.cn,DIRECT
+  - DOMAIN-SUFFIX,bambulab.co,DIRECT
+  - GEOSITE,category-communication,自动选择
+  - GEOSITE,telegram,Telegram
+  - GEOIP,telegram,Telegram
+  - GEOSITE,youtube,YouTube
+  - DOMAIN-SUFFIX,speedtest.net,DIRECT
+  - DOMAIN-SUFFIX,ookla.com,DIRECT
+  - DOMAIN-SUFFIX,fast.com,自动选择
+  - DOMAIN-SUFFIX,startspoint.com,自动选择
+  - DST-PORT,123,DIRECT
+  - DST-PORT,137,DIRECT
+  - DST-PORT,138,DIRECT
+  - DST-PORT,139,DIRECT
+  - DST-PORT,5353,DIRECT
+  - GEOSITE,cn,国内
+  - GEOIP,cn,国内,no-resolve
+  - GEOSITE,geolocation-!cn,自动选择
+  - GEOIP,CN,国内,no-resolve
+  - MATCH,自动选择
