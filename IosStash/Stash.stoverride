@@ -1,7 +1,5 @@
-﻿# Last Updated: 2026-02-22 [Stash v1.99]
-#!name=Stash v1.99
-#!desc=v1.99 | 优化: 强制锁定默认运行模式为 Rule
-#!icon=https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Stash.png
+﻿#SUBSCRIBED http://104.194.75.174:3001/api/file/Stash.stoverride
+# Last Updated: 2026-02-26 [Stash v2.00]
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/IosStash/Stash.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/IosStash/Stash.stoverride
 # ==========================================
@@ -233,6 +231,7 @@ rules: #!replace
   - DOMAIN-SUFFIX,stackoverflow.com,自动选择
   - DOMAIN-SUFFIX,stackexchange.com,自动选择
   # 社交
+  - GEOSITE,tiktok,Gemini
   - GEOSITE,telegram,自动选择
   - GEOIP,telegram,自动选择,no-resolve
   
