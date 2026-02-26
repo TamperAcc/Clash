@@ -394,6 +394,7 @@ function main(config) {
     "DOMAIN-SUFFIX,bambulab.cn,DIRECT",
     "DOMAIN-SUFFIX,bambulab.co,DIRECT",
     // 社交
+    "GEOSITE,tiktok,Gemini",
     "GEOSITE,category-communication,自动选择",
     "GEOSITE,telegram,Telegram",
     "GEOIP,telegram,Telegram",

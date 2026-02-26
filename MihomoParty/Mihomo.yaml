@@ -330,6 +330,7 @@ rules:
   - DOMAIN-SUFFIX,bambulab.com,DIRECT
   - DOMAIN-SUFFIX,bambulab.cn,DIRECT
   - DOMAIN-SUFFIX,bambulab.co,DIRECT
+  - GEOSITE,tiktok,Gemini
   - GEOSITE,category-communication,自动选择
   - GEOSITE,telegram,Telegram
   - GEOIP,telegram,Telegram
