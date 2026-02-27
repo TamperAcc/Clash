@@ -1,12 +1,12 @@
 ﻿// FLClash / Mihomo Party 配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/FlClash_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/FlClash_Override.js
-// 版本: v1.21 (自动更新版) | 更新日期: 2026-02-10
+// 版本: v1.22 (自动更新版) | 更新日期: 2026-02-27
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
   // 打印日志方便调试 (在软件日志中可见)
-  console.log("🔵 [Script] 正在应用 FlClash 覆写脚本 v1.21...");
+  console.log("🔵 [Script] 正在应用 FlClash 覆写脚本 v1.22...");
 
 
 
@@ -161,7 +161,7 @@ function main(config) {
       "include-all": true,
       "exclude-filter": "(?i)IEPL|立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
       "url": "https://www.gstatic.com/generate_204",
-      "interval": 300,
+      "interval": 150,
       "tolerance": 100,
       "unified-delay": true,
       "lazy": true
