@@ -220,6 +220,7 @@ rules: #!replace
 
   # 基础连通性修正 (IPv6)
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
+  - DOMAIN-SUFFIX,xmsl.org,DIRECT
   - DOMAIN-SUFFIX,1huanlesap02.top,DIRECT
   - DOMAIN-SUFFIX,ei38d3if3.xyz,DIRECT
   

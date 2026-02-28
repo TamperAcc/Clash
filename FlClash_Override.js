@@ -1,7 +1,7 @@
 ﻿// FLClash / Mihomo Party 配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/FlClash_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/FlClash_Override.js
-// 版本: v1.22 (自动更新版) | 更新日期: 2026-02-27
+// 版本: v1.23 (自动更新版) | 更新日期: 2026-02-28
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
@@ -236,6 +236,7 @@ function main(config) {
     "DOMAIN,ipv6.msftconnecttest.com,REJECT",
     "DOMAIN,ipv6.msftncsi.com,REJECT",
     "DOMAIN-SUFFIX,yfjc.xyz,DIRECT",
+    "DOMAIN-SUFFIX,xmsl.org,DIRECT",
     "DOMAIN-SUFFIX,msftconnecttest.com,DIRECT",
     "DOMAIN-SUFFIX,msftncsi.com,DIRECT",
     "RULE-SET,reject,REJECT",

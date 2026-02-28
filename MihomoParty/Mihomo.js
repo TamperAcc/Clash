@@ -1,7 +1,7 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.js
-// 版本: v2.01  | 更新日期: 2026-02-27
+// 版本: v2.02  | 更新日期: 2026-02-28
 //PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
@@ -273,6 +273,7 @@ function main(config) {
     "DOMAIN-SUFFIX,local,DIRECT",
     "DOMAIN-SUFFIX,home.arpa,DIRECT",
     "DOMAIN-SUFFIX,yfjc.xyz,DIRECT",
+    "DOMAIN-SUFFIX,xmsl.org,DIRECT",
     "DOMAIN-SUFFIX,1huanlesap02.top,DIRECT", // user requested: test.1huanlesap02.top -> DIRECT
     
     // 基础 - 微软连通性测试 (IPv6 需 Reject 以避免卡顿)
