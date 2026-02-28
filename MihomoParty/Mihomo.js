@@ -175,7 +175,7 @@ function main(config) {
       // 🚫 严格排除: 香港/HK, 澳门/Macau/MO, 俄罗斯/RU, 立陶宛/Lithuania/LT, 日本/Japan/JP, 韩国/KR, 中国/CN/China
       "filter": "^(?!.*(俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*",
       "url": "https://gemini.google.com", // 🎯 靶向检测: 直接探测目标网站
-      "expected-status": "200/301/302/307/308", // 🚀 Mihomo原生语法：排除送中/被阻断的403和404
+      "expected-status": "200/301/302/307/308", // 🚀 Mihomo原生语法(不能用正则)：用斜杠分隔状态码，排除送中/被阻断的403和404
       "interval": 320, // 错开 20s
       "tolerance": 100,
 
