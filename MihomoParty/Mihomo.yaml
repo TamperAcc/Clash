@@ -166,7 +166,7 @@ proxy-groups:
       - 组合机场
     filter: ^(?!.*(俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*
     url: https://gemini.google.com
-    expected-status: '^(200|301|302|307)$' # 🎯 正则筛选: 允许200和30x，严格拦截被送中(403/404)或被拦截的节点
+    expected-status: '200/301/302/307/308' # 🎯 Mihomo专用语法: 允许200和30x，严格拦截被送中(403/404)或被拦截的节点
     interval: 320
     tolerance: 100
     lazy: true
@@ -178,7 +178,7 @@ proxy-groups:
       - 组合机场
     filter: ^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*
     url: https://www.bing.com
-    expected-status: '^(200|301|302|307)$'
+    expected-status: '200/301/302/307/308'
     interval: 340
     tolerance: 100
     lazy: true
@@ -190,7 +190,7 @@ proxy-groups:
       - 组合机场
     filter: ^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*
     url: https://api.github.com
-    expected-status: '^(200|301|302|307)$'
+    expected-status: '200/301/302/307/308'
     interval: 360
     tolerance: 100
     lazy: true
@@ -202,7 +202,7 @@ proxy-groups:
       - 组合机场
     filter: ^(?!.*(香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*
     url: https://chatgpt.com
-    expected-status: '^(200|301|302|307)$'
+    expected-status: '200/301/302/307/308'
     interval: 380
     tolerance: 100
     lazy: true
@@ -214,7 +214,7 @@ proxy-groups:
       - 组合机场
     filter: ^(?!.*(俄罗斯|Russia|RU)).*
     url: https://api.telegram.org
-    expected-status: '^(200|301|302|307)$'
+    expected-status: '200/301/302/307/308'
     interval: 400
     tolerance: 100
     lazy: true

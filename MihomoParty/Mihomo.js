@@ -175,7 +175,7 @@ function main(config) {
       // 🚫 严格排除: 香港/HK, 澳门/Macau/MO, 俄罗斯/RU, 立陶宛/Lithuania/LT, 日本/Japan/JP, 韩国/KR, 中国/CN/China
       "filter": "^(?!.*(俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*",
       "url": "https://gemini.google.com", // 🎯 靶向检测: 直接探测目标网站
-      "expected-status": "^(200|301|302|307)$", // 🚀 正则筛选状态码：排除送中/被阻断的403和404
+      "expected-status": "200/301/302/307/308", // 🚀 Mihomo原生语法：排除送中/被阻断的403和404
       "interval": 320, // 错开 20s
       "tolerance": 100,
 
@@ -189,7 +189,7 @@ function main(config) {
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 RU/KP/CU
       "url": "https://www.bing.com",
-      "expected-status": "^(200|301|302|307)$",
+      "expected-status": "200/301/302/307/308",
       "interval": 340, // 错开 20s
       "tolerance": 100,
 
@@ -203,7 +203,7 @@ function main(config) {
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://api.github.com",
-      "expected-status": "^(200|301|302|307)$",
+      "expected-status": "200/301/302/307/308",
       "interval": 360, // 错开 20s
       "tolerance": 100,
 
@@ -217,7 +217,7 @@ function main(config) {
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://chatgpt.com",
-      "expected-status": "^(200|301|302|307)$",
+      "expected-status": "200/301/302/307/308",
       "interval": 380, // 错开 20s
       "tolerance": 100,
 
@@ -232,7 +232,7 @@ function main(config) {
       "filter": "^(?!.*(俄罗斯|Russia|RU)).*",
       // 排除立陶宛防止假延迟？扁平化测速会自动剔除假延迟节点，故不再强制正则排除，靠测速说话
       "url": "https://api.telegram.org",
-      "expected-status": "^(200|301|302|307)$",
+      "expected-status": "200/301/302/307/308",
       "interval": 400, // 错开 20s
       "tolerance": 100,
 
