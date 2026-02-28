@@ -282,6 +282,20 @@ function main(config) {
     "IP-CIDR,224.0.0.0/4,DIRECT,no-resolve", // 优化：组播地址直连
     "IP-CIDR,255.255.255.255/32,DIRECT,no-resolve", // 优化：广播地址直连
     "GEOIP,PRIVATE,DIRECT,no-resolve",
+    
+    // 🎬 Emby 影音服务器分流 (高优先级，防止被后面的 DIRECT 拦截，如 xmsl.org)
+    "DOMAIN,tv.ash.yt,EMBY", // AshEmby
+    "DOMAIN,ask.ash.yt,EMBY", // Ask Ash
+    "DOMAIN,best.28.al,EMBY", // 起点:公费A
+    "DOMAIN,emby.bangumi.ca,EMBY", // Nyamedia:公益
+    "DOMAIN,free.28.al,EMBY", // 起点:公益2-30天保号
+    "DOMAIN,1.eoos.lol,EMBY", // eoos
+    "DOMAIN,v1.uhdnow.com,EMBY", // UHD
+    "DOMAIN,emby-cm.hohai.eu.org,EMBY", // honhai:公费
+    "DOMAIN,emby-npo.hohai.eu.org,EMBY", // hohai:公益
+    "DOMAIN,m.mobaiemby.site,EMBY", // 墨云阁:公益30天保号
+    "DOMAIN,line.xmsl.org,EMBY", // 1111:公费
+
     "DOMAIN-SUFFIX,lan,DIRECT",
     "DOMAIN-SUFFIX,local,DIRECT",
     "DOMAIN-SUFFIX,home.arpa,DIRECT",
