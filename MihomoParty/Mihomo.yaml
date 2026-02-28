@@ -140,7 +140,7 @@ proxy-providers:
     health-check:
       enable: true
       url: http://www.gstatic.com/generate_204
-      interval: 280
+      interval: 240
       expected-status: '204' # 🚀 依赖 Mihomo 1.18+ 内核功能：防止流量耗尽/被墙的情况导致假连通
     override:
       client-fingerprint: chrome
@@ -167,7 +167,7 @@ proxy-groups:
     filter: ^(?!.*(IEPL|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU|日本|Japan|JP)).*
     url: http://www.gstatic.com/generate_204
     expected-status: '204'
-    interval: 300
+    interval: 360
     tolerance: 100
     lazy: true
   - name: Gemini
@@ -179,7 +179,7 @@ proxy-groups:
     filter: ^(?!.*(俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*
     url: https://gemini.google.com
     expected-status: '200/301/302/307/308' # 🎯 Mihomo专用语法(不能用正则): 用斜杠分隔或使用A-B格式，允许200和30x，严格拦截被送中(403/404)或被拦截的节点
-    interval: 320
+    interval: 420
     tolerance: 100
     lazy: true
   - name: Copilot
@@ -191,7 +191,7 @@ proxy-groups:
     filter: ^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*
     url: https://www.bing.com
     expected-status: '200/301/302/307/308'
-    interval: 340
+    interval: 480
     tolerance: 100
     lazy: true
   - name: GitHub Copilot
@@ -203,7 +203,7 @@ proxy-groups:
     filter: ^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*
     url: https://api.github.com
     expected-status: '200/301/302/307/308'
-    interval: 360
+    interval: 540
     tolerance: 100
     lazy: true
   - name: ChatGPT
@@ -215,7 +215,7 @@ proxy-groups:
     filter: ^(?!.*(香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*
     url: https://chatgpt.com
     expected-status: '200/301/302/307/308'
-    interval: 380
+    interval: 600
     tolerance: 100
     lazy: true
   - name: Telegram
@@ -227,7 +227,7 @@ proxy-groups:
     filter: ^(?!.*(俄罗斯|Russia|RU)).*
     url: https://api.telegram.org
     expected-status: '200/301/302/307/308'
-    interval: 400
+    interval: 620
     tolerance: 100
     lazy: true
   - name: 国内
