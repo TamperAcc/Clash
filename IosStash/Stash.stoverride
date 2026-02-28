@@ -115,6 +115,14 @@ proxy-providers:
 # 策略组 (Proxy Groups) - 核心逻辑移植
 # ==========================================
 proxy-groups:
+  - name: EMBY
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 720
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Emby.png
+    include-all: true
+    filter: "(?i)^(?!.*(日本|Japan|JP|KR|韩国|KR)).*"
+
   - name: 自动选择
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
@@ -202,6 +210,19 @@ rules: #!replace
   # - GEOSITE,google,Gemini (STUN 修复后，无需在此处强制前提，恢复原位即可减少误伤) - [v1.74 回退]
 
   - GEOIP,PRIVATE,DIRECT,no-resolve
+
+  # === EMBY 专属分流 (精准匹配) ===
+  - DOMAIN,ntemby.nanaya.top,EMBY
+  - DOMAIN,j1.chinanet.pub,EMBY
+  - DOMAIN,p1.zox.show,EMBY
+  - DOMAIN,nt.tingshu.la,EMBY
+  - DOMAIN,stream.tanhuatv.site,EMBY
+  - DOMAIN,stream2.tanhuatv.site,EMBY
+  - DOMAIN,cf.pm.xmsl.org,DIRECT
+  - DOMAIN,ash.yt,EMBY
+  - DOMAIN,cf.bangumi.ca,EMBY
+  - DOMAIN,emby.pika.pro,EMBY
+  - DOMAIN,xmsl.org,DIRECT
   
   # === 2. 广告拦截与隐私保护 (Geosite 内存优化) ===
   # ♻️ 替换 RULE-SET,reject 为 Geosite,category-ads-all
