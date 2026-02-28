@@ -214,6 +214,7 @@ proxy-groups:
       - 组合机场
     filter: ^(?!.*(俄罗斯|Russia|RU)).*
     url: https://api.telegram.org
+    expected-status: '^(200|301|302|307)$'
     interval: 400
     tolerance: 100
     lazy: true

@@ -232,6 +232,7 @@ function main(config) {
       "filter": "^(?!.*(俄罗斯|Russia|RU)).*",
       // 排除立陶宛防止假延迟？扁平化测速会自动剔除假延迟节点，故不再强制正则排除，靠测速说话
       "url": "https://api.telegram.org",
+      "expected-status": "^(200|301|302|307)$",
       "interval": 400, // 错开 20s
       "tolerance": 100,
 
