@@ -1,7 +1,7 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.js
-// 版本: v2.02  | 更新日期: 2026-02-28
+// 版本: v2.03  | 更新日期: 2026-02-28
 //PC 端终极优化版" (全扁平化架构 + ES5兼容)
 
 function main(config) {
