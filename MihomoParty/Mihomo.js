@@ -174,7 +174,8 @@ function main(config) {
       "use": ["组合机场"], // 引入代理集
       // 🚫 严格排除: 香港/HK, 澳门/Macau/MO, 俄罗斯/RU, 立陶宛/Lithuania/LT, 日本/Japan/JP, 韩国/KR, 中国/CN/China
       "filter": "^(?!.*(俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*",
-      "url": "https://gemini.google.com", // 🎯 靶向检测: 只有能打开 Gemini 的节点才会被选中
+      "url": "http://www.google.com/generate_204", // 🎯 靶向检测: Google 204
+      "expected-status": "204",
       "interval": 320, // 错开 20s
       "tolerance": 100,
 
@@ -187,7 +188,8 @@ function main(config) {
       "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 RU/KP/CU
-      "url": "https://www.bing.com",
+      "url": "http://edge.microsoft.com/captiveportal/generate_204",
+      "expected-status": "204",
       "interval": 340, // 错开 20s
       "tolerance": 100,
 
@@ -200,7 +202,8 @@ function main(config) {
       "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
-      "url": "https://api.github.com",
+      "url": "http://cp.cloudflare.com/generate_204",
+      "expected-status": "204",
       "interval": 360, // 错开 20s
       "tolerance": 100,
 
@@ -213,7 +216,8 @@ function main(config) {
       "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
-      "url": "https://chatgpt.com",
+      "url": "http://cp.cloudflare.com/generate_204",
+      "expected-status": "204",
       "interval": 380, // 错开 20s
       "tolerance": 100,
 
