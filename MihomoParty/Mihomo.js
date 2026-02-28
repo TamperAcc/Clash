@@ -344,7 +344,7 @@ function main(config) {
     // 问题可能出在 Gemini 策略组选到了香港/澳门节点。
     
     // 📚 学术网站 (国外) - 新增
-    "GEOSITE,category-scholar-!cn,国外通用",
+    "GEOSITE,category-scholar-!cn,自动选择",
 
     // 进程 (Windows)
     "PROCESS-NAME,WeChat.exe,DIRECT",
@@ -363,7 +363,7 @@ function main(config) {
     "PROCESS-NAME,BitComet.exe,DIRECT",
     "PROCESS-NAME,uTorrent.exe,DIRECT",
     "PROCESS-NAME,IDMan.exe,DIRECT",
-    "PROCESS-NAME,git.exe,国外通用",
+    "PROCESS-NAME,git.exe,自动选择",
     "PROCESS-NAME,Code.exe,自动选择",
     "PROCESS-NAME,cursor.exe,自动选择",
     "PROCESS-NAME,idea64.exe,自动选择",

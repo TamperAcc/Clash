@@ -289,7 +289,7 @@ rules:
   - DOMAIN-SUFFIX,copilot.microsoft.com,Copilot
   - GEOSITE,github,GitHub Copilot
   - GEOSITE,google,Google
-  - GEOSITE,category-scholar-!cn,国外通用
+  - GEOSITE,category-scholar-!cn,自动选择
   - PROCESS-NAME,WeChat.exe,DIRECT
   - PROCESS-NAME,WeChatAppEx.exe,DIRECT
   - PROCESS-NAME,QQ.exe,DIRECT
@@ -305,7 +305,7 @@ rules:
   - PROCESS-NAME,BitComet.exe,DIRECT
   - PROCESS-NAME,uTorrent.exe,DIRECT
   - PROCESS-NAME,IDMan.exe,DIRECT
-  - PROCESS-NAME,git.exe,国外通用
+  - PROCESS-NAME,git.exe,自动选择
   - PROCESS-NAME,Code.exe,自动选择
   - PROCESS-NAME,cursor.exe,自动选择
   - PROCESS-NAME,idea64.exe,自动选择
