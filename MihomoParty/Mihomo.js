@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.js
-// 版本: v2.03  | 更新日期: 2026-02-28
-//PC 端终极优化版" (全扁平化架构 + ES5兼容)
+// 版本: v2.04  | 更新日期: 2026-03-01
+// PC 端终极优化版" (全扁平化架构 + ES5兼容 + 智能状态码检测)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v2.01 (极限性能版: 开启 DNS ARC 缓存、TCP 并发、连接复用与 Lazy 测速)...");
+  console.log("✅ 加载脚本 v2.04 (极限性能版: 开启智能状态码防假通、DNS ARC 缓存、TCP 并发与 Lazy 测速)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -142,7 +142,7 @@ function main(config) {
         "enable": true,
         "url": "http://www.gstatic.com/generate_204",
         "interval": 280,
-        "expected-status": "204"
+        "expected-status": "204" // 🚀 依赖 Mihomo 1.18+ 内核功能：预期的 HTTP 状态码，防流量耗尽/被墙等假连通情况 (自动踢出跳转节点的防挂神器)
       }
     }
   };
@@ -161,7 +161,7 @@ function main(config) {
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(IEPL|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除过期/流量/IEPL/RU/KP/CU
       "url": "http://www.gstatic.com/generate_204",
-      "expected-status": "204",
+      "expected-status": "204", // 🚀 依赖 Mihomo 1.18+ 内核功能：防止劣质/被封节点强行返回 403/302 导致测速被骗
       "interval": 300,
       "tolerance": 100,
       "lazy": false
