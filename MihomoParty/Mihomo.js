@@ -274,7 +274,10 @@ function main(config) {
   ];
 
   config["rules"] = [
-    // 基础 - 局域网与直连 (Tun 模式路由已排除，但保留作为保险，或供非 Tun 模式使用)
+    // ==========================================
+    // 🔴 层级 1：最高优先级 - 本地与局域网 IP 直连
+    // 作用: 防止局域网设备(NAS/打印机)和网关流量被代理劫持，避免内网死循环
+    // ==========================================
     "IP-CIDR,192.168.0.0/16,DIRECT,no-resolve",
     "IP-CIDR,10.0.0.0/8,DIRECT,no-resolve",
     "IP-CIDR,172.16.0.0/12,DIRECT,no-resolve",
@@ -282,8 +285,12 @@ function main(config) {
     "IP-CIDR,224.0.0.0/4,DIRECT,no-resolve", // 优化：组播地址直连
     "IP-CIDR,255.255.255.255/32,DIRECT,no-resolve", // 优化：广播地址直连
     "GEOIP,PRIVATE,DIRECT,no-resolve",
-    
-    // 🎬 Emby 影音服务器分流 (高优先级，防止被后面的 DIRECT 拦截，如 xmsl.org)
+
+    // ==========================================
+    // 🟠 层级 2：绝对特权区 - 专有业务与内网域名强制分流
+    // 作用: 抢在接下来的所有泛规则和重定向之前，让 Emby 此类特定需求分配好去向
+    // ==========================================
+    // 🎬 Emby 影音服务器分流 (要求剔除日本节点，故分走专有 EMBY 组)
     "DOMAIN,tv.ash.yt,EMBY", // AshEmby
     "DOMAIN,ask.ash.yt,EMBY", // Ask Ash
     "DOMAIN,best.28.al,EMBY", // 起点:公费A
@@ -295,14 +302,20 @@ function main(config) {
     "DOMAIN,emby-npo.hohai.eu.org,EMBY", // hohai:公益
     "DOMAIN,m.mobaiemby.site,EMBY", // 墨云阁:公益30天保号
 
+    // 🏠 内网域名直连兜底保障
     "DOMAIN-SUFFIX,lan,DIRECT",
     "DOMAIN-SUFFIX,local,DIRECT",
     "DOMAIN-SUFFIX,home.arpa,DIRECT",
     "DOMAIN-SUFFIX,yfjc.xyz,DIRECT",
-    "DOMAIN-SUFFIX,xmsl.org,DIRECT",
-    "DOMAIN-SUFFIX,1huanlesap02.top,DIRECT", // user requested: test.1huanlesap02.top -> DIRECT
-    
-    // 基础 - 微软连通性测试 (IPv6 需 Reject 以避免卡顿)
+
+    // EMBY 直连服 (专门摘出，不走上面代理的)
+    "DOMAIN-SUFFIX,xmsl.org,DIRECT", // 1111:公费
+    "DOMAIN-SUFFIX,1huanlesap02.top,DIRECT", // 起点:Pro
+
+    // ==========================================
+    // 🟡 层级 3：系统底层修正与协议拦截
+    // 作用: 修复 Windows 系统连通性状态，并强制拦截 UDP(QUIC) 以挽救测速和流媒体稳定性
+    // ==========================================
     "DOMAIN,ipv6.msftconnecttest.com,REJECT",
     "DOMAIN,ipv6.msftncsi.com,REJECT",
     "DOMAIN-SUFFIX,msftconnecttest.com,DIRECT",
@@ -312,12 +325,18 @@ function main(config) {
     // 强制回退到 TCP，提高代理稳定性
     "AND,((NETWORK,UDP),(DST-PORT,443)),REJECT",
 
+    // ==========================================
+    // 🟢 层级 4：非刚需请求拦截 (去广告)
+    // 作用: 大面积泛规则匹配之前，先打掉广告追踪平台的域名，节省带宽和算力
+    // ==========================================
     // 广告与隐私拦截 (Geosite 替代 Rule-Set)
     "GEOSITE,category-ads-all,REJECT",
-    // 冗余的显式域名规则已包含在 Geosite 中，如果为了保险可保留，但 Geosite 通常已足够
     "DOMAIN-SUFFIX,tracking.miui.com,REJECT",
     
-    // AI 服务 - 核心域名强制分流 (防止漏网致 1060 错误)
+    // ==========================================
+    // 🔵 层级 5：核心 AI 服务精确保护
+    // 作用: 防止被 `GEOSITE,google` 这类大包大揽的后缀接管，造成 AI 无法进入你指定的测速组
+    // ==========================================
     // Google AI / Gemini (关键: opa-pa/proactivebackend)
     "DOMAIN-SUFFIX,gemini.google.com,Gemini",
     "DOMAIN-SUFFIX,bard.google.com,Gemini",
@@ -366,6 +385,10 @@ function main(config) {
     // 📚 学术网站 (国外) - 新增
     "GEOSITE,category-scholar-!cn,自动选择",
 
+    // ==========================================
+    // 🔵 层级 5：应用层进程精准分流 (仅适用于 Tun 模式或 PC 客户端)
+    // 作用: 将软件本体请求固定死向某地，阻止一些软件自己各种探测导致分流混乱 
+    // ==========================================
     // 进程 (Windows)
     "PROCESS-NAME,WeChat.exe,DIRECT",
     "PROCESS-NAME,WeChatAppEx.exe,DIRECT",
@@ -396,6 +419,10 @@ function main(config) {
     "PROCESS-NAME,cloudmusic.exe,DIRECT",
     "PROCESS-NAME,QQMusic.exe,DIRECT", // 优化：增加 QQ 音乐直连
 
+    // ==========================================
+    // 🟣 层级 6：开发者生产力与应用大类 (泛匹配兜底)
+    // 作用: 匹配 GitHub、各种应用市场以及没在上方命中的大型流媒体分类
+    // ==========================================
     // 开发者/微软
     "DOMAIN-SUFFIX,stackoverflow.com,自动选择",
     "DOMAIN-SUFFIX,stackexchange.com,自动选择",
@@ -438,6 +465,10 @@ function main(config) {
     "DST-PORT,139,DIRECT", // NetBIOS
     "DST-PORT,5353,DIRECT", // mDNS
     
+    // ==========================================
+    // ⚫ 层级 7：国家大洲归属判定及最终全球兜底 (终审法院)
+    // 作用: 处理所有在上面六层里成了漏网之鱼的流量，如果是国内 IP/域名就直连，不然就代理
+    // ==========================================
     // 最终匹配
     // Google Rule (blackmatrix7) 优先于 google_domain
     "GEOSITE,cn,国内",

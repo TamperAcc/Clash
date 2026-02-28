@@ -249,6 +249,10 @@ proxy-groups:
       - 自动选择
       - Gemini
 rules:
+  # ==========================================
+  # 🔴 层级 1：最高优先级 - 本地与局域网 IP 直连
+  # 作用: 防止局域网设备(NAS/打印机)和网关流量被代理劫持，会导致断网
+  # ==========================================
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
   - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
@@ -256,7 +260,12 @@ rules:
   - IP-CIDR,224.0.0.0/4,DIRECT,no-resolve
   - IP-CIDR,255.255.255.255/32,DIRECT,no-resolve
   - GEOIP,PRIVATE,DIRECT,no-resolve
-  # 🎬 Emby 影音服务器分流 (高优先级)
+  
+  # ==========================================
+  # 🟠 层级 2：绝对特权区 - 专有业务与内网域名强制分流
+  # 作用: 抢在泛匹配之前，确保特定的 Emby 服绝对走高优代理或者指定的直连通道
+  # ==========================================
+  # 🎬 Emby 影音代理服务器分流 (要求剔除去日本)
   - DOMAIN,tv.ash.yt,EMBY # AshEmby
   - DOMAIN,ask.ash.yt,EMBY # Ask Ash
   - DOMAIN,best.28.al,EMBY # 起点:公费A
@@ -271,8 +280,14 @@ rules:
   - DOMAIN-SUFFIX,local,DIRECT
   - DOMAIN-SUFFIX,home.arpa,DIRECT
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
-  - DOMAIN-SUFFIX,xmsl.org,DIRECT
-  - DOMAIN-SUFFIX,1huanlesap02.top,DIRECT
+  # EMBY 直连服 (独立拆分)
+  - DOMAIN-SUFFIX,xmsl.org,DIRECT  # 1111:公费
+  - DOMAIN-SUFFIX,1huanlesap02.top,DIRECT  # 起点:Pro
+  
+  # ==========================================
+  # 🟡 层级 3：系统底层修正与广告协议拦截
+  # 作用: 修复 Windows 系统连通性探测、关闭阻断 QUIC 保流媒体、彻底去广告兜底
+  # ==========================================
   - DOMAIN,ipv6.msftconnecttest.com,REJECT
   - DOMAIN,ipv6.msftncsi.com,REJECT
   - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
@@ -280,6 +295,11 @@ rules:
   - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
   - GEOSITE,category-ads-all,REJECT
   - DOMAIN-SUFFIX,tracking.miui.com,REJECT
+  
+  # ==========================================
+  # 🟢 层级 4：核心核心 AI 服务精准保护
+  # 作用: 防止被大厂泛解析接管，这部分全部指定走最精简专门筛掉送中的代理点
+  # ==========================================
   - DOMAIN-SUFFIX,gemini.google.com,Gemini
   - DOMAIN-SUFFIX,bard.google.com,Gemini
   - DOMAIN,gemini.google.com,Gemini
@@ -307,6 +327,10 @@ rules:
   - GEOSITE,github,GitHub Copilot
   - GEOSITE,google,Google
   - GEOSITE,category-scholar-!cn,自动选择
+  # ==========================================
+  # 🔵 层级 5：应用层进程精准分流 (仅适用于 Tun 模式或 PC 客户端)
+  # 作用: 将软件本体请求固定死向某地，阻止一些软件自己各种探测导致分流混乱 
+  # ==========================================
   - PROCESS-NAME,WeChat.exe,DIRECT
   - PROCESS-NAME,WeChatAppEx.exe,DIRECT
   - PROCESS-NAME,QQ.exe,DIRECT
@@ -334,6 +358,10 @@ rules:
   - PROCESS-NAME,Uplay.exe,自动选择
   - PROCESS-NAME,cloudmusic.exe,DIRECT
   - PROCESS-NAME,QQMusic.exe,DIRECT
+  # ==========================================
+  # 🟣 层级 6：开发者生产力与应用大类 (泛匹配兜底)
+  # 作用: 匹配 GitHub、各种应用市场以及部分没写具体的其它大型流媒体 (会命中大路由策略)
+  # ==========================================
   - DOMAIN-SUFFIX,stackoverflow.com,自动选择
   - DOMAIN-SUFFIX,stackexchange.com,自动选择
   - DOMAIN-SUFFIX,npmjs.com,自动选择
@@ -368,6 +396,10 @@ rules:
   - DST-PORT,138,DIRECT
   - DST-PORT,139,DIRECT
   - DST-PORT,5353,DIRECT
+  # ==========================================
+  # ⚫ 层级 7：国家大洲归属判定及最终全球兜底 (终审法院)
+  # 作用: 处理所有在上面六层里成了漏网之鱼的所有域名和 IP，如果是国内的就直连，不然就代理
+  # ==========================================
   - GEOSITE,cn,国内
   - GEOIP,cn,国内,no-resolve
   - GEOSITE,geolocation-!cn,自动选择
