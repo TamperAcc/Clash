@@ -248,12 +248,6 @@ proxy-groups:
     proxies:
       - 自动选择
       - Gemini
-  - name: 国外通用
-    type: select
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png
-    proxies:
-      - 自动选择
-      - Gemini
 rules:
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve

@@ -141,7 +141,7 @@ function main(config) {
       "health-check": {
         "enable": true,
         "url": "http://www.gstatic.com/generate_204",
-        "interval": 280,
+        "interval": 240,
         "expected-status": "204" // 🚀 依赖 Mihomo 1.18+ 内核功能：预期的 HTTP 状态码，防流量耗尽/被墙等假连通情况 (自动踢出跳转节点的防挂神器)
       }
     }
@@ -175,7 +175,7 @@ function main(config) {
       "filter": "^(?!.*(IEPL|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU|日本|Japan|JP)).*", // 额外排除日本节点
       "url": "http://www.gstatic.com/generate_204",
       "expected-status": "204",
-      "interval": 300,
+      "interval": 360,
       "tolerance": 100,
       "lazy": true
     },
@@ -189,7 +189,7 @@ function main(config) {
       "filter": "^(?!.*(俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*",
       "url": "https://gemini.google.com", // 🎯 靶向检测: 直接探测目标网站
       "expected-status": "200/301/302/307/308", // 🚀 Mihomo原生语法(不能用正则)：用斜杠分隔状态码，排除送中/被阻断的403和404
-      "interval": 320, // 错开 20s
+      "interval": 420, // 错开 60s
       "tolerance": 100,
 
       "lazy": true
@@ -203,7 +203,7 @@ function main(config) {
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 RU/KP/CU
       "url": "https://www.bing.com",
       "expected-status": "200/301/302/307/308",
-      "interval": 340, // 错开 20s
+      "interval": 480, // 错开 20s
       "tolerance": 100,
 
       "lazy": true
@@ -217,7 +217,7 @@ function main(config) {
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://api.github.com",
       "expected-status": "200/301/302/307/308",
-      "interval": 360, // 错开 20s
+      "interval": 540, // 错开 20s
       "tolerance": 100,
 
       "lazy": true
@@ -231,7 +231,7 @@ function main(config) {
       "filter": "^(?!.*(香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://chatgpt.com",
       "expected-status": "200/301/302/307/308",
-      "interval": 380, // 错开 20s
+      "interval": 600, // 错开 20s
       "tolerance": 100,
 
       "lazy": true
@@ -246,7 +246,7 @@ function main(config) {
       // 排除立陶宛防止假延迟？扁平化测速会自动剔除假延迟节点，故不再强制正则排除，靠测速说话
       "url": "https://api.telegram.org",
       "expected-status": "200/301/302/307/308",
-      "interval": 400, // 错开 20s
+      "interval": 620, // 错开 20s
       "tolerance": 100,
 
       "lazy": true
@@ -269,12 +269,6 @@ function main(config) {
       "name": "YouTube",
       "type": "select",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/YouTube.png",
-      "proxies": ["自动选择", "Gemini"]
-    },
-    {
-      "name": "国外通用",
-      "type": "select",
-      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Global.png",
       "proxies": ["自动选择", "Gemini"]
     }
   ];
