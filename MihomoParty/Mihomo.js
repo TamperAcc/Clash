@@ -141,7 +141,8 @@ function main(config) {
       "health-check": {
         "enable": true,
         "url": "http://www.gstatic.com/generate_204",
-        "interval": 280
+        "interval": 280,
+        "expected-status": "204"
       }
     }
   };
@@ -160,6 +161,7 @@ function main(config) {
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(IEPL|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除过期/流量/IEPL/RU/KP/CU
       "url": "http://www.gstatic.com/generate_204",
+      "expected-status": "204",
       "interval": 300,
       "tolerance": 100,
       "lazy": false
