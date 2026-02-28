@@ -165,8 +165,8 @@ proxy-groups:
     use:
       - 组合机场
     filter: ^(?!.*(俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*
-    url: http://www.google.com/generate_204
-    expected-status: '204' # 🚀 依赖 Mihomo 1.18+ 内核功能：防止劣质/被封节点强行返回 403/302 导致测速被骗
+    url: https://gemini.google.com
+    expected-status: '^(200|301|302|307)$' # 🎯 正则筛选: 允许200和30x，严格拦截被送中(403/404)或被拦截的节点
     interval: 320
     tolerance: 100
     lazy: true
@@ -177,8 +177,8 @@ proxy-groups:
     use:
       - 组合机场
     filter: ^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*
-    url: http://edge.microsoft.com/captiveportal/generate_204
-    expected-status: '204'
+    url: https://www.bing.com
+    expected-status: '^(200|301|302|307)$'
     interval: 340
     tolerance: 100
     lazy: true
@@ -189,8 +189,8 @@ proxy-groups:
     use:
       - 组合机场
     filter: ^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*
-    url: http://cp.cloudflare.com/generate_204
-    expected-status: '204'
+    url: https://api.github.com
+    expected-status: '^(200|301|302|307)$'
     interval: 360
     tolerance: 100
     lazy: true
@@ -201,8 +201,8 @@ proxy-groups:
     use:
       - 组合机场
     filter: ^(?!.*(香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*
-    url: http://cp.cloudflare.com/generate_204
-    expected-status: '204'
+    url: https://chatgpt.com
+    expected-status: '^(200|301|302|307)$'
     interval: 380
     tolerance: 100
     lazy: true
