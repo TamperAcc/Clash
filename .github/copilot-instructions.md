@@ -80,5 +80,9 @@ The configuration logic flows from Reference YAMLs to Implementation Scripts.
   - JS: Guard `if (!config) return {};`.
   - Stoverride: Ensure correct YAML indentation for injected script sections.
 - **Variables**: `const` for static lists (proxies, rules), avoid global scope pollution.
-- **Patterns**: Use `createRegionSets` helper in JS for creating auto-test groups.
+## 6. Critical Operational Warnings
+- **PowerShell File Encoding (乱码警告)**: When manipulating files using Windows PowerShell tools like `Set-Content` or `Out-File`, **you MUST explicitly specify `-Encoding UTF8`**. PowerShell 5.1 defaults to ANSI/Default encoding, which WILL DESTROY all Chinese characters in configuration files, causing catastrophic parser failures (乱码) for Clash/Stash parsing. 
+  - **Wrong**: `Get-Content file.txt | % { $_ -replace 'A', 'B' } | Set-Content file.txt`
+  - **Correct**: `(Get-Content file.txt -Raw) -replace 'A', 'B' | Set-Content file.txt -Encoding UTF8`
+  - *Note*: Using `replace_string_in_file` tool or Node.js (`fs.writeFileSync`) is always preferred over PowerShell scripting for file modifications due to newline (`\n` vs `\r\n`) and encoding issues.
 
