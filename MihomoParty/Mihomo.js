@@ -167,6 +167,19 @@ function main(config) {
       "lazy": false
     },
     {
+      "name": "EMBY",
+      "type": "url-test",
+      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Emby.png",
+      "include-all": true,
+      "use": ["组合机场"], // 引入代理集
+      "filter": "^(?!.*(IEPL|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU|日本|Japan|JP)).*", // 额外排除日本节点
+      "url": "http://www.gstatic.com/generate_204",
+      "expected-status": "204",
+      "interval": 300,
+      "tolerance": 100,
+      "lazy": true
+    },
+    {
       "name": "Gemini",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
