@@ -294,7 +294,6 @@ function main(config) {
     "DOMAIN,emby-cm.hohai.eu.org,EMBY", // honhai:公费
     "DOMAIN,emby-npo.hohai.eu.org,EMBY", // hohai:公益
     "DOMAIN,m.mobaiemby.site,EMBY", // 墨云阁:公益30天保号
-    "DOMAIN,line.xmsl.org,EMBY", // 1111:公费
 
     "DOMAIN-SUFFIX,lan,DIRECT",
     "DOMAIN-SUFFIX,local,DIRECT",
