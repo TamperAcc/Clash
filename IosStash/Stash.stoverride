@@ -115,14 +115,6 @@ proxy-providers:
 # 策略组 (Proxy Groups) - 核心逻辑移植
 # ==========================================
 proxy-groups:
-  - name: EMBY
-    type: url-test
-    url: http://www.gstatic.com/generate_204
-    interval: 720
-    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Emby.png
-    include-all: true
-    filter: "(?i)^(?!.*(日本|Japan|JP|KR|韩国|KR)).*"
-
   - name: 自动选择
     type: url-test
     icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
@@ -135,6 +127,14 @@ proxy-groups:
     interval: 600   # 🔋 极致省电
     tolerance: 100
     lazy: true
+
+  - name: EMBY
+    type: url-test
+    url: http://www.gstatic.com/generate_204
+    interval: 720
+    icon: https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Emby.png
+    include-all: true
+    filter: "(?i)^(?!.*(日本|Japan|JP|KR|韩国|KR)).*"
 
   - name: Gemini
     type: url-test
