@@ -163,7 +163,7 @@ function main(config) {
       "url": "http://www.gstatic.com/generate_204",
       "interval": 150,
       "tolerance": 100,
-      "lazy": true
+      "lazy": false
     },
     {
       "name": "Gemini",
