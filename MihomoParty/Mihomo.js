@@ -73,7 +73,6 @@ function main(config) {
     "fallback-filter": { 
       "geoip": true, 
       "geoip-code": "CN", 
-      "geosite": ["geolocation-!cn"], // 🚀 极限优化：匹配非大陆域名的直接使用 fallback 结果，跳过 IP 验证，大幅降低解析延迟 (比 gfw 列表更全)
       "ipcidr": ["240.0.0.0/4"] 
     },
     "nameserver-policy": {
