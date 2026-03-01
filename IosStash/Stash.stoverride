@@ -1,5 +1,5 @@
 ﻿#SUBSCRIBED http://104.194.75.174:3001/api/file/Stash.stoverride
-# Last Updated: 2026-03-01 [Stash v2.08]
+# Last Updated: 2026-03-01 [Stash v2.09]
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/IosStash/Stash.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/IosStash/Stash.stoverride
 # ==========================================
@@ -222,6 +222,7 @@ rules: #!replace
   - DOMAIN,ash.yt,EMBY
   - DOMAIN,cf.bangumi.ca,EMBY
   - DOMAIN,emby.pika.pro,EMBY
+  - DOMAIN,us01.doudou.pet,EMBY # Ryan:公益
   - DOMAIN,xmsl.org,DIRECT
   
   # === 2. 广告拦截与隐私保护 (Geosite 内存优化) ===

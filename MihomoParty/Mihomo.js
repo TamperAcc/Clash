@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.js
-// 版本: v2.08  | 更新日期: 2026-03-01
+// 版本: v2.09  | 更新日期: 2026-03-01
 // PC 端终极优化版" (全扁平化架构 + ES5兼容 + 智能状态码检测)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v2.06 (极限性能版: 开启智能状态码防假通、DNS ARC 缓存、TCP 并发与 Lazy 测速)...");
+  console.log("✅ 加载脚本 v2.09 (极限性能版: 开启智能状态码防假通、DNS ARC 缓存、TCP 并发与 Lazy 测速)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -301,6 +301,7 @@ function main(config) {
     "DOMAIN,emby-cm.hohai.eu.org,EMBY", // honhai:公费
     "DOMAIN,emby-npo.hohai.eu.org,EMBY", // hohai:公益
     "DOMAIN,m.mobaiemby.site,EMBY", // 墨云阁:公益30天保号
+    "DOMAIN,us01.doudou.pet,EMBY", // Ryan:公益
 
     // 🏠 内网域名直连兜底保障
     "DOMAIN-SUFFIX,lan,DIRECT",
