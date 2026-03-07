@@ -1,4 +1,4 @@
-﻿# Last Updated: 2026-02-22 [Stash v1.99]
+﻿# Last Updated: 2026-03-07 [Stash v2.00]
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/IosStash/Stash.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/IosStash/Stash.stoverride
 # Stash 元数据
@@ -205,6 +205,10 @@ rules: #!replace
   # - GEOSITE,google,Gemini (STUN 修复后，无需在此处强制前提，恢复原位即可减少误伤) - [v1.74 回退]
 
   - GEOIP,PRIVATE,DIRECT,no-resolve
+
+  # === EMBY 专属分流 (精准匹配) ===
+  - DOMAIN,us01.doudou.pet,EMBY
+  - DOMAIN-SUFFIX,test.startspoint.com,EMBY
   
   # === 2. 广告拦截与隐私保护 (Geosite 内存优化) ===
   # ♻️ 替换 RULE-SET,reject 为 Geosite,category-ads-all
@@ -227,7 +231,6 @@ rules: #!replace
   # 测速服务
   - GEOSITE,ookla-speedtest,DIRECT
   - DOMAIN-SUFFIX,fast.com,自动选择
-  - DOMAIN-SUFFIX,startspoint.com,自动选择
   
   # 优化: 移除冗余 CDN 及国内域名列表, 使用 Geosite:cn 统一代理
   # - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT (已移除，防JSdelivr污染)

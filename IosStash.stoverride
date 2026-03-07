@@ -1,4 +1,4 @@
-# Last Updated: 2026-02-17 [IosStash.stoverride v1.02]
+# Last Updated: 2026-03-07 [IosStash.stoverride v1.03]
 # 移植自 PC 端 Mihomo_Override.js v1.90
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/IosStash.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/IosStash.stoverride
@@ -79,6 +79,9 @@ rules: #!replace
   - DOMAIN-SUFFIX,lan,DIRECT
   - DOMAIN-SUFFIX,local,DIRECT
   - DOMAIN-SUFFIX,home.arpa,DIRECT
+
+  # === EMBY 专属分流 (精准匹配) ===
+  - DOMAIN-SUFFIX,test.startspoint.com,EMBY
   
   # === 2. 广告拦截与隐私保护 (Geosite 内存优化) ===
   # ♻️ 替换 RULE-SET,reject 为 Geosite,category-ads-all
@@ -112,7 +115,6 @@ rules: #!replace
   # 测速服务
   - GEOSITE,ookla-speedtest,DIRECT
   - DOMAIN-SUFFIX,fast.com,自动选择
-  - DOMAIN-SUFFIX,startspoint.com,自动选择
   
   # 优化: 移除冗余 CDN 及国内域名列表, 使用 Geosite:cn 统一代理
   # - DOMAIN-SUFFIX,cdn.jsdelivr.net,DIRECT (已移除，防JSdelivr污染)

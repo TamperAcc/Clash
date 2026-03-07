@@ -1,7 +1,7 @@
 # Mihomo Party 专用配置文件 (由 Mihomo.js 转换而来)
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.yaml
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.yaml
-# 版本: v2.09 | 更新日期: 2026-03-01
+# 版本: v2.10 | 更新日期: 2026-03-07
 # 说明: 
 # 1. 本文件为完整的 YAML 配置，可直接作为 Mihomo Party 的【配置(Profile)】导入使用。
 # 2. 相比 JS 覆写脚本，YAML 格式解析更快，且原生支持。
@@ -277,6 +277,7 @@ rules:
   - DOMAIN,emby-npo.hohai.eu.org,EMBY # hohai:公益
   - DOMAIN,m.mobaiemby.site,EMBY # 墨云阁:公益30天保号
   - DOMAIN,us01.doudou.pet,EMBY # Ryan:公益
+  - DOMAIN-SUFFIX,test.startspoint.com,EMBY # 起点公费A
   - DOMAIN-SUFFIX,lan,DIRECT
   - DOMAIN-SUFFIX,local,DIRECT
   - DOMAIN-SUFFIX,home.arpa,DIRECT
@@ -391,7 +392,6 @@ rules:
   - DOMAIN-SUFFIX,speedtest.net,DIRECT
   - DOMAIN-SUFFIX,ookla.com,DIRECT
   - DOMAIN-SUFFIX,fast.com,自动选择
-  - DOMAIN-SUFFIX,startspoint.com,自动选择
   - DST-PORT,123,DIRECT
   - DST-PORT,137,DIRECT
   - DST-PORT,138,DIRECT
