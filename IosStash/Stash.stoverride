@@ -1,5 +1,5 @@
 ﻿#SUBSCRIBED http://104.194.75.174:3001/api/file/Stash.stoverride
-# Last Updated: 2026-03-07 [Stash v2.11]
+# Last Updated: 2026-03-08 [Stash v2.12]
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/IosStash/Stash.stoverride
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/IosStash/Stash.stoverride
 # ==========================================
@@ -101,7 +101,7 @@ sniffer:
 proxy-providers:
   组合机场:
     type: http
-    url: "https://sub.store/download/collection/%E7%BB%84%E5%90%88%E6%9C%BA%E5%9C%BA?target=ClashMeta"
+    url: "https://sub.tymin.cn:8443/xiejian2026/download/collection/%E7%BB%84%E5%90%88%E6%9C%BA%E5%9C%BA"
     interval: 86400
     path: ./proxies/sub_store_collection.yaml
     # 🚀 内存优化: 在源头直接过滤掉垃圾节点，防止它们进入内存和 UI
