@@ -1,7 +1,7 @@
 # Mihomo Party 专用配置文件 (由 Mihomo.js 转换而来)
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.yaml
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.yaml
-# 版本: v2.10 | 更新日期: 2026-03-07
+# 版本: v2.11 | 更新日期: 2026-03-07
 # 说明: 
 # 1. 本文件为完整的 YAML 配置，可直接作为 Mihomo Party 的【配置(Profile)】导入使用。
 # 2. 相比 JS 覆写脚本，YAML 格式解析更快，且原生支持。
@@ -155,7 +155,7 @@ proxy-groups:
     filter: ^(?!.*(IEPL|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*
     url: http://www.gstatic.com/generate_204
     expected-status: '204' # 🚀 依赖 Mihomo 1.18+ 内核功能：防止劣质/被封节点强行返回 403/302 导致测速被骗
-    interval: 300
+    interval: 120
     tolerance: 100
     lazy: false
   - name: EMBY
