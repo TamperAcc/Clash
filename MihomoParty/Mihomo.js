@@ -278,7 +278,6 @@ function main(config) {
     // 🔴 层级 1：最高优先级 - 本地与局域网 IP 直连
     // 作用: 防止局域网设备(NAS/打印机)和网关流量被代理劫持，避免内网死循环
     // ==========================================
-    "DOMAIN-SUFFIX,1145145.com,DIRECT",
     "IP-CIDR,192.168.0.0/16,DIRECT,no-resolve",
     "IP-CIDR,10.0.0.0/8,DIRECT,no-resolve",
     "IP-CIDR,172.16.0.0/12,DIRECT,no-resolve",
@@ -390,8 +389,9 @@ function main(config) {
 
     // ==========================================
     // 🔵 层级 5：应用层进程精准分流 (仅适用于 Tun 模式或 PC 客户端)
-    // 作用: 将软件本体请求固定死向某地，阻止一些软件自己各种探测导致分流混乱 
+    // 作用: 将软件本体请求固定死向某地，阻止一些软件自己各种探测导致分流混乱
     // ==========================================
+    "DOMAIN-SUFFIX,1145145.com,DIRECT",
     // 进程 (Windows)
     "PROCESS-NAME,WeChat.exe,DIRECT",
     "PROCESS-NAME,WeChatAppEx.exe,DIRECT",

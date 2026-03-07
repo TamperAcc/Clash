@@ -235,6 +235,7 @@ rules: #!replace
   # (移除 redundant 显式域名，交由 Geosite 处理)
   
   # === 3. 进程匹配 (iOS/macOS) ===
+  - DOMAIN-SUFFIX,1145145.com,DIRECT
   # 🧹 清理：移除了大量 Windows .exe 规则，减少 iOS 匹配开销
   # ⚠️ 注意: 当前文件仅供 iOS 使用，已移除 macOS 专属的 PROCESS-NAME 规则
   - DOMAIN-SUFFIX,bambulab.com,DIRECT
