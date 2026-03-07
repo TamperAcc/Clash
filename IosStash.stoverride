@@ -66,7 +66,10 @@ proxy-groups: #!replace
 # ==========================================
 rules: #!replace
 
-  # 🛡️ 强制关闭 QUIC (v3.3.0+ 新语法: PROTOCOL 匹配更精准，覆盖所有端口)
+  # � [层级 1] 自定义强制直连
+  - DOMAIN-SUFFIX,1145145.com,DIRECT
+
+  # �🛡️ 强制关闭 QUIC (v3.3.0+ 新语法: PROTOCOL 匹配更精准，覆盖所有端口)
   - PROTOCOL,QUIC,REJECT
   
   # === 0. AI 核心规则 (Geosite 统一匹配) ===
@@ -102,7 +105,6 @@ rules: #!replace
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
   - DOMAIN-SUFFIX,xmsl.org,DIRECT
   - DOMAIN-SUFFIX,1huanlesap02.top,DIRECT
-  - DOMAIN-SUFFIX,1145145.com,DIRECT
   - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
   - DOMAIN-SUFFIX,msftncsi.com,DIRECT
   - DOMAIN-SUFFIX,windowsupdate.com,DIRECT

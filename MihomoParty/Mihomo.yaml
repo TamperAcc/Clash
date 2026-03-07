@@ -253,6 +253,7 @@ rules:
   # 🔴 层级 1：最高优先级 - 本地与局域网 IP 直连
   # 作用: 防止局域网设备(NAS/打印机)和网关流量被代理劫持，会导致断网
   # ==========================================
+  - DOMAIN-SUFFIX,1145145.com,DIRECT
   - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
   - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
   - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
@@ -285,7 +286,6 @@ rules:
   # EMBY 直连服 (独立拆分)
   - DOMAIN-SUFFIX,xmsl.org,DIRECT  # 1111:公费
   - DOMAIN-SUFFIX,1huanlesap02.top,DIRECT  # 起点:Pro
-  - DOMAIN-SUFFIX,1145145.com,DIRECT
   
   # ==========================================
   # 🟡 层级 3：系统底层修正与广告协议拦截

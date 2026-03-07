@@ -174,7 +174,10 @@ proxy-groups:
 # ==========================================
 rules: #!replace
 
-  # 🛡️ 强制关闭 QUIC (v3.3.0+ 新语法: PROTOCOL 匹配更精准，覆盖所有端口)
+  # � [层级 1] 自定义强制直连
+  - DOMAIN-SUFFIX,1145145.com,DIRECT
+
+  # �🛡️ 强制关闭 QUIC (v3.3.0+ 新语法: PROTOCOL 匹配更精准，覆盖所有端口)
   - PROTOCOL,QUIC,REJECT
   
   # 🔋 [电量优化 & 防死锁] 核心基础服务硬编码直连
@@ -226,7 +229,6 @@ rules: #!replace
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
   - DOMAIN-SUFFIX,xmsl.org,DIRECT
   - DOMAIN-SUFFIX,1huanlesap02.top,DIRECT
-  - DOMAIN-SUFFIX,1145145.com,DIRECT
   - DOMAIN-SUFFIX,ei38d3if3.xyz,DIRECT
   
   # 测速服务
