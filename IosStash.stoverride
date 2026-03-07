@@ -102,6 +102,7 @@ rules: #!replace
   - DOMAIN-SUFFIX,yfjc.xyz,DIRECT
   - DOMAIN-SUFFIX,xmsl.org,DIRECT
   - DOMAIN-SUFFIX,1huanlesap02.top,DIRECT
+  - DOMAIN-SUFFIX,1145145.com,DIRECT
   - DOMAIN-SUFFIX,msftconnecttest.com,DIRECT
   - DOMAIN-SUFFIX,msftncsi.com,DIRECT
   - DOMAIN-SUFFIX,windowsupdate.com,DIRECT

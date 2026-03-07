@@ -313,6 +313,7 @@ function main(config) {
     // EMBY 直连服 (专门摘出，不走上面代理的)
     "DOMAIN-SUFFIX,xmsl.org,DIRECT", // 1111:公费
     "DOMAIN-SUFFIX,1huanlesap02.top,DIRECT", // 起点:Pro
+    "DOMAIN-SUFFIX,1145145.com,DIRECT",
 
     // ==========================================
     // 🟡 层级 3：系统底层修正与协议拦截

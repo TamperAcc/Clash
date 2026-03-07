@@ -285,6 +285,7 @@ rules:
   # EMBY 直连服 (独立拆分)
   - DOMAIN-SUFFIX,xmsl.org,DIRECT  # 1111:公费
   - DOMAIN-SUFFIX,1huanlesap02.top,DIRECT  # 起点:Pro
+  - DOMAIN-SUFFIX,1145145.com,DIRECT
   
   # ==========================================
   # 🟡 层级 3：系统底层修正与广告协议拦截
