@@ -1,7 +1,7 @@
 # Mihomo Party 专用配置文件 (由 Mihomo.js 转换而来)
 # 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.yaml
 # 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.yaml
-# 版本: v2.11 | 更新日期: 2026-03-07
+# 版本: v2.12 | 更新日期: 2026-03-08
 # 说明: 
 # 1. 本文件为完整的 YAML 配置，可直接作为 Mihomo Party 的【配置(Profile)】导入使用。
 # 2. 相比 JS 覆写脚本，YAML 格式解析更快，且原生支持。
@@ -133,7 +133,7 @@ rule-providers: {}
 proxy-providers:
   组合机场:
     type: http
-    url: https://sub.tymin.cn:8443/download/collection/%E7%BB%84%E5%90%88%E6%9C%BA%E5%9C%BA
+    url: https://sub.tymin.cn:8443/xiejian2026/download/collection/%E7%BB%84%E5%90%88%E6%9C%BA%E5%9C%BA
     path: ./proxy_providers/组合机场.yaml
     interval: 3600
     filter: (?i)^(?!.*(流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*
