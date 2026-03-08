@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.js
-// 版本: v2.12  | 更新日期: 2026-03-08
+// 版本: v2.13  | 更新日期: 2026-03-08
 // PC 端终极优化版" (全扁平化架构 + ES5兼容 + 智能状态码检测)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v2.12 (极限性能版: 开启智能状态码防假通、DNS ARC 缓存、TCP 并发与 Lazy 测速)...");
+  console.log("✅ 加载脚本 v2.13 (极限性能版: 开启智能状态码防假通、DNS ARC 缓存、TCP 并发与 Lazy 测速)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -16,7 +16,7 @@ function main(config) {
 
   // 1. 基础设置优化
   config["log-level"] = "info"; // 恢复默认 info 日志
-  config["tcp-concurrent"] = true;
+  config["tcp-concurrent"] = false;
   config["unified-delay"] = true; // 开启统一延迟，更准确
   config["global-ua"] = "chrome"; // 优化：全局伪装 UA，防止订阅或规则下载被墙/被拦截
   config["keep-alive-idle"] = 15; // 优化：空闲连接保持时间
@@ -97,7 +97,7 @@ function main(config) {
   config["tun"] = {
     "enable": true,
     "stack": "mixed", // 🚀 极限优化：Windows 下推荐 mixed 栈，结合 system 和 gvisor 优势，提升吞吐量
-    "mtu": 9000, // 🚀 极限优化：开启巨型帧，大幅提升大文件下载和流媒体吞吐量
+    "mtu": 1500, // 🚀 极限优化：开启巨型帧，大幅提升大文件下载和流媒体吞吐量
     "auto-route": true,
     "auto-detect-interface": true,
     "strict-route": true,

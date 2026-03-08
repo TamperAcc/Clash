@@ -1,7 +1,7 @@
 ﻿// FLClash / Mihomo Party 配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/FlClash_Override.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/FlClash_Override.js
-// 版本: v1.24 (自动更新版) | 更新日期: 2026-02-28
+// 版本: v1.25 (自动更新版) | 更新日期: 2026-03-08
 // 移植自 ClashVerge.yaml "PC 端终极优化版"
 
 function main(config) {
@@ -11,7 +11,7 @@ function main(config) {
 
 
   // 1. 基础设置优化
-  config["tcp-concurrent"] = true;
+  config["tcp-concurrent"] = false;
   config["unified-delay"] = true;
   config["global-ua"] = "chrome";
   config["keep-alive-interval"] = 30;
@@ -101,7 +101,7 @@ function main(config) {
   config["tun"] = {
     "enable": true,
     "stack": "mixed",
-    "mtu": 9000, // 🚀 极限优化：开启巨型帧
+    "mtu": 1500, // 🚀 极限优化：开启巨型帧
     "auto-route": true,
     "auto-detect-interface": true,
     "strict-route": true,
