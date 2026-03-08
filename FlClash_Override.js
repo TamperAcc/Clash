@@ -162,7 +162,7 @@ function main(config) {
       "exclude-filter": "(?i)IEPL|立陶宛|Lithuania|LT|俄罗斯|Russia|RU|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
       "url": "https://www.gstatic.com/generate_204",
       "interval": 150,
-      "tolerance": 30,
+      "tolerance": 100,
       "unified-delay": true,
       "lazy": true
     },
@@ -186,7 +186,7 @@ function main(config) {
       "exclude-filter": "(?i)俄罗斯|Russia|RU|立陶宛|Lithuania|LT|流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新",
       "url": "https://api.telegram.org",
       "interval": 300,
-      "tolerance": 30,
+      "tolerance": 100,
       "unified-delay": true
     },
     
@@ -392,4 +392,3 @@ function main(config) {
 
   return config;
 }
-

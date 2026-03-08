@@ -1,4 +1,4 @@
-﻿// Mihomo Party 专用配置文件覆写脚本
+// Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.js
 // 版本: v2.16  | 更新日期: 2026-03-08
@@ -163,7 +163,7 @@ function main(config) {
       "url": "https://www.gstatic.com/generate_204",
       "expected-status": "204", // 🚀 依赖 Mihomo 1.18+ 内核功能：防止劣质/被封节点强行返回 403/302 导致测速被骗
       "interval": 300,
-      "tolerance": 30, // 优化：将容差降至30ms，更积极切低延迟
+      "tolerance": 100,
       "lazy": false
     },
     {
@@ -176,7 +176,7 @@ function main(config) {
       "url": "https://www.gstatic.com/generate_204",
       "expected-status": "204",
       "interval": 360,
-      "tolerance": 30, // 优化：将容差降至30ms，更积极切低延迟
+      "tolerance": 100,
       "lazy": true
     },
     {
@@ -190,7 +190,7 @@ function main(config) {
       "url": "https://gemini.google.com", // 🎯 靶向检测: 直接探测目标网站
       "expected-status": "200/301/302/307/308", // 🚀 Mihomo原生语法(不能用正则)：用斜杠分隔状态码，排除送中/被阻断的403和404
       "interval": 420, // 错开 60s
-      "tolerance": 30, // 优化：将容差降至30ms，更积极切低延迟
+      "tolerance": 100,
 
       "lazy": true
     },
@@ -204,7 +204,7 @@ function main(config) {
       "url": "https://www.bing.com",
       "expected-status": "200/301/302/307/308",
       "interval": 480, // 错开 20s
-      "tolerance": 30, // 优化：将容差降至30ms，更积极切低延迟
+      "tolerance": 100,
 
       "lazy": true
     },
@@ -218,7 +218,7 @@ function main(config) {
       "url": "https://api.github.com",
       "expected-status": "200/301/302/307/308",
       "interval": 540, // 错开 20s
-      "tolerance": 30, // 优化：将容差降至30ms，更积极切低延迟
+      "tolerance": 100,
 
       "lazy": true
     },
@@ -232,7 +232,7 @@ function main(config) {
       "url": "https://chatgpt.com",
       "expected-status": "200/301/302/307/308",
       "interval": 600, // 错开 20s
-      "tolerance": 30, // 优化：将容差降至30ms，更积极切低延迟
+      "tolerance": 100,
 
       "lazy": true
     },
@@ -247,7 +247,7 @@ function main(config) {
       "url": "https://api.telegram.org",
       "expected-status": "200/301/302/307/308",
       "interval": 620, // 错开 20s
-      "tolerance": 30, // 优化：将容差降至30ms，更积极切低延迟
+      "tolerance": 100,
 
       "lazy": true
     },
@@ -495,4 +495,3 @@ function main(config) {
 
   return config;
 }
-
