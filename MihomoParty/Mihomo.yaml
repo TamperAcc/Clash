@@ -139,7 +139,7 @@ proxy-providers:
     filter: (?i)^(?!.*(流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*
     health-check:
       enable: true
-      url: http://www.gstatic.com/generate_204
+      url: https://www.gstatic.com/generate_204
       interval: 240
       expected-status: '204' # 🚀 依赖 Mihomo 1.18+ 内核功能：防止流量耗尽/被墙的情况导致假连通
     override:
@@ -153,7 +153,7 @@ proxy-groups:
     use:
       - 组合机场
     filter: ^(?!.*(IEPL|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*
-    url: http://www.gstatic.com/generate_204
+    url: https://www.gstatic.com/generate_204
     expected-status: '204' # 🚀 依赖 Mihomo 1.18+ 内核功能：防止劣质/被封节点强行返回 403/302 导致测速被骗
     interval: 120
     tolerance: 100
@@ -165,7 +165,7 @@ proxy-groups:
     use:
       - 组合机场
     filter: ^(?!.*(IEPL|俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU|日本|Japan|JP)).*
-    url: http://www.gstatic.com/generate_204
+    url: https://www.gstatic.com/generate_204
     expected-status: '204'
     interval: 360
     tolerance: 100

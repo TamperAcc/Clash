@@ -140,7 +140,7 @@ function main(config) {
       "filter": "(?i)^(?!.*(流量|到期|重置|官网|剩余|套餐|expire|traffic|reset|群组|频道|@|联系|网站|入群|关注|反馈|更新)).*",
       "health-check": {
         "enable": true,
-        "url": "http://www.gstatic.com/generate_204",
+        "url": "https://www.gstatic.com/generate_204",
         "interval": 240,
         "expected-status": "204" // 🚀 依赖 Mihomo 1.18+ 内核功能：预期的 HTTP 状态码，防流量耗尽/被墙等假连通情况 (自动踢出跳转节点的防挂神器)
       }
@@ -160,7 +160,7 @@ function main(config) {
       "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除过期/流量/IEPL/RU/KP/CU
-      "url": "http://www.gstatic.com/generate_204",
+      "url": "https://www.gstatic.com/generate_204",
       "expected-status": "204", // 🚀 依赖 Mihomo 1.18+ 内核功能：防止劣质/被封节点强行返回 403/302 导致测速被骗
       "interval": 120,
       "tolerance": 100,
@@ -173,7 +173,7 @@ function main(config) {
       "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU|日本|Japan|JP)).*", // 额外排除日本节点
-      "url": "http://www.gstatic.com/generate_204",
+      "url": "https://www.gstatic.com/generate_204",
       "expected-status": "204",
       "interval": 160,
       "tolerance": 100,
