@@ -1,12 +1,13 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.js
-// 版本: v2.23  | 更新日期: 2026-03-09
+// 版本: v2.24  | 更新日期: 2026-03-10
 // Phase 1.1: 加权评分 + 自适应容差版 (Gemini/Copilot/GitHub Copilot 多 URL 健康检查)
+// BugFix: ChatGPT 组健康检查URL修复 (改用中立端点，解决连接循环问题)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v2.23 (Phase 1.1: 加权评分 + 自适应容差 - 关键 AI 组多 URL 模式)...");
+  console.log("✅ 加载脚本 v2.24 (Phase 1.1: 加权评分 + 自适应容差 - 关键 AI 组多 URL 模式 | ChatGPT 健康检查修复)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -268,8 +269,8 @@ function main(config) {
       "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
-      "url": "https://chatgpt.com",
-      "expected-status": "200/301/302/307/308",
+      "url": "https://www.gstatic.com/generate_204",
+      "expected-status": "204",
       "interval": 300, // 🎯 AI 核心业务
       "tolerance": 60,
 
