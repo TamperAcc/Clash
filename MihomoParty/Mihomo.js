@@ -1,13 +1,13 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.js
-// 版本: v2.26  | 更新日期: 2026-03-10
+// 版本: v2.27  | 更新日期: 2026-03-10
 // Phase 1.1: 加权评分 + 自适应容差版 (Gemini/Copilot/GitHub Copilot 多 URL 健康检查)
 // BugFix: 全组启用多 URL 模式，并修复 ChatGPT 健康检查循环问题
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v2.26 (Phase 1.1: 加权评分 + 自适应容差 - DNS/健康检查稳定性修复)...");
+  console.log("✅ 加载脚本 v2.27 (Phase 1.1: 加权评分 + 自适应容差 - 业务探测对齐 + DNS优先级修复)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -87,7 +87,7 @@ function main(config) {
     },
     "nameserver-policy": {
       "geosite:category-ads-all": "rcode://success", // 🚀 极限优化：DNS 级别直接屏蔽广告，节省 CPU 和内存
-      "geosite:geolocation-!cn": ["https://dns.alidns.com/dns-query", "https://doh.pub/dns-query", "https://1.1.1.1/dns-query", "https://8.8.8.8/dns-query"], // 稳定性修复：优先可达 DoH，外部 DoH 作为后备，避免解析超时触发策略组异常
+      "geosite:geolocation-!cn": ["https://1.1.1.1/dns-query", "https://8.8.8.8/dns-query", "https://dns.alidns.com/dns-query", "https://doh.pub/dns-query"], // 修复：海外域名优先海外 DoH，国内 DoH 作为后备，兼顾纯净度与可达性
       "geosite:cn": "https://dns.alidns.com/dns-query",
       "geosite:apple": "https://dns.alidns.com/dns-query",
       "+.icloud.com": "https://dns.alidns.com/dns-query",
@@ -285,14 +285,14 @@ function main(config) {
       "filter": "^(?!.*(香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "urls": [
         {
-          "url": "https://www.gstatic.com/generate_204",
+          "url": "https://chatgpt.com",
           "weight": 0.7,
-          "expected-status": "204"
+          "expected-status": "200/301/302/307/308"
         },
         {
-          "url": "https://cdn.jsdelivr.net/",
+          "url": "https://api.openai.com",
           "weight": 0.3,
-          "expected-status": "200"
+          "expected-status": "200/301/302/307/308"
         }
       ],
       "interval": 300, // 🎯 AI 核心业务
@@ -308,14 +308,14 @@ function main(config) {
       // 排除立陶宛防止假延迟？扁平化测速会自动剔除假延迟节点，故不再强制正则排除，靠测速说话
       "urls": [
         {
-          "url": "https://www.gstatic.com/generate_204",
+          "url": "https://api.telegram.org",
           "weight": 0.6,
-          "expected-status": "204"
+          "expected-status": "200/301/302/307/308"
         },
         {
-          "url": "https://cdn.jsdelivr.net/",
+          "url": "https://web.telegram.org",
           "weight": 0.4,
-          "expected-status": "200"
+          "expected-status": "200/301/302/307/308"
         }
       ],
       "interval": 600, // 🎯 通讯工具：降低频率
