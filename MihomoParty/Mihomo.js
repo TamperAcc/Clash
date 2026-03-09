@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.js
-// 版本: v2.22  | 更新日期: 2026-03-09
-// Phase 1.1: 加权评分 + 自适应容差版 (Gemini 多 URL 健康检查)
+// 版本: v2.23  | 更新日期: 2026-03-09
+// Phase 1.1: 加权评分 + 自适应容差版 (Gemini/Copilot/GitHub Copilot 多 URL 健康检查)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v2.22 (Phase 1.1: 加权评分 + 自适应容差 - Gemini 多 URL 模式)...");
+  console.log("✅ 加载脚本 v2.23 (Phase 1.1: 加权评分 + 自适应容差 - 关键 AI 组多 URL 模式)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -220,8 +220,18 @@ function main(config) {
       "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 RU/KP/CU
-      "url": "https://www.bing.com",
-      "expected-status": "200/301/302/307/308",
+      "urls": [
+        {
+          "url": "https://www.bing.com",
+          "weight": 0.7,
+          "expected-status": "200/301/302/307/308"
+        },
+        {
+          "url": "https://copilot.microsoft.com",
+          "weight": 0.3,
+          "expected-status": "200/301/302/307/308"
+        }
+      ],
       "interval": 300, // 🎯 核心业务 Copilot
       "tolerance": 60,
 
@@ -234,8 +244,18 @@ function main(config) {
       "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
-      "url": "https://api.github.com",
-      "expected-status": "200/301/302/307/308",
+      "urls": [
+        {
+          "url": "https://api.github.com",
+          "weight": 0.7,
+          "expected-status": "200/301/302/307/308"
+        },
+        {
+          "url": "https://copilot-proxy.githubusercontent.com",
+          "weight": 0.3,
+          "expected-status": "200/301/302/307/308"
+        }
+      ],
       "interval": 360, // 🎯 开发工具业务：6 分钟周期
       "tolerance": 60,
 
