@@ -3,11 +3,11 @@
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.js
 // 版本: v2.24  | 更新日期: 2026-03-10
 // Phase 1.1: 加权评分 + 自适应容差版 (Gemini/Copilot/GitHub Copilot 多 URL 健康检查)
-// BugFix: ChatGPT 组健康检查URL修复 (改用中立端点，解决连接循环问题)
+// BugFix: 全组启用多 URL 模式，并修复 ChatGPT 健康检查循环问题
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v2.24 (Phase 1.1: 加权评分 + 自适应容差 - 关键 AI 组多 URL 模式 | ChatGPT 健康检查修复)...");
+  console.log("✅ 加载脚本 v2.24 (Phase 1.1: 加权评分 + 自适应容差 - 全组多 URL 模式 | ChatGPT 健康检查修复)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -167,11 +167,20 @@ function main(config) {
       "name": "自动选择",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png",
-      "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除过期/流量/IEPL/RU/KP/CU
-      "url": "https://www.gstatic.com/generate_204",
-      "expected-status": "204", // 🚀 依赖 Mihomo 1.18+ 内核功能：防止劣质/被封节点强行返回 403/302 导致测速被骗
+      "urls": [
+        {
+          "url": "https://www.gstatic.com/generate_204",
+          "weight": 0.6,
+          "expected-status": "204"
+        },
+        {
+          "url": "http://www.gstatic.com/generate_204",
+          "weight": 0.4,
+          "expected-status": "204"
+        }
+      ],
       "interval": 240, // 🎯 关键组基准周期
       "tolerance": 80, // 🎯 平衡容差：80ms 足以应对临界切换需求，但不易被抖动触发
       "lazy": true // 🎯 平衡模式：只在使用时测速，节省资源同时保证响应
@@ -180,11 +189,20 @@ function main(config) {
       "name": "EMBY",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Emby.png",
-      "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU|日本|Japan|JP)).*", // 额外排除日本节点
-      "url": "https://www.gstatic.com/generate_204",
-      "expected-status": "204",
+      "urls": [
+        {
+          "url": "https://www.gstatic.com/generate_204",
+          "weight": 0.7,
+          "expected-status": "204"
+        },
+        {
+          "url": "http://www.gstatic.com/generate_204",
+          "weight": 0.3,
+          "expected-status": "204"
+        }
+      ],
       "interval": 600, // 🎯 非关键业务：降低检测频率，减少不必要的连接
       "tolerance": 80,
       "lazy": true // 🎯 非关键业务：延迟测速，进一步节省开销
@@ -193,7 +211,6 @@ function main(config) {
       "name": "Gemini",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
-      "include-all": true,
       "use": ["组合机场"], // 引入代理集
       // 🚫 严格排除: 香港/HK, 澳门/Macau/MO, 俄罗斯/RU, 立陶宛/Lithuania/LT, 日本/Japan/JP, 韩国/KR, 中国/CN/China
       "filter": "^(?!.*(俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*",
@@ -218,7 +235,6 @@ function main(config) {
       "name": "Copilot",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png",
-      "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 RU/KP/CU
       "urls": [
@@ -242,7 +258,6 @@ function main(config) {
       "name": "GitHub Copilot",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/github.png",
-      "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "urls": [
@@ -266,29 +281,45 @@ function main(config) {
       "name": "ChatGPT",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
-      "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
-      "url": "https://www.gstatic.com/generate_204",
-      "expected-status": "204",
+      "urls": [
+        {
+          "url": "https://www.gstatic.com/generate_204",
+          "weight": 0.7,
+          "expected-status": "204"
+        },
+        {
+          "url": "https://cdn.jsdelivr.net/",
+          "weight": 0.3,
+          "expected-status": "200"
+        }
+      ],
       "interval": 300, // 🎯 AI 核心业务
       "tolerance": 60,
-
       "lazy": false // 🎯 关键业务：保持即时检测
     },
     {
       "name": "Telegram",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png",
-      "include-all": true,
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU)).*",
       // 排除立陶宛防止假延迟？扁平化测速会自动剔除假延迟节点，故不再强制正则排除，靠测速说话
-      "url": "https://api.telegram.org",
-      "expected-status": "200/301/302/307/308",
+      "urls": [
+        {
+          "url": "https://www.gstatic.com/generate_204",
+          "weight": 0.6,
+          "expected-status": "204"
+        },
+        {
+          "url": "https://cdn.jsdelivr.net/",
+          "weight": 0.4,
+          "expected-status": "200"
+        }
+      ],
       "interval": 600, // 🎯 通讯工具：降低频率
       "tolerance": 80,
-
       "lazy": true // 🎯 非实时性业务：延迟测速
     },
 
