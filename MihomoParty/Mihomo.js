@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.js
-// 版本: v2.17  | 更新日期: 2026-03-09
-// PC 端终极优化版" (全扁平化架构 + ES5兼容 + 智能状态码检测)
+// 版本: v2.21  | 更新日期: 2026-03-09
+// PC 端终极优化版" (300+ 节点黄金平衡版: 高响应 + 高稳定 + 网络抖动免疫)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v2.17 (极限性能版: 开启智能状态码防假通、DNS ARC 缓存、TCP 并发与 Lazy 测速)...");
+  console.log("✅ 加载脚本 v2.21 (300+ 节点黄金平衡版: 关键业务竞速 + 全场景稳定免疫)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -46,12 +46,21 @@ function main(config) {
     "enable": true,
     "ipv6": false,
     "cache-algorithm": "arc", // 🚀 极限优化：启用 ARC 缓存算法，大幅提升 DNS 命中率和解析速度
+    "cache-max-size": 16384, // 🚀 P1 优化：扩大缓存到 16384 条，大规模节点场景下提升命中率（默认 4096）
     "listen": "0.0.0.0:1053",
     "enhanced-mode": "fake-ip",
     "fake-ip-range": "198.18.0.1/16",
     "respect-rules": true,
     "default-nameserver": ["223.5.5.5", "119.29.29.29"], // 优化：仅支持纯 IP，用于解析 DoH/DoT 域名
     "proxy-server-nameserver": ["223.5.5.5", "119.29.29.29"], // 优化：节点域名解析专用 DNS，使用高可用 IP
+    "proxy-server-nameserver-policy": { // 🚀 P2 优化：为不同 CDN 机场指定专用 DNS，优化节点解析路由
+      "+.cloudflare.com": "1.1.1.1",
+      "+.cfcdn.net": "1.1.1.1",
+      "+.tencent.com": "119.29.29.29",
+      "+.myqcloud.com": "119.29.29.29",
+      "+.aliyun.com": "223.5.5.5",
+      "+.alicdn.com": "223.5.5.5"
+    },
     "fake-ip-filter": [
       "*.lan", "*.local", // 优化：防止局域网域名被 Fake-IP 劫持，保障本地设备发现
       "+.msftconnecttest.com", "+.msftncsi.com",
@@ -96,8 +105,8 @@ function main(config) {
   // 3. Tun 模式
   config["tun"] = {
     "enable": true,
-    "stack": "mixed", // 🚀 极限优化：Windows 下推荐 mixed 栈，结合 system 和 gvisor 优势，提升吞吐量
-    "mtu": 9000, // 🚀 极限优化：开启巨型帧，大幅提升大文件下载和流媒体吞吐量
+    "stack": "system", // 🔴 P0 修复：改为 system 栈，Windows 下性能最佳且兼容性更好
+    "mtu": 1500, // 🔴 P0 修复：改为标准 MTU，避免公网环境巨型帧分片导致性能下降
     "auto-route": true,
     "auto-detect-interface": true,
     "strict-route": true,
@@ -141,7 +150,7 @@ function main(config) {
       "health-check": {
         "enable": true,
         "url": "https://www.gstatic.com/generate_204",
-        "interval": 240,
+        "interval": 240, // 🎯 平衡点：240s 保持高频但避免过度采样，网络稳定时间充足
         "expected-status": "204" // 🚀 依赖 Mihomo 1.18+ 内核功能：预期的 HTTP 状态码，防流量耗尽/被墙等假连通情况 (自动踢出跳转节点的防挂神器)
       }
     }
@@ -162,9 +171,9 @@ function main(config) {
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除过期/流量/IEPL/RU/KP/CU
       "url": "https://www.gstatic.com/generate_204",
       "expected-status": "204", // 🚀 依赖 Mihomo 1.18+ 内核功能：防止劣质/被封节点强行返回 403/302 导致测速被骗
-      "interval": 300,
-      "tolerance": 100,
-      "lazy": false
+      "interval": 240, // 🎯 关键组基准周期
+      "tolerance": 80, // 🎯 平衡容差：80ms 足以应对临界切换需求，但不易被抖动触发
+      "lazy": true // 🎯 平衡模式：只在使用时测速，节省资源同时保证响应
     },
     {
       "name": "EMBY",
@@ -175,9 +184,9 @@ function main(config) {
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU|日本|Japan|JP)).*", // 额外排除日本节点
       "url": "https://www.gstatic.com/generate_204",
       "expected-status": "204",
-      "interval": 360,
-      "tolerance": 100,
-      "lazy": true
+      "interval": 600, // 🎯 非关键业务：降低检测频率，减少不必要的连接
+      "tolerance": 80,
+      "lazy": true // 🎯 非关键业务：延迟测速，进一步节省开销
     },
     {
       "name": "Gemini",
@@ -189,10 +198,9 @@ function main(config) {
       "filter": "^(?!.*(俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*",
       "url": "https://gemini.google.com", // 🎯 靶向检测: 直接探测目标网站
       "expected-status": "200/301/302/307/308", // 🚀 Mihomo原生语法(不能用正则)：用斜杠分隔状态码，排除送中/被阻断的403和404
-      "interval": 420, // 错开 60s
-      "tolerance": 100,
-
-      "lazy": true
+      "interval": 300, // 🎯 AI 核心业务：5 分钟周期保证即时性
+      "tolerance": 60, // 🎯 敏感但稳定：60ms 应对实际网络条件
+      "lazy": false // 🎯 关键业务：保持即时检测
     },
     {
       "name": "Copilot",
@@ -203,10 +211,10 @@ function main(config) {
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 RU/KP/CU
       "url": "https://www.bing.com",
       "expected-status": "200/301/302/307/308",
-      "interval": 480, // 错开 20s
-      "tolerance": 100,
+      "interval": 300, // 🎯 核心业务 Copilot
+      "tolerance": 60,
 
-      "lazy": true
+      "lazy": false // 🎯 关键业务：保持即时检测
     },
     {
       "name": "GitHub Copilot",
@@ -217,10 +225,10 @@ function main(config) {
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://api.github.com",
       "expected-status": "200/301/302/307/308",
-      "interval": 540, // 错开 20s
-      "tolerance": 100,
+      "interval": 360, // 🎯 开发工具业务：6 分钟周期
+      "tolerance": 60,
 
-      "lazy": true
+      "lazy": true // 🎯 非实时性业务：延迟测速
     },
     {
       "name": "ChatGPT",
@@ -231,10 +239,10 @@ function main(config) {
       "filter": "^(?!.*(香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "url": "https://chatgpt.com",
       "expected-status": "200/301/302/307/308",
-      "interval": 600, // 错开 20s
-      "tolerance": 100,
+      "interval": 300, // 🎯 AI 核心业务
+      "tolerance": 60,
 
-      "lazy": true
+      "lazy": false // 🎯 关键业务：保持即时检测
     },
     {
       "name": "Telegram",
@@ -246,10 +254,10 @@ function main(config) {
       // 排除立陶宛防止假延迟？扁平化测速会自动剔除假延迟节点，故不再强制正则排除，靠测速说话
       "url": "https://api.telegram.org",
       "expected-status": "200/301/302/307/308",
-      "interval": 620, // 错开 20s
-      "tolerance": 100,
+      "interval": 600, // 🎯 通讯工具：降低频率
+      "tolerance": 80,
 
-      "lazy": true
+      "lazy": true // 🎯 非实时性业务：延迟测速
     },
 
     // 手动选择区
