@@ -97,7 +97,7 @@ function main(config) {
   config["tun"] = {
     "enable": true,
     "stack": "mixed", // 🚀 极限优化：Windows 下推荐 mixed 栈，结合 system 和 gvisor 优势，提升吞吐量
-    "mtu": 1500, // 🚀 极限优化：开启巨型帧，大幅提升大文件下载和流媒体吞吐量
+    "mtu": 9000, // 🚀 极限优化：开启巨型帧，大幅提升大文件下载和流媒体吞吐量
     "auto-route": true,
     "auto-detect-interface": true,
     "strict-route": true,
