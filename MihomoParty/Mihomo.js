@@ -1,12 +1,12 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo.js
-// 版本: v2.21  | 更新日期: 2026-03-09
-// PC 端终极优化版" (300+ 节点黄金平衡版: 高响应 + 高稳定 + 网络抖动免疫)
+// 版本: v2.22  | 更新日期: 2026-03-09
+// Phase 1.1: 加权评分 + 自适应容差版 (Gemini 多 URL 健康检查)
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 v2.21 (300+ 节点黄金平衡版: 关键业务竞速 + 全场景稳定免疫)...");
+  console.log("✅ 加载脚本 v2.22 (Phase 1.1: 加权评分 + 自适应容差 - Gemini 多 URL 模式)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -196,8 +196,19 @@ function main(config) {
       "use": ["组合机场"], // 引入代理集
       // 🚫 严格排除: 香港/HK, 澳门/Macau/MO, 俄罗斯/RU, 立陶宛/Lithuania/LT, 日本/Japan/JP, 韩国/KR, 中国/CN/China
       "filter": "^(?!.*(俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*",
-      "url": "https://gemini.google.com", // 🎯 靶向检测: 直接探测目标网站
-      "expected-status": "200/301/302/307/308", // 🚀 Mihomo原生语法(不能用正则)：用斜杠分隔状态码，排除送中/被阻断的403和404
+      // 🚀 多 URL 健康检查配置 (启用加权评分 + 自适应容差)
+      "urls": [
+        {
+          "url": "https://gemini.google.com",
+          "weight": 0.7, // 主 URL 权重 70%
+          "expected-status": "200/301/302/307/308"
+        },
+        {
+          "url": "https://www.google.com",
+          "weight": 0.3, // 次 URL 权重 30%
+          "expected-status": "200"
+        }
+      ],
       "interval": 300, // 🎯 AI 核心业务：5 分钟周期保证即时性
       "tolerance": 60, // 🎯 敏感但稳定：60ms 应对实际网络条件
       "lazy": false // 🎯 关键业务：保持即时检测
