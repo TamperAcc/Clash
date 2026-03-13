@@ -371,7 +371,7 @@ function main(config) {
     "DOMAIN,emby-npo.hohai.eu.org,EMBY", // hohai:公益
     "DOMAIN,us01.doudou.pet,EMBY", // Ryan:公益
     "DOMAIN-SUFFIX,startspoint.com,EMBY", // 起点公费A
-    "DOMAIN-SUFFIX,mobaieemby.site,EMBY", // 墨云阁:公益30天保号
+    "DOMAIN-SUFFIX,mobaiemby.site,EMBY", // 墨云阁:公益30天保号
     "DOMAIN-SUFFIX,28.al,EMBY", // 起点:公益2-30天保号 
     "DOMAIN-SUFFIX,startspoint.com,EMBY", //起点:公益
 
