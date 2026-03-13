@@ -364,16 +364,16 @@ function main(config) {
     // 🎬 Emby 影音服务器分流 (要求剔除日本节点，故分走专有 EMBY 组)
     "DOMAIN,tv.ash.yt,EMBY", // AshEmby
     "DOMAIN,ask.ash.yt,EMBY", // Ask Ash
-    "DOMAIN,best.28.al,EMBY", // 起点:公费A
     "DOMAIN,emby.bangumi.ca,EMBY", // Nyamedia:公益
-    "DOMAIN,free.28.al,EMBY", // 起点:公益2-30天保号
     "DOMAIN,1.eoos.lol,EMBY", // eoos
     "DOMAIN,v1.uhdnow.com,EMBY", // UHD
     "DOMAIN,emby-cm.hohai.eu.org,EMBY", // honhai:公费
     "DOMAIN,emby-npo.hohai.eu.org,EMBY", // hohai:公益
-    "DOMAIN,m.mobaiemby.site,EMBY", // 墨云阁:公益30天保号
     "DOMAIN,us01.doudou.pet,EMBY", // Ryan:公益
-    "DOMAIN-SUFFIX,test.startspoint.com,EMBY", // 起点公费A
+    "DOMAIN-SUFFIX,startspoint.com,EMBY", // 起点公费A
+    "DOMAIN-SUFFIX,mobaieemby.site,EMBY", // 墨云阁:公益30天保号
+    "DOMAIN-SUFFIX,28.al,EMBY", // 起点:公益2-30天保号 
+    "DOMAIN-SUFFIX,startspoint.com,EMBY", //起点:公益
 
     // 🏠 内网域名直连兜底保障
     "DOMAIN-SUFFIX,lan,DIRECT",
