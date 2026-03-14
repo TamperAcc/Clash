@@ -24,6 +24,10 @@ function main(config) {
   config["keep-alive-interval"] = 15; // 优化：空闲连接探测间隔
   config["allow-lan"] = true;
   config["bind-address"] = "*";
+  // 开启本地控制面 API，供脚本压测与运行时观测使用
+  config["external-controller"] = "127.0.0.1:9090";
+  // 建议替换为你自己的强密码，压测脚本可用 --secret 传入
+  config["secret"] = "xiejian2026";
   config["find-process-mode"] = "strict";
   config["profile"] = {
     "store-selected": true,
