@@ -314,6 +314,28 @@ function main(config) {
       "lazy": true // 🎯 非实时性业务：延迟测速
     },
     {
+      "name": "Cursor",
+      "type": "url-test",
+      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Cursor.png",
+      "use": ["组合机场"], // 引入代理集
+      "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
+      "urls": [
+        {
+          "url": "https://api2.cursor.sh",
+          "weight": 0.7,
+          "expected-status": "200/301/302/307/308"
+        },
+        {
+          "url": "https://www.cursor.com",
+          "weight": 0.3,
+          "expected-status": "200/301/302/307/308"
+        }
+      ],
+      "interval": 300, // 🎯 开发工具核心业务：5 分钟周期
+      "tolerance": 60,
+      "lazy": false // 🎯 关键业务：保持即时检测
+    },
+    {
       "name": "ChatGPT",
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
@@ -478,6 +500,12 @@ function main(config) {
     // Copilot 依赖 Bing/Microsoft，手动保底
     "DOMAIN-SUFFIX,bing.com,Copilot", 
     "DOMAIN-SUFFIX,copilot.microsoft.com,Copilot",
+
+    // Cursor 核心链路前置，避免被泛规则抢占
+    "DOMAIN-SUFFIX,cursor.com,Cursor",
+    "DOMAIN-SUFFIX,cursor.sh,Cursor",
+    "DOMAIN,api.cursor.sh,Cursor",
+    "DOMAIN,api2.cursor.sh,Cursor",
     
     // GitHub Copilot & GitHub
     "GEOSITE,github,GitHub Copilot",
@@ -518,7 +546,8 @@ function main(config) {
     "PROCESS-NAME,IDMan.exe,DIRECT",
     "PROCESS-NAME,git.exe,自动选择",
     "PROCESS-NAME,Code.exe,自动选择",
-    "PROCESS-NAME,cursor.exe,自动选择",
+    "PROCESS-NAME,cursor.exe,Cursor",
+    "PROCESS-NAME,Cursor.exe,Cursor",
     "PROCESS-NAME,idea64.exe,自动选择",
     "PROCESS-NAME,pycharm64.exe,自动选择",
     "PROCESS-NAME,Steam.exe,自动选择",
