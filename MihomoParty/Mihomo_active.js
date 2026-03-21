@@ -503,9 +503,11 @@ function main(config) {
 
     // Cursor 核心链路前置，避免被泛规则抢占
     "DOMAIN-SUFFIX,cursor.com,Cursor",
+    "DOMAIN-SUFFIX,withcursor.com,Cursor", // 历史品牌域名，防止重定向链路误分流
     "DOMAIN-SUFFIX,cursor.sh,Cursor",
     "DOMAIN,api.cursor.sh,Cursor",
     "DOMAIN,api2.cursor.sh,Cursor",
+    "DOMAIN,www.cursor.com,Cursor", // 显式命中主页域名，便于日志排查
     
     // GitHub Copilot & GitHub
     "GEOSITE,github,GitHub Copilot",
