@@ -1,13 +1,13 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V1.99.99  | 更新日期: 2026-03-11
-// Phase 1.1: 加权评分 + 自适应容差版 (Gemini/Copilot/GitHub Copilot 多 URL 健康检查)
-// BugFix: 全组启用多 URL 模式，并修复 ChatGPT 健康检查循环问题
+// 版本: V2.0  | 更新日期: 2026-04-03
+// Fix: Telegram 规则顺序、googleapis.cn 策略纠正、TUN LAN 排除
+// Opt: AI 组 adaptive-cooldown-sec 独立缩短至 60s，加快坏节点恢复
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V1.99.99 (全适应 active 全量接管)...");
+  console.log("✅ 加载脚本 V2.0 (全适应 active 全量接管)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -116,7 +116,14 @@ function main(config) {
     "auto-detect-interface": true,
     "strict-route": true,
     "endpoint-independent-nat": true,
-    "dns-hijack": ["any:53"]
+    "dns-hijack": ["any:53"],
+    // 🔴 P0 修复：strict-route+system 栈下排除 LAN 段，防止局域网流量被 TUN 捕获导致 ERR_EMPTY_RESPONSE
+    "inet4-route-exclude-address": [
+      "192.168.0.0/16",
+      "10.0.0.0/8",
+      "172.16.0.0/12",
+      "169.254.0.0/16"
+    ]
   };
 
   // 4. Sniffer 设置
@@ -265,6 +272,8 @@ function main(config) {
       ],
       "interval": 300, // 🎯 AI 核心业务：5 分钟周期保证即时性
       "tolerance": 60, // 🎯 敏感但稳定：60ms 应对实际网络条件
+      "adaptive-cooldown-sec": 60, // 🔥 AI 关键组：加快坏节点恢复，loop 默认 180s 过长
+      "adaptive-stage-cooldown-sec": 300, // 🔥 缩短阶段冷却至 5 分钟
       "lazy": false // 🎯 关键业务：保持即时检测
     },
     {
@@ -288,6 +297,8 @@ function main(config) {
       "interval": 300, // 🎯 核心业务 Copilot
       "tolerance": 60,
 
+      "adaptive-cooldown-sec": 60, // 🔥 AI 关键组
+      "adaptive-stage-cooldown-sec": 300,
       "lazy": false // 🎯 关键业务：保持即时检测
     },
     {
@@ -333,6 +344,8 @@ function main(config) {
       ],
       "interval": 300, // 🎯 开发工具核心业务：5 分钟周期
       "tolerance": 60,
+      "adaptive-cooldown-sec": 60, // 🔥 AI 关键组
+      "adaptive-stage-cooldown-sec": 300,
       "lazy": false // 🎯 关键业务：保持即时检测
     },
     {
@@ -355,6 +368,8 @@ function main(config) {
       ],
       "interval": 300, // 🎯 AI 核心业务
       "tolerance": 60,
+      "adaptive-cooldown-sec": 60, // 🔥 AI 关键组
+      "adaptive-stage-cooldown-sec": 300,
       "lazy": false // 🎯 关键业务：保持即时检测
     },
     {
@@ -431,7 +446,6 @@ function main(config) {
     "DOMAIN-SUFFIX,startspoint.com,EMBY", // 起点公费A
     "DOMAIN-SUFFIX,mobaiemby.site,EMBY", // 墨云阁:公益30天保号
     "DOMAIN-SUFFIX,28.al,EMBY", // 起点:公益2-30天保号 
-    "DOMAIN-SUFFIX,startspoint.com,EMBY", //起点:公益
 
     // 🏠 内网域名直连兜底保障
     "DOMAIN-SUFFIX,lan,DIRECT",
@@ -482,7 +496,7 @@ function main(config) {
     "DOMAIN-SUFFIX,ai.google.com,Gemini",
     "DOMAIN-SUFFIX,aistudio.google.com,Gemini",
     "DOMAIN-SUFFIX,makersuite.google.com,Gemini",
-    "DOMAIN-SUFFIX,googleapis.cn,Gemini",
+    "DOMAIN-SUFFIX,googleapis.cn,Google", // 🔴 Fix: Google 中国 CDN，涵盖全部 Google 服务，应走可手动切换的 Google 组而非锁死 Gemini
     "DOMAIN-SUFFIX,deepmind.com,Gemini", // DeepMind 相关
     "DOMAIN-SUFFIX,deepmind.google,Gemini", // DeepMind 相关
     
@@ -590,9 +604,10 @@ function main(config) {
     "DOMAIN-SUFFIX,bambulab.co,DIRECT",
     // 社交
     "GEOSITE,tiktok,Gemini",
-    "GEOSITE,category-communication,自动选择",
+    // 🔴 Fix: Telegram 必须在 category-communication 之前，否则 GEOSITE,category-communication 包含 telegram 导致先命中自动选择
     "GEOSITE,telegram,Telegram",
     "GEOIP,telegram,Telegram",
+    "GEOSITE,category-communication,自动选择",
     "GEOSITE,youtube,YouTube",
 
     // 测速与其他兜底
