@@ -327,7 +327,7 @@ function main(config) {
     {
       "name": "Cursor",
       "type": "url-test",
-      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Cursor.png",
+      "icon": "https://www.google.com/s2/favicons?domain=cursor.com&sz=128",
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
       "urls": [
