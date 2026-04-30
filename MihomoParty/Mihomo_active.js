@@ -490,7 +490,7 @@ function main(config) {
     "DOMAIN,bard.google.com,Gemini",   // 加强匹配
     "DOMAIN,generativelanguage.googleapis.com,Gemini",
     "DOMAIN-SUFFIX,aiplatform.googleapis.com,Gemini", // 新增: Vertex AI 核心 API
-    "DOMAIN,oauth2.googleapis.com,Gemini",           // 新增: 谷歌 API 认证服务器
+    "DOMAIN,oauth2.googleapis.com,自动选择",           // 修复: 认证服务器走常规高可用节点，防止 Gemini 节点抖动导致授权失败
     "DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,Gemini",
     "DOMAIN-SUFFIX,opa-pa.googleapis.com,Gemini",
     "DOMAIN-SUFFIX,waa-pa.googleapis.com,Gemini", // 新增: Web & App Activity
