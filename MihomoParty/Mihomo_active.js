@@ -1,14 +1,15 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V2.2  | 更新日期: 2026-04-30
+// 版本: V2.3  | 更新日期: 2026-04-30
+// Fix: 新增 Claude 官方域名分流，强制走 Gemini 组以避开香港/日韩节点封锁
 // Fix: 强制 Vertex AI / Gemini API 走 Gemini 分组，防止 SSL 被拦截
 // Fix: Telegram 规则顺序、googleapis.cn 策略纠正、TUN LAN 排除
 // Opt: AI 组 adaptive-cooldown-sec 独立缩短至 60s，加快坏节点恢复
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V2.1 (针对 Vertex AI / Gemini 专项修复)...");
+  console.log("✅ 加载脚本 V2.3 (支持 Claude Code & 修复 Vertex 认证)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -508,6 +509,10 @@ function main(config) {
     "DOMAIN-SUFFIX,chatgpt.com,ChatGPT",
     "DOMAIN-SUFFIX,oaistatic.com,ChatGPT",
     "DOMAIN-SUFFIX,oaiusercontent.com,ChatGPT",
+
+    // Anthropic / Claude (严格封锁区，复用 Gemini 的无港澳日韩节点策略)
+    "DOMAIN-SUFFIX,anthropic.com,Gemini",
+    "DOMAIN-SUFFIX,claude.ai,Gemini",
 
     // AI 服务 - Rule Sets (已废弃，清理残留)
     "GEOSITE,openai,ChatGPT",
