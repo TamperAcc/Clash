@@ -1,13 +1,14 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V2.0  | 更新日期: 2026-04-03
+// 版本: V2.1  | 更新日期: 2026-04-30
+// Fix: 强制 Vertex AI / Gemini API 走 Gemini 分组，防止 SSL 被拦截
 // Fix: Telegram 规则顺序、googleapis.cn 策略纠正、TUN LAN 排除
 // Opt: AI 组 adaptive-cooldown-sec 独立缩短至 60s，加快坏节点恢复
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V2.0 (全适应 active 全量接管)...");
+  console.log("✅ 加载脚本 V2.1 (针对 Vertex AI / Gemini 专项修复)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -488,6 +489,8 @@ function main(config) {
     "DOMAIN,gemini.google.com,Gemini", // 加强匹配
     "DOMAIN,bard.google.com,Gemini",   // 加强匹配
     "DOMAIN,generativelanguage.googleapis.com,Gemini",
+    "DOMAIN-SUFFIX,aiplatform.googleapis.com,Gemini", // 新增: Vertex AI 核心 API
+    "DOMAIN,oauth2.googleapis.com,Gemini",           // 新增: 谷歌 API 认证服务器
     "DOMAIN-SUFFIX,proactivebackend-pa.googleapis.com,Gemini",
     "DOMAIN-SUFFIX,opa-pa.googleapis.com,Gemini",
     "DOMAIN-SUFFIX,waa-pa.googleapis.com,Gemini", // 新增: Web & App Activity
