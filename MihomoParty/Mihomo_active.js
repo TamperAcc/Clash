@@ -1,7 +1,7 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V2.8  | 更新日期: 2026-05-02
+// 版本: V2.9  | 更新日期: 2026-05-02
 // Fix: 新增 Claude 官方域名分流，强制走 Gemini 组以避开香港/日韩节点封锁
 // Fix: 强制 Vertex AI / Gemini API 走 Gemini 分组，防止 SSL 被拦截
 // Fix: Telegram 规则顺序、googleapis.cn 策略纠正、TUN LAN 排除
@@ -15,7 +15,7 @@
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V2.8 (补全 Copilot/GitHub Copilot 封锁地区)...");
+  console.log("✅ 加载脚本 V2.9 (修复 Claude 组图标)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -287,7 +287,7 @@ function main(config) {
     {
       "name": "Claude",
       "type": "url-test",
-      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Anthropic.png",
+      "icon": "https://www.google.com/s2/favicons?domain=claude.ai&sz=128",
       "use": ["组合机场"],
       // 🚀 白名单锁定亚洲低延迟 + 美国兜底，JP/KR/TW 均对 Anthropic 可用
       "filter": "(?i)(台湾|\\bTW\\b|Taiwan|日本|\\bJP\\b|Japan|韩国|\\bKR\\b|Korea|新加坡|\\bSG\\b|Singapore|美国|\\bUS\\b)",
