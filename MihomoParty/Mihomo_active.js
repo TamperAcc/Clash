@@ -1,15 +1,16 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V2.3  | 更新日期: 2026-04-30
+// 版本: V2.4  | 更新日期: 2026-05-02
 // Fix: 新增 Claude 官方域名分流，强制走 Gemini 组以避开香港/日韩节点封锁
 // Fix: 强制 Vertex AI / Gemini API 走 Gemini 分组，防止 SSL 被拦截
 // Fix: Telegram 规则顺序、googleapis.cn 策略纠正、TUN LAN 排除
 // Opt: AI 组 adaptive-cooldown-sec 独立缩短至 60s，加快坏节点恢复
+// Opt: ChatGPT 组改为白名单过滤，精确锁定 US/JP/SG/TW/UK/CA/AU 节点
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V2.3 (支持 Claude Code & 修复 Vertex 认证)...");
+  console.log("✅ 加载脚本 V2.4 (ChatGPT 白名单精确分流)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -355,7 +356,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
       "use": ["组合机场"], // 引入代理集
-      "filter": "^(?!.*(香港|HongKong|HK|俄罗斯|Russia|RU|澳门|Macau|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
+      "filter": "(?i)(美国|\\bUS\\b|日本|\\bJP\\b|Japan|新加坡|\\bSG\\b|Singapore|台湾|\\bTW\\b|Taiwan|英国|\\bUK\\b|\\bGB\\b|加拿大|\\bCA\\b|澳大利亚|\\bAU\\b|Australia)",
       "urls": [
         {
           "url": "https://chatgpt.com",
