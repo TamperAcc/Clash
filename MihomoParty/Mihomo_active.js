@@ -1,7 +1,7 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V2.7  | 更新日期: 2026-05-02
+// 版本: V2.8  | 更新日期: 2026-05-02
 // Fix: 新增 Claude 官方域名分流，强制走 Gemini 组以避开香港/日韩节点封锁
 // Fix: 强制 Vertex AI / Gemini API 走 Gemini 分组，防止 SSL 被拦截
 // Fix: Telegram 规则顺序、googleapis.cn 策略纠正、TUN LAN 排除
@@ -11,10 +11,11 @@
 // Opt: Cursor 组改为白名单过滤，精确锁定 US/JP/SG/TW/UK/CA/AU 节点
 // Feat: 新增独立 Claude 组，白名单锁定 TW/JP/KR/SG/US 低延迟节点
 // Opt: Gemini 组改为白名单，同样锁定 TW/JP/KR/SG/US
+// Fix: Copilot 补排 CN；GitHub Copilot 补全官方封锁列表 IR/SY/BY/CN
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V2.7 (新增 Claude 独立组 + Gemini/Claude 白名单提速)...");
+  console.log("✅ 加载脚本 V2.8 (补全 Copilot/GitHub Copilot 封锁地区)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -313,7 +314,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png",
       "use": ["组合机场"], // 引入代理集
-      "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除 RU/KP/CU
+      "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU|CN|China|中国)).*", // 补全：排除 RU/KP/CU/CN
       "urls": [
         {
           "url": "https://www.bing.com",
@@ -338,7 +339,7 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/github.png",
       "use": ["组合机场"], // 引入代理集
-      "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*",
+      "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU|伊朗|Iran|IR|叙利亚|Syria|SY|白俄罗斯|Belarus|BY|CN|China|中国)).*", // 补全：官方封锁全列表
       "urls": [
         {
           "url": "https://api.github.com",
