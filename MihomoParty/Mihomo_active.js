@@ -1,7 +1,7 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V2.6  | 更新日期: 2026-05-02
+// 版本: V2.7  | 更新日期: 2026-05-02
 // Fix: 新增 Claude 官方域名分流，强制走 Gemini 组以避开香港/日韩节点封锁
 // Fix: 强制 Vertex AI / Gemini API 走 Gemini 分组，防止 SSL 被拦截
 // Fix: Telegram 规则顺序、googleapis.cn 策略纠正、TUN LAN 排除
@@ -9,10 +9,12 @@
 // Opt: ChatGPT 组改为白名单过滤，精确锁定 US/JP/SG/TW/UK/CA/AU 节点
 // Opt: 补充 sora.com 域名及 ChatGPT.exe/codex.exe 进程规则
 // Opt: Cursor 组改为白名单过滤，精确锁定 US/JP/SG/TW/UK/CA/AU 节点
+// Feat: 新增独立 Claude 组，白名单锁定 TW/JP/KR/SG/US 低延迟节点
+// Opt: Gemini 组改为白名单，同样锁定 TW/JP/KR/SG/US
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V2.6 (Cursor 白名单精确分流)...");
+  console.log("✅ 加载脚本 V2.7 (新增 Claude 独立组 + Gemini/Claude 白名单提速)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -260,8 +262,8 @@ function main(config) {
       "type": "url-test",
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png",
       "use": ["组合机场"], // 引入代理集
-      // 🚫 严格排除: 香港/HK, 澳门/Macau/MO, 俄罗斯/RU, 立陶宛/Lithuania/LT, 日本/Japan/JP, 韩国/KR, 中国/CN/China
-      "filter": "^(?!.*(俄罗斯|香港|HongKong|HK|Russia|RU|澳门|Macau|MO|立陶宛|Lithuania|LT|朝鲜|Korea|KP|KR|韩国|古巴|Cuba|CU|CN|China|中国|日本|Japan|JP)).*",
+      // 🚀 白名单锁定亚洲低延迟 + 美国兜底，JP/KR 已确认 Gemini 可用
+      "filter": "(?i)(台湾|\\bTW\\b|Taiwan|日本|\\bJP\\b|Japan|韩国|\\bKR\\b|Korea|新加坡|\\bSG\\b|Singapore|美国|\\bUS\\b)",
       // 🚀 多 URL 健康检查配置 (启用加权评分 + 自适应容差)
       "urls": [
         {
@@ -280,6 +282,31 @@ function main(config) {
       "adaptive-cooldown-sec": 60, // 🔥 AI 关键组：加快坏节点恢复，loop 默认 180s 过长
       "adaptive-stage-cooldown-sec": 300, // 🔥 缩短阶段冷却至 5 分钟
       "lazy": false // 🎯 关键业务：保持即时检测
+    },
+    {
+      "name": "Claude",
+      "type": "url-test",
+      "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Anthropic.png",
+      "use": ["组合机场"],
+      // 🚀 白名单锁定亚洲低延迟 + 美国兜底，JP/KR/TW 均对 Anthropic 可用
+      "filter": "(?i)(台湾|\\bTW\\b|Taiwan|日本|\\bJP\\b|Japan|韩国|\\bKR\\b|Korea|新加坡|\\bSG\\b|Singapore|美国|\\bUS\\b)",
+      "urls": [
+        {
+          "url": "https://api.anthropic.com",
+          "weight": 0.7,
+          "expected-status": "200/301/302/307/308"
+        },
+        {
+          "url": "https://claude.ai",
+          "weight": 0.3,
+          "expected-status": "200/301/302/307/308"
+        }
+      ],
+      "interval": 300,
+      "tolerance": 60,
+      "adaptive-cooldown-sec": 60,
+      "adaptive-stage-cooldown-sec": 300,
+      "lazy": false
     },
     {
       "name": "Copilot",
@@ -514,9 +541,9 @@ function main(config) {
     "DOMAIN-SUFFIX,oaiusercontent.com,ChatGPT",
     "DOMAIN-SUFFIX,sora.com,ChatGPT", // Sora 视频生成，独立域名补充
 
-    // Anthropic / Claude (严格封锁区，复用 Gemini 的无港澳日韩节点策略)
-    "DOMAIN-SUFFIX,anthropic.com,Gemini",
-    "DOMAIN-SUFFIX,claude.ai,Gemini",
+    // Anthropic / Claude
+    "DOMAIN-SUFFIX,anthropic.com,Claude",
+    "DOMAIN-SUFFIX,claude.ai,Claude",
 
     // AI 服务 - Rule Sets (已废弃，清理残留)
     "GEOSITE,openai,ChatGPT",
