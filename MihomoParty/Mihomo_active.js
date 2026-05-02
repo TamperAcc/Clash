@@ -1,16 +1,17 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V2.4  | 更新日期: 2026-05-02
+// 版本: V2.5  | 更新日期: 2026-05-02
 // Fix: 新增 Claude 官方域名分流，强制走 Gemini 组以避开香港/日韩节点封锁
 // Fix: 强制 Vertex AI / Gemini API 走 Gemini 分组，防止 SSL 被拦截
 // Fix: Telegram 规则顺序、googleapis.cn 策略纠正、TUN LAN 排除
 // Opt: AI 组 adaptive-cooldown-sec 独立缩短至 60s，加快坏节点恢复
 // Opt: ChatGPT 组改为白名单过滤，精确锁定 US/JP/SG/TW/UK/CA/AU 节点
+// Opt: 补充 sora.com 域名及 ChatGPT.exe/codex.exe 进程规则
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V2.4 (ChatGPT 白名单精确分流)...");
+  console.log("✅ 加载脚本 V2.5 (补全 ChatGPT/Codex 分流)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -510,6 +511,7 @@ function main(config) {
     "DOMAIN-SUFFIX,chatgpt.com,ChatGPT",
     "DOMAIN-SUFFIX,oaistatic.com,ChatGPT",
     "DOMAIN-SUFFIX,oaiusercontent.com,ChatGPT",
+    "DOMAIN-SUFFIX,sora.com,ChatGPT", // Sora 视频生成，独立域名补充
 
     // Anthropic / Claude (严格封锁区，复用 Gemini 的无港澳日韩节点策略)
     "DOMAIN-SUFFIX,anthropic.com,Gemini",
@@ -573,6 +575,8 @@ function main(config) {
     "PROCESS-NAME,Code.exe,自动选择",
     "PROCESS-NAME,cursor.exe,Cursor",
     "PROCESS-NAME,Cursor.exe,Cursor",
+    "PROCESS-NAME,ChatGPT.exe,ChatGPT",
+    "PROCESS-NAME,codex.exe,ChatGPT",
     "PROCESS-NAME,idea64.exe,自动选择",
     "PROCESS-NAME,pycharm64.exe,自动选择",
     "PROCESS-NAME,Steam.exe,自动选择",
