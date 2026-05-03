@@ -1,7 +1,8 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V3.4  | 更新日期: 2026-05-03
+// 版本: V3.5  | 更新日期: 2026-05-03
+// Fix: 新增 Statsig 域名分流至 Claude 组（Anthropic A/B 测试与功能开关服务）
 // Fix: 新增 Intercom 域名分流至 Claude 组（nexus-websocket-a.intercom.io 等推送通道）
 // Fix: 新增 PROCESS-NAME,claude.exe,Claude 进程规则，防止 Claude 桌面端走自动选择
 // Fix: 新增 Claude 官方域名分流，强制走 Gemini 组以避开香港/日韩节点封锁
@@ -21,7 +22,7 @@
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V3.4 (修复 Claude 桌面端 Intercom 推送域名分流)...");
+  console.log("✅ 加载脚本 V3.5 (新增 Statsig 域名 + 补全所有 Claude 第三方服务分流)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -561,6 +562,9 @@ function main(config) {
     "DOMAIN-SUFFIX,intercom.io,Claude",
     "DOMAIN-SUFFIX,intercomassets.com,Claude",
     "DOMAIN-SUFFIX,intercomcdn.com,Claude",
+    // Fix: Anthropic 使用 Statsig 做 A/B 测试和功能开关，Claude 客户端频繁请求
+    "DOMAIN-SUFFIX,statsig.com,Claude",
+    "DOMAIN-SUFFIX,statsigapi.net,Claude",
 
     // AI 服务 - Rule Sets (已废弃，清理残留)
     "GEOSITE,openai,ChatGPT",
