@@ -1,7 +1,7 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V3.6  | 更新日期: 2026-05-04
+// 版本: V3.7  | 更新日期: 2026-05-04
 // Sec: 移除硬编码 secret，改为注释说明（防止密码通过公开 CDN 泄露）
 // Fix: 修正 skip-auth-prefixes 为 127.0.0.1/32（原 /8 过宽，存在局域网绕过风险）
 // Fix: 新增 Statsig 域名分流至 Claude 组（Anthropic A/B 测试与功能开关服务）
@@ -14,6 +14,8 @@
 // Opt: ChatGPT/Cursor/Gemini/Claude 组改为白名单过滤，锁定低延迟节点
 // Fix: 补全 Copilot/GitHub Copilot 官方封锁地区列表
 // Chore: 补充 LumexCore 内核依赖声明及 secret 安全警告
+// Compat: 为所有 url-test 组补充标准 url 字段，兼容非 LumexCore 内核（urls 数组为 LumexCore 专属扩展）
+// Fix: 拆分 GEOSITE,github 规则 — 仅 Copilot 专属 API 走 GitHub Copilot 组，其余 GitHub 流量走自动选择
 //
 // ⚠️  内核依赖声明：本脚本中 adaptive-heavy / adaptive-mode / switch-cost-* /
 //     hierarchical-* / bandit-mode 等参数为 LumexCore 定制内核专属扩展，
@@ -24,7 +26,7 @@
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V3.6 (安全加固：移除硬编码 secret，修正 skip-auth-prefixes 范围)...");
+  console.log("✅ 加载脚本 V3.7 (兼容性: 补全 url 字段，修正 GitHub 规则过宽问题)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -229,6 +231,7 @@ function main(config) {
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png",
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU)).*", // 排除过期/流量/IEPL/RU/KP/CU
+      "url": "https://www.gstatic.com/generate_204", // 标准 Mihomo 兼容字段（非 LumexCore 内核使用此值）
       "urls": [
         {
           "url": "https://www.gstatic.com/generate_204",
@@ -251,6 +254,7 @@ function main(config) {
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Emby.png",
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU|日本|Japan|JP)).*", // 额外排除日本节点
+      "url": "https://www.gstatic.com/generate_204", // 标准 Mihomo 兼容字段
       "urls": [
         {
           "url": "https://www.gstatic.com/generate_204",
@@ -274,6 +278,7 @@ function main(config) {
       "use": ["组合机场"], // 引入代理集
       // 🚀 白名单锁定亚洲低延迟 + 美国兜底，JP/KR 已确认 Gemini 可用
       "filter": "(?i)(台湾|\\bTW\\b|Taiwan|日本|\\bJP\\b|Japan|韩国|\\bKR\\b|Korea|新加坡|\\bSG\\b|Singapore|美国|\\bUS\\b)",
+      "url": "https://gemini.google.com", // 标准 Mihomo 兼容字段
       // 🚀 多 URL 健康检查配置 (启用加权评分 + 自适应容差)
       "urls": [
         {
@@ -300,6 +305,7 @@ function main(config) {
       "use": ["组合机场"],
       // 🚀 白名单锁定亚洲低延迟 + 美国兜底，JP/KR/TW 均对 Anthropic 可用
       "filter": "(?i)(台湾|\\bTW\\b|Taiwan|日本|\\bJP\\b|Japan|韩国|\\bKR\\b|Korea|新加坡|\\bSG\\b|Singapore|美国|\\bUS\\b)",
+      "url": "https://api.anthropic.com", // 标准 Mihomo 兼容字段
       "urls": [
         {
           "url": "https://api.anthropic.com",
@@ -324,6 +330,7 @@ function main(config) {
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/Microsoft.png",
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU|CN|China|中国)).*", // 补全：排除 RU/KP/CU/CN
+      "url": "https://www.bing.com", // 标准 Mihomo 兼容字段
       "urls": [
         {
           "url": "https://www.bing.com",
@@ -349,6 +356,7 @@ function main(config) {
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/github.png",
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU|朝鲜|Korea|KP|古巴|Cuba|CU|伊朗|Iran|IR|叙利亚|Syria|SY|白俄罗斯|Belarus|BY|CN|China|中国)).*", // 补全：官方封锁全列表
+      "url": "https://api.github.com", // 标准 Mihomo 兼容字段
       "urls": [
         {
           "url": "https://api.github.com",
@@ -372,6 +380,7 @@ function main(config) {
       "icon": "https://www.google.com/s2/favicons?domain=cursor.com&sz=128",
       "use": ["组合机场"], // 引入代理集
       "filter": "(?i)(美国|\\bUS\\b|日本|\\bJP\\b|Japan|新加坡|\\bSG\\b|Singapore|台湾|\\bTW\\b|Taiwan|英国|\\bUK\\b|\\bGB\\b|加拿大|\\bCA\\b|澳大利亚|\\bAU\\b|Australia)",
+      "url": "https://api2.cursor.sh", // 标准 Mihomo 兼容字段
       "urls": [
         {
           "url": "https://api2.cursor.sh",
@@ -396,6 +405,7 @@ function main(config) {
       "icon": "https://cdn.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png",
       "use": ["组合机场"], // 引入代理集
       "filter": "(?i)(美国|\\bUS\\b|日本|\\bJP\\b|Japan|新加坡|\\bSG\\b|Singapore|台湾|\\bTW\\b|Taiwan|英国|\\bUK\\b|\\bGB\\b|加拿大|\\bCA\\b|澳大利亚|\\bAU\\b|Australia)",
+      "url": "https://chatgpt.com", // 标准 Mihomo 兼容字段
       "urls": [
         {
           "url": "https://chatgpt.com",
@@ -421,6 +431,7 @@ function main(config) {
       "use": ["组合机场"], // 引入代理集
       "filter": "^(?!.*(俄罗斯|Russia|RU)).*",
       // 排除立陶宛防止假延迟？扁平化测速会自动剔除假延迟节点，故不再强制正则排除，靠测速说话
+      "url": "https://api.telegram.org", // 标准 Mihomo 兼容字段
       "urls": [
         {
           "url": "https://api.telegram.org",
@@ -585,8 +596,13 @@ function main(config) {
     "DOMAIN,api2.cursor.sh,Cursor",
     "DOMAIN,www.cursor.com,Cursor", // 显式命中主页域名，便于日志排查
     
-    // GitHub Copilot & GitHub
-    "GEOSITE,github,GitHub Copilot",
+    // GitHub Copilot 专属 API（必须在 GEOSITE,github 之前，避免被宽泛规则抢占）
+    "DOMAIN-SUFFIX,copilot.github.com,GitHub Copilot",
+    "DOMAIN-SUFFIX,copilot-proxy.githubusercontent.com,GitHub Copilot",
+    "DOMAIN-SUFFIX,githubcopilot.com,GitHub Copilot",
+    "DOMAIN,api.githubcopilot.com,GitHub Copilot",
+    // GitHub 通用（浏览/clone/Actions 等不需要走严格封锁过滤的 Copilot 组）
+    "GEOSITE,github,自动选择",
     
     // AI 服务 - 兜底 (Gemini 通常包含在 Google Geosite 中，防止误伤优先放前面)
     "GEOSITE,google,Google",
