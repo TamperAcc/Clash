@@ -1,7 +1,9 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V3.5  | 更新日期: 2026-05-03
+// 版本: V3.6  | 更新日期: 2026-05-04
+// Sec: 移除硬编码 secret，改为注释说明（防止密码通过公开 CDN 泄露）
+// Fix: 修正 skip-auth-prefixes 为 127.0.0.1/32（原 /8 过宽，存在局域网绕过风险）
 // Fix: 新增 Statsig 域名分流至 Claude 组（Anthropic A/B 测试与功能开关服务）
 // Fix: 新增 Intercom 域名分流至 Claude 组（nexus-websocket-a.intercom.io 等推送通道）
 // Fix: 新增 PROCESS-NAME,claude.exe,Claude 进程规则，防止 Claude 桌面端走自动选择
@@ -22,7 +24,7 @@
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V3.5 (新增 Statsig 域名 + 补全所有 Claude 第三方服务分流)...");
+  console.log("✅ 加载脚本 V3.6 (安全加固：移除硬编码 secret，修正 skip-auth-prefixes 范围)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -41,8 +43,8 @@ function main(config) {
   config["bind-address"] = "*";
   // 开启本地控制面 API，供脚本压测与运行时观测使用
   config["external-controller"] = "127.0.0.1:9090";
-  // 建议替换为你自己的强密码，压测脚本可用 --secret 传入
-  config["secret"] = "xiejian2026";
+  // ⚠️ 请在本地 mihomo.yaml 中手动设置 secret，此处不写入默认值以避免密码泄露至公开仓库。
+  // config["secret"] = "YOUR_STRONG_PASSWORD_HERE";
   config["find-process-mode"] = "strict";
   config["profile"] = {
     "store-selected": true,
@@ -50,7 +52,7 @@ function main(config) {
   };
   
   // 修复本地回环和 Google 连接问题
-  config["skip-auth-prefixes"] = ["127.0.0.1/8", "::1/128"];
+  config["skip-auth-prefixes"] = ["127.0.0.1/32", "::1/128"];
   
   // GeoData 优化
   config["geo-auto-update"] = true;
