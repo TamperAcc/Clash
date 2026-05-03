@@ -1,7 +1,7 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V3.2  | 更新日期: 2026-05-02
+// 版本: V3.3  | 更新日期: 2026-05-02
 // Fix: 新增 Claude 官方域名分流，强制走 Gemini 组以避开香港/日韩节点封锁
 // Fix: 强制 Vertex AI / Gemini API 走 Gemini 分组，防止 SSL 被拦截
 // Fix: Telegram 规则顺序、googleapis.cn 策略纠正、TUN LAN 排除
@@ -19,7 +19,7 @@
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V3.2 (补充安全声明 + LumexCore 依赖说明)...");
+  console.log("✅ 加载脚本 V3.3 (补充安全声明 + LumexCore 依赖说明)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -554,7 +554,7 @@ function main(config) {
     "DOMAIN-SUFFIX,claudeapp.com,Claude", // 可能的未来域名，提前布局
     "DOMAIN-SUFFIX,claudepro.com,Claude", // 可能的未来域名，提前布局
     "DOMAIN-SUFFIX,claude.com,Claude", // 可能的未来域名，提前布局
-    
+    "DOMAIN-SUFFIX,mcp.exa.ai,Claude", // 可能的未来域名，提前布局
 
     // AI 服务 - Rule Sets (已废弃，清理残留)
     "GEOSITE,openai,ChatGPT",
