@@ -1,7 +1,9 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V3.3  | 更新日期: 2026-05-02
+// 版本: V3.4  | 更新日期: 2026-05-03
+// Fix: 新增 Intercom 域名分流至 Claude 组（nexus-websocket-a.intercom.io 等推送通道）
+// Fix: 新增 PROCESS-NAME,claude.exe,Claude 进程规则，防止 Claude 桌面端走自动选择
 // Fix: 新增 Claude 官方域名分流，强制走 Gemini 组以避开香港/日韩节点封锁
 // Fix: 强制 Vertex AI / Gemini API 走 Gemini 分组，防止 SSL 被拦截
 // Fix: Telegram 规则顺序、googleapis.cn 策略纠正、TUN LAN 排除
@@ -19,7 +21,7 @@
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V3.3 (补充安全声明 + LumexCore 依赖说明)...");
+  console.log("✅ 加载脚本 V3.4 (修复 Claude 桌面端 Intercom 推送域名分流)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -555,6 +557,10 @@ function main(config) {
     "DOMAIN-SUFFIX,claudepro.com,Claude", // 可能的未来域名，提前布局
     "DOMAIN-SUFFIX,claude.com,Claude", // 可能的未来域名，提前布局
     "DOMAIN-SUFFIX,mcp.exa.ai,Claude", // 可能的未来域名，提前布局
+    // Fix: Claude 客户端实时推送/通知通道（Intercom），nexus-websocket-a.intercom.io 等
+    "DOMAIN-SUFFIX,intercom.io,Claude",
+    "DOMAIN-SUFFIX,intercomassets.com,Claude",
+    "DOMAIN-SUFFIX,intercomcdn.com,Claude",
 
     // AI 服务 - Rule Sets (已废弃，清理残留)
     "GEOSITE,openai,ChatGPT",
@@ -614,6 +620,7 @@ function main(config) {
     "PROCESS-NAME,Code.exe,自动选择",
     "PROCESS-NAME,cursor.exe,Cursor",
     "PROCESS-NAME,Cursor.exe,Cursor",
+    "PROCESS-NAME,claude.exe,Claude", // Fix: Claude 桌面端进程强制走 Claude 组
     "PROCESS-NAME,ChatGPT.exe,ChatGPT",
     "PROCESS-NAME,codex.exe,ChatGPT",
     "PROCESS-NAME,idea64.exe,自动选择",
