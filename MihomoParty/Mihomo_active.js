@@ -1,21 +1,25 @@
 // Mihomo Party 专用配置文件覆写脚本
 // 引用链接: https://raw.githubusercontent.com/TamperAcc/Clash/main/MihomoParty/Mihomo_active.js
 // 加速链接: https://cdn.jsdelivr.net/gh/TamperAcc/Clash@main/MihomoParty/Mihomo_active.js
-// 版本: V2.9  | 更新日期: 2026-05-02
+// 版本: V3.1  | 更新日期: 2026-05-02
 // Fix: 新增 Claude 官方域名分流，强制走 Gemini 组以避开香港/日韩节点封锁
 // Fix: 强制 Vertex AI / Gemini API 走 Gemini 分组，防止 SSL 被拦截
 // Fix: Telegram 规则顺序、googleapis.cn 策略纠正、TUN LAN 排除
 // Opt: AI 组 adaptive-cooldown-sec 独立缩短至 60s，加快坏节点恢复
-// Opt: ChatGPT 组改为白名单过滤，精确锁定 US/JP/SG/TW/UK/CA/AU 节点
-// Opt: 补充 sora.com 域名及 ChatGPT.exe/codex.exe 进程规则
-// Opt: Cursor 组改为白名单过滤，精确锁定 US/JP/SG/TW/UK/CA/AU 节点
-// Feat: 新增独立 Claude 组，白名单锁定 TW/JP/KR/SG/US 低延迟节点
-// Opt: Gemini 组改为白名单，同样锁定 TW/JP/KR/SG/US
-// Fix: Copilot 补排 CN；GitHub Copilot 补全官方封锁列表 IR/SY/BY/CN
+// Opt: ChatGPT/Cursor/Gemini/Claude 组改为白名单过滤，锁定低延迟节点
+// Fix: 补全 Copilot/GitHub Copilot 官方封锁地区列表
+// Chore: 补充 LumexCore 内核依赖声明及 secret 安全警告
+//
+// ⚠️  内核依赖声明：本脚本中 adaptive-heavy / adaptive-mode / switch-cost-* /
+//     hierarchical-* / bandit-mode 等参数为 LumexCore 定制内核专属扩展，
+//     在标准 Mihomo 内核下会被静默忽略，需配合 LumexCore 使用才能发挥完整效果。
+//
+// ⚠️  安全警告：config["secret"] 字段为示例占位值，请在本地替换为强密码，
+//     切勿将真实密码提交到公开仓库，否则任何人均可访问你的代理控制 API。
 
 function main(config) {
   // 打印版本号，用于确认是否下载到了最新版
-  console.log("✅ 加载脚本 V2.9 (修复 Claude 组图标)...");
+  console.log("✅ 加载脚本 V3.1 (补充安全声明 + LumexCore 依赖说明)...");
 
   // 关键修复：如果 config 为空，必须返回空对象 {} 而不是 null
 
@@ -545,6 +549,11 @@ function main(config) {
     // Anthropic / Claude
     "DOMAIN-SUFFIX,anthropic.com,Claude",
     "DOMAIN-SUFFIX,claude.ai,Claude",
+    "DOMAIN-SUFFIX,platform.claude.com,Claude", // 可能的未来域名，提前布局
+    "DOMAIN-SUFFIX,claudeapi.com,Claude", // 可能的未来域名，提前布局
+    "DOMAIN-SUFFIX,claudeapp.com,Claude", // 可能的未来域名，提前布局
+    "DOMAIN-SUFFIX,claudepro.com,Claude", // 可能的未来域名，提前布局
+    
 
     // AI 服务 - Rule Sets (已废弃，清理残留)
     "GEOSITE,openai,ChatGPT",
